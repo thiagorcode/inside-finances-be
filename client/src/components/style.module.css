@@ -1,0 +1,28 @@
+.container {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   margin: 30px 0;
+}
+.select {
+   display: flex;
+   width: 16%;
+   min-width: 125px;
+   margin: 0 10px;
+}
+.flexRow {
+   width: 80%;
+   margin: 0 auto;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   flex-wrap: wrap;
+}
+.flexRow p {
+   font-size: 16px;
+   font-weight: bold;
+}
+.flexRow p span {
+   font-weight: 500;
+   font-size: 15px;
+}
