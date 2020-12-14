@@ -3,13 +3,18 @@ import React, { useState, useEffect } from 'react';
 import Select from '../../components/Select';
 import Balance from '../../components/Balance';
 import Report from '../../components/Report';
-
 import ServiceHttp from "../../services/TransactionService";
 
+import './checking.css'
+
 export default function Checking() {
+  const time = new Date();
+  const currentYear = time.getFullYear();
+  const currentMonth = +time.getMonth();
+
   const [current, setCurrent] = useState(0);
   const [modified, setModified] = useState(0);
-  const [yearMonth, setYearMonth] = useState("2019-01");
+  const [yearMonth, setYearMonth] = useState(`${currentYear}-${currentMonth}`);
   const [changeFilter, setChangeFilter] = useState('')
 
   useEffect(() => {

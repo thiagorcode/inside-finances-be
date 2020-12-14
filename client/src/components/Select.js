@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import css from "./style.module.css"
 
 export default function Select({ onChange }) {
-   const [period, setPeriod] = useState([])
-   const [currentPeriod, setCurrentPeriod] = useState(0)
+   const [period, setPeriod] = useState([]);
+   const [currentPeriod, setCurrentPeriod] = useState(0);
    const months = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-   const years = [2019, 2020, 2021];
+   const years = [2019, 2020, 2021, 2022];
 
    useEffect(() => {
       const select = Array.from(document.querySelectorAll("select"))
