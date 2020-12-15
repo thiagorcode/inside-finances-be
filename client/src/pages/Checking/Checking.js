@@ -62,7 +62,7 @@ export default function Checking() {
       <h2>CFP</h2>
 
       <Select onChange={handleGetAll} />
-      <Balance transanctions={current} value={current.report} type={current.report} />
+      <Balance transanctions={current} />
 
       <Report
         transanctions={current}

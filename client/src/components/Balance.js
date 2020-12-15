@@ -3,8 +3,8 @@ import helperCalculated from "./helpers/Calculated";
 
 import css from "./style.module.css";
 
-export default function Balance({ transanctions, value, type }) {
-   const result = helperCalculated.result(transanctions, value, type);
+export default function Balance({ transanctions }) {
+   const result = helperCalculated.result(transanctions);
 
    return (
       <div className={css.flexRow}>

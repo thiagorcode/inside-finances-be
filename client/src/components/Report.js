@@ -21,13 +21,14 @@ export default function Report({ transanctions, deleted, modal, filter }) {
       })
       : 0;
    let idKey = 0
-
+   // * Realiza operações com o modal
    const handleModal = (edit, id) => {
       setIdentifier(id)
       setChange(edit)
       setIsModalOpen(true)
       modal(true)
    }
+
    const handleClose = () => {
       setIsModalOpen(false);
       modal(false)

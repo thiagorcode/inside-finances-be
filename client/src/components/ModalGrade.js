@@ -158,17 +158,6 @@ export default function ModalGrade({ onClose, identifier, change }) {
                   <div className="input-field">
                      <input
                         type="text"
-                        id="description"
-                        required
-                        name="description"
-                        onChange={handleInputChange}
-                        value={gradeForm.description}
-                     />
-                     <label htmlFor="description" className="active">Descrição:</label>
-                  </div>
-                  <div className="input-field">
-                     <input
-                        type="text"
                         required
                         name="category"
                         id="category"
@@ -176,6 +165,18 @@ export default function ModalGrade({ onClose, identifier, change }) {
                         value={gradeForm.category}
                      />
                      <label htmlFor="category" className="active">Categoria:</label>
+                  </div>
+                  <div className="input-field">
+                     <input
+                        type="text"
+                        id="description"
+                        required
+                        name="description"
+                        onChange={handleInputChange}
+                        value={gradeForm.description}
+                     />
+                     <label htmlFor="description" className="active">Descrição:</label>
+
                   </div>
                   <div className="row">
                      <div className="input-field col s6">
