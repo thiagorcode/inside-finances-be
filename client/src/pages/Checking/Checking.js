@@ -31,13 +31,15 @@ export default function Checking() {
         })
         .filter(inv => {
           return inv.description.toLowerCase().indexOf(changeFilter.toLowerCase()) > -1;
-        })
+        });
+
       const newData = { length: investigate.length, report: investigate }
       setCurrent(newData);
     }
     getAll(yearMonth)
     // Quando verifica que yearMonth alterou ou a modal fechou ou abriu faz uma nova consulta
-  }, [yearMonth, modified, changeFilter])
+  }, [yearMonth, modified, changeFilter]);
+
   const handleClickDeleted = async (id) => {
     const status = await ServiceHttp.remove(id);
     setModified(status)
@@ -48,6 +50,7 @@ export default function Checking() {
   // Verifica as datas
   const handleGetAll = (event) => {
     setYearMonth(event)
+    console.log(current)
   }
 
   const handleModified = async (modal) => {
@@ -59,7 +62,8 @@ export default function Checking() {
       <h2>CFP</h2>
 
       <Select onChange={handleGetAll} />
-      <Balance transanctions={current} />
+      <Balance transanctions={current} value={current.report} type={current.report} />
+
       <Report
         transanctions={current}
         deleted={handleClickDeleted}

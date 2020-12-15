@@ -1,25 +1,27 @@
 import format from "./formatHelpers";
-
-const result = (transanctions) => {
+// * Realiza a soma dos valores de Receita, Despesa, total @
+const result = (transanctions, value, type) => {
+   console.log(value)
+   const newBalance = { ...value, ...type }
+   console.log(newBalance)
    let negative = 0
    let some = 0
    let total = 0
    if (transanctions !== 0) {
-      let newBalance = transanctions.report.map(transaction => {
+      let CurrentBalance = transanctions.report.map(transaction => {
          const { value, type } = transaction;
-         let id = 0
          return {
-            id: ++id,
             value: parseFloat(value),
             type,
          }
       })
-      some = newBalance.reduce((acc, curr) => {
+      console.log(CurrentBalance)
+      some = CurrentBalance.reduce((acc, curr) => {
          return curr.type === "+" ? acc + curr.value : acc + 0;
 
       }, 0);
 
-      negative = newBalance.reduce((acc, curr) => {
+      negative = CurrentBalance.reduce((acc, curr) => {
          return curr.type === "-" ? acc + curr.value : acc + 0;
 
       }, 0);

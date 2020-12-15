@@ -1,16 +1,14 @@
-import React from 'react'
-import helperCalculated from "./helpers/Calculated"
+import React from 'react';
+import helperCalculated from "./helpers/Calculated";
 
 import css from "./style.module.css";
 
-
-export default function Balance({ transanctions }) {
-
-   const result = helperCalculated.result(transanctions)
+export default function Balance({ transanctions, value, type }) {
+   const result = helperCalculated.result(transanctions, value, type);
 
    return (
       <div className={css.flexRow}>
-         <p>Lançamento: <span>{transanctions.length || 0}</span> </p>
+         <p>Lançamentos: <span>{transanctions.length || 0}</span> </p>
          <p>Receita:<span style={{ color: "#26A69A" }}>R$ {result.some}</span>  </p>
          <p>Despesa:<span style={{ color: "red" }}>R$ {result.negative}</span> </p>
          <p>Saldo: <span style={{ color: "#26A69A" }}>R$ {result.total}</span> </p>

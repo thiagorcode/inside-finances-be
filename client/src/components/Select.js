@@ -13,10 +13,16 @@ export default function Select({ onChange }) {
    }, [setPeriod, setCurrentPeriod])
 
 
-   const handleSelect = (event) => {
-      setCurrentPeriod(period.selectedIndex)
-      onChange(period.value); // Devolve para APP os dados do select (value dos options)
+   const handleSelect = () => {
+      /**
+       * Recebe o Index do campo select Exe: 1 
+       */
+      setCurrentPeriod(period.selectedIndex);
+      // Devolve para Checking.JS o value do select (value dos options) exe:. 2020-01
+      onChange(period.value);
    }
+   // * Alterar o campo select
+   // TODO: Melhorar o modo de processamento - INFO:Notion
    const handleClickButton = ({ target }) => {
       if (target.value === ">") {
          ++period.selectedIndex
@@ -65,7 +71,8 @@ export default function Select({ onChange }) {
             style={{ zIndex: "0" }}
             onClick={handleClickButton}
             value=">"
-            disabled={currentPeriod < 35 ? false : true}
+            disabled={currentPeriod < 35 ? false : true // Alterar o currentPeriod < 35 para period.length
+            }
          >{">"}
          </button>
       </ div>

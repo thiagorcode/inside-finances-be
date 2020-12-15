@@ -2,11 +2,9 @@ import React from 'react'
 
 
 export default function Action({ id, click, deleted, edit }) {
-   // edit
-   const handleClickEdi = () => {
+   const handleClickEdit = () => {
       edit(id)
    }
-   // remove
 
    const handleClickDel = () => {
       deleted(id)
@@ -17,7 +15,7 @@ export default function Action({ id, click, deleted, edit }) {
          <button
             className="btn waves-effect waves-ligh col s3"
             style={{ zIndex: "0" }}
-            onClick={handleClickEdi}
+            onClick={handleClickEdit}
          >
             <i className="small material-icons">edit</i>
          </button>

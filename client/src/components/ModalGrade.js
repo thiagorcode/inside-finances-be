@@ -20,8 +20,8 @@ export default function ModalGrade({ onClose, identifier, change }) {
       }
    };
    const initialForm = {
-      description: "",
-      type: "",
+      description: '',
+      type: '',
       value: '',
       category: '',
       year: '',
@@ -29,15 +29,15 @@ export default function ModalGrade({ onClose, identifier, change }) {
       day: '',
       yearMonth: '',
       yearMonthDay: '',
-   }
+   };
 
    const [gradeForm, setGradeForm] = useState(initialForm);
-
+   // Busca os dados para preencher os campos do modal
    const getData = async (id) => {
-      const find = await ServiceHttp.findOne(id) // Analisar funções assim para o effect
+      const find = await ServiceHttp.findOne(id) // Todo: Analisar funções assim para o effect
       setGradeForm(find.data.report)
-
    }
+
    useEffect(() => {
       if (change) getData(identifier)
    }, [identifier])
@@ -50,7 +50,8 @@ export default function ModalGrade({ onClose, identifier, change }) {
          setGradeForm({ ...gradeForm, [name]: newValue });
          return
       }
-      if (name === "date") { // Tira os - de date separa campo YYYY MM DD   
+      // * Tira os - de date separa campo YYYY-MM-DD
+      if (name === "date") {
          valueDate = value.split("-");
          setGradeForm({
             ...gradeForm,
@@ -79,8 +80,8 @@ export default function ModalGrade({ onClose, identifier, change }) {
          yearMonth: gradeForm.yearMonth,
          yearMonthDay: gradeForm.yearMonthDay,
       };
-      let respost = await ServiceHttp.create(data);
-      console.log(respost) // Colocar uma mensagem que fale que foi efetuado com sucesso
+      const status = await ServiceHttp.create(data);
+      console.log(status) // TODO: Colocar uma mensagem que fale que foi efetuado com sucesso
 
       onClose(null);
    }
@@ -98,7 +99,9 @@ export default function ModalGrade({ onClose, identifier, change }) {
          yearMonth: gradeForm.yearMonth,
          yearMonthDay: gradeForm.yearMonthDay,
       };
-      await ServiceHttp.update(gradeForm.id, data)
+      const status = await ServiceHttp.update(gradeForm.id, data)
+      console.log(status) // TODO: Colocar uma mensagem que fale que foi efetuado com sucesso
+
       onClose(null);
    }
    const handleModalClose = () => {

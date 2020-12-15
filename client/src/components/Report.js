@@ -40,8 +40,6 @@ export default function Report({ transanctions, deleted, modal, filter }) {
    const handleChangeFilter = (event) => {
       filter(event.target.value)
    }
-
-
    return (
       <div>
          <div className="row">
