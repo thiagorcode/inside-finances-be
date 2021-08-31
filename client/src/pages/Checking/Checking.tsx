@@ -7,23 +7,34 @@ import ServiceHttp from "../../services/TransactionService";
 
 import './checking.css'
 
-export default function Checking() {
+interface ITransaction {
+  report: {
+    day: string;
+    category: string;
+    description: string;
+    value: string;
+    type: string;
+    id: string;
+  }[]
+
+}
+const Checking: React.FC = () => {
   const time = new Date();
   const currentYear = time.getFullYear();
   const currentMonth = +time.getMonth();
 
-  const [current, setCurrent] = useState(0);
-  const [modified, setModified] = useState(0);
-  const [yearMonth, setYearMonth] = useState(`${currentYear}-${currentMonth}`);
+  const [current, setCurrent] = useState({});
+  const [modified, setModified] = useState({});
+  const [yearMonth, setYearMonth] = useState<string>(`${currentYear}-${currentMonth}`);
   const [changeFilter, setChangeFilter] = useState('')
 
   useEffect(() => {
-    const getAll = async (yearMonth) => {
+    const getAll = async (yearMonth: string) => {
 
       const currentTrasanction = await ServiceHttp.getAll(yearMonth);
-      const { data } = currentTrasanction;
-      const investigate = data.report
-        .map(report => {
+      const { report }: ITransaction = currentTrasanction.data;
+      const investigate = report
+        .map((report) => {
           return {
             ...report,
             value: parseFloat(report.value),
@@ -40,11 +51,11 @@ export default function Checking() {
     // Quando verifica que yearMonth alterou ou a modal fechou ou abriu faz uma nova consulta
   }, [yearMonth, modified, changeFilter]);
 
-  const handleClickDeleted = async (id) => {
+  const handleClickDeleted = async (id: string) => {
     const status = await ServiceHttp.remove(id);
     setModified(status)
   }
-  const handleFiler = (filter) => {
+  const handleFilter = (filter) => {
     setChangeFilter(filter)
   }
   // Verifica as datas
@@ -59,7 +70,7 @@ export default function Checking() {
 
   return (
     <div className="container center">
-      <h2>CFP</h2>
+      <h2>WebFinances</h2>
 
       <Select onChange={handleGetAll} />
       <Balance transanctions={current} />
@@ -68,10 +79,11 @@ export default function Checking() {
         transanctions={current}
         deleted={handleClickDeleted}
         modal={handleModified}
-        filter={handleFiler}
+        filter={handleFilter}
       />
       <p>Feito por <a href="https://www.linkedin.com/in/thiagorodrig/" target="_blank">Thiago Rodrigues </a></p>
     </div>
   )
 }
 
+export default Checking
