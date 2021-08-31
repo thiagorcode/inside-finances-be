@@ -1,5 +1,4 @@
 {
-  "root": true,
   "env": {
     "browser": true,
     "es2021": true,
@@ -8,8 +7,9 @@
   "extends": [
     "plugin:react/recommended",
     "airbnb",
-    "plugin:prettier/recommended"
+    "plugin:@typescript-eslint/recommended"
   ],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -19,64 +19,45 @@
   },
   "plugins": [
     "react",
+    "@typescript-eslint",
     "react-hooks",
     "prettier"
   ],
   "rules": {
+    "camelcase": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/prop-types": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "import/prefer-default-export": "off",
-    "camelcase": "off",
-    "prettier/prettier": "error",
-    "react/jsx-filename-extension": "off",
-    "react/jsx-props-no-spreading": "off",
-    "jsx-a11y/label-has-associated-control": [
-      "error",
+    "import/no-duplicates": "off",
+    "react/jsx-filename-extension": [
+      1,
       {
-        "required": {
-          "some": [
-            "nesting",
-            "id"
-          ]
-        }
+        "extensions": [
+          ".tsx"
+        ]
       }
     ],
-    "jsx-a11y/label-has-for": [
-      "error",
-      {
-        "required": {
-          "some": [
-            "nesting",
-            "id"
-          ]
-        }
-      }
+    "@typescript-eslint/ban-types": "off",
+    "no-use-before-define": "off",
+    "@typescript-eslint/camelcase": "off",
+    "@typescript-eslint/no-use-before-define": [
+      "error"
     ],
-    "no-restricted-globals": "off",
-    "react/no-array-index-key": "off",
-    "react/forbid-prop-types": "off",
-    "no-unused-vars": "off",
+    "react/react-in-jsx-scope": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
       {
-        "js": "never",
-        "jsx": "never"
+        "ts": "never",
+        "tsx": "never"
       }
-    ]
+    ],
+    "import/prefer-default-export": "off"
   },
   "settings": {
     "import/resolver": {
-      "node": {
-        "extensions": [
-          ".js",
-          ".jsx"
-        ],
-        "moduleDirectory": [
-          "node_modules",
-          "src/"
-        ]
-      }
+      "typescript": {}
     }
   }
 }

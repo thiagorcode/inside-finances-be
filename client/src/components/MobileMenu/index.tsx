@@ -1,10 +1,11 @@
-import React from 'react'
+import React from 'react';
+import { Nav } from './styles'
 
 const MobileMenu: React.FC = () => {
   return (
-    <div>
-
-    </div>
+    <Nav>
+      Thiago
+    </Nav>
   )
 }
 
