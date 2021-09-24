@@ -80,7 +80,6 @@ const Dashboard: React.FC = () => {
         </a>
       </p>
       <MobileMenu />
-
     </div>
   );
 };
