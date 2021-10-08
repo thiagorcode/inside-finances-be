@@ -11,7 +11,7 @@ export const Spiral = styled.div`
   background-color: #121f64;
 
   span {
-    font-family: Roboto;
+    font-family: 'Poppins', sans-serif;
     font-weight: 500;
     color: #fff;
   }

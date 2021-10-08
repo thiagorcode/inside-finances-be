@@ -1,6 +1,6 @@
 import format from './formatHelpers';
 // * Realiza a soma dos valores de Receita, Despesa, total @
-const result = (transanctions) => {
+const result = transanctions => {
   let negative = 0;
   let some = 0;
   let total = 0;
