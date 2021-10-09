@@ -6,10 +6,12 @@ import MobileMenu from '../../components/MobileMenu';
 import Button from '../../components/Button';
 
 import { Spiral } from './styles';
+import Header from '../../components/Header';
 
 const Dashboard: React.FC = () => {
   return (
     <Box component="div" sx={{ maxWidth: '1200px', ml: 'auto', mr: 'auto' }}>
+      <Header />
       <Box
         component="div"
         bgcolor="#2B2E35"
