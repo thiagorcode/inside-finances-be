@@ -151,6 +151,7 @@ const Dashboard: React.FC = () => {
               py: 2,
               borderRadius: 6,
               mr: 0.2,
+              height: '80px',
             }}
           >
             <FixedIncome>
@@ -172,6 +173,8 @@ const Dashboard: React.FC = () => {
               py: 2,
               borderRadius: 6,
               ml: 0.2,
+              height: '80px',
+
             }}
           >
             <VariabelIncome>
@@ -185,53 +188,103 @@ const Dashboard: React.FC = () => {
         </Box>
         <Box
           component="div"
+          bgcolor="#2B2E35"
           sx={{
-            display: 'flex',
-            flexDirection: 'row',
+            display: 'block',
+            px: 2.3,
+            py: 2,
+            mb: 2,
+
+            borderRadius: 6,
           }}
         >
           <Box
             component="div"
-            bgcolor="#2B2E35"
             sx={{
               display: 'flex',
+              justifyContent: 'space-between',
               alignItems: 'center',
-              width: '50%',
-              px: 2.3,
-              py: 2,
-              borderRadius: 6,
-              mr: 0.2,
             }}
           >
-            <FixedIncome>
-              <h5>Renda Fixa</h5>
-              <div>
-                <span></span>
-                <span>R$ 1,000.00</span>
-              </div>
-            </FixedIncome>
+            {/* Usar Typografh */}
+            <h2>Controle de Gasto</h2>
+            <Button type="button">
+              <Add />
+            </Button>
           </Box>
           <Box
             component="div"
-            bgcolor="#2B2E35"
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              width: '50%',
-              px: 2.3,
-              py: 2,
-              borderRadius: 6,
-              ml: 0.2,
-            }}
+            sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}
           >
-            <VariabelIncome>
-              <h5>Renda Variável</h5>
-              <div>
-                <span></span>
-                <span>R$ 1,000.00</span>
-              </div>
-            </VariabelIncome>
+            <Spiral>
+              <span>R$ 1,000.00</span>
+              <span>+ 15%</span>
+            </Spiral>
           </Box>
+          <BoxTypeValues>
+            <div>
+              <span>
+                <ArrowUpwardRounded />
+              </span>
+              <span>R$ 2,000.00</span>
+            </div>
+            <div>
+              <span>
+                <ArrowDownwardRounded />
+              </span>
+              <span>R$ 1,000.00</span>
+            </div>
+          </BoxTypeValues>
+          <Resume>
+            <div>
+              <FastfoodRounded />
+              <span>Comida</span>
+              <span>08/10/2021</span>
+              <span>R$ 50,00</span>
+            </div>
+            <div>
+              <FastfoodRounded />
+              <span>Comida</span>
+              <span>08/10/2021</span>
+              <span>R$ 50,00</span>
+            </div>
+            <div>
+              <FastfoodRounded />
+              <span>Comida</span>
+              <span>08/10/2021</span>
+              <span>R$ 50,00</span>
+            </div>
+            <div>
+              <FastfoodRounded />
+              <span>Comida</span>
+              <span>08/10/2021</span>
+              <span>R$ 50,00</span>
+            </div>
+            <div>
+              <FastfoodRounded />
+              <span>Comida</span>
+              <span>08/10/2021</span>
+              <span>R$ 50,00</span>
+            </div>
+            <div>
+              <FastfoodRounded />
+              <span>Comida</span>
+              <span>08/10/2021</span>
+              <span>R$ 50,00</span>
+            </div>
+            <div>
+              <FastfoodRounded />
+              <span>Comida</span>
+              <span>08/10/2021</span>
+              <span>R$ 50,00</span>
+            </div>
+            <div>
+              <FastfoodRounded />
+              <span>Comida</span>
+              <span>08/10/2021</span>
+              <span>R$ 50,00</span>
+            </div>
+          </Resume>
         </Box>
       </Box>
       <MobileMenu />
