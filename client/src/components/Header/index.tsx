@@ -1,6 +1,12 @@
 import React from 'react';
-import { NotificationsNoneOutlined, Logout } from '@mui/icons-material'
-import { Container, Profile, Status, BoxProfile, BoxNotification } from './styles';
+import { NotificationsNoneOutlined, Logout } from '@mui/icons-material';
+import {
+  Container,
+  Profile,
+  Status,
+  BoxProfile,
+  BoxNotification,
+} from './styles';
 
 const Header: React.FC = () => {
   return (
@@ -13,12 +19,15 @@ const Header: React.FC = () => {
         </Status>
       </BoxProfile>
       <BoxNotification>
-        <div><NotificationsNoneOutlined /></div>
-        <div><Logout /></div>
+        <div>
+          <NotificationsNoneOutlined />
+        </div>
+        <div>
+          <Logout />
+        </div>
       </BoxNotification>
-
     </Container>
-  )
-}
+  );
+};
 
 export default Header;

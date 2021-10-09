@@ -6,21 +6,21 @@ export const Container = styled.header`
   display: flex;
   justify-content: space-between;
   flex-direction: row;
-  align-items:center;
-`
+  align-items: center;
+`;
 export const Profile = styled.div`
   width: 54px;
   height: 54px;
   border-radius: 50%;
-  border: 3px solid #233DC7;
-  background-color: #FFB800;
+  border: 3px solid #233dc7;
+  background-color: #ffb800;
   font-weight: bold;
   color: #000;
 
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 export const Status = styled.div`
   font-weight: bold;
@@ -30,31 +30,30 @@ export const Status = styled.div`
   margin-left: 9px;
 
   span {
-    color: #6B6B6E;
+    color: #6b6b6e;
     font-size: 14px;
   }
   span:last-child {
     font-size: 16px;
-    color: #3652DC;
+    color: #3652dc;
   }
-`
+`;
 export const BoxProfile = styled.section`
   display: flex;
   flex-direction: row;
-  align-items:center;
-
-`
+  align-items: center;
+`;
 
 export const BoxNotification = styled.section`
   display: flex;
   flex-direction: row;
-  align-items:center;
+  align-items: center;
   div {
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background-color: #3C404E;
+    background-color: #3c404e;
     width: 30px;
     height: 30px;
 
@@ -62,9 +61,7 @@ export const BoxNotification = styled.section`
     margin: 0 5px;
     svg {
       font-size: 18px;
-      color: #DBDBDB;
+      color: #dbdbdb;
     }
   }
-
-`
-
+`;
