@@ -7,6 +7,9 @@ import {
   FastfoodRounded,
   MovingRounded,
   TrendingDownRounded,
+  KeyboardArrowLeftRounded,
+  KeyboardArrowRightRounded,
+  KeyboardArrowDownRounded,
 } from '@mui/icons-material';
 
 import MobileMenu from '../../components/MobileMenu';
@@ -18,6 +21,9 @@ import {
   Resume,
   FixedIncome,
   VariabelIncome,
+  Card,
+  Balance,
+  ResumeCard,
 } from './styles';
 import Header from '../../components/Header';
 
@@ -151,7 +157,7 @@ const Dashboard: React.FC = () => {
               py: 2,
               borderRadius: 6,
               mr: 0.2,
-              height: '80px',
+              height: '100px',
             }}
           >
             <FixedIncome>
@@ -173,8 +179,7 @@ const Dashboard: React.FC = () => {
               py: 2,
               borderRadius: 6,
               ml: 0.2,
-              height: '80px',
-
+              height: '100px',
             }}
           >
             <VariabelIncome>
@@ -201,90 +206,60 @@ const Dashboard: React.FC = () => {
           <Box
             component="div"
             sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              display: 'block',
             }}
           >
-            {/* Usar Typografh */}
-            <h2>Controle de Gasto</h2>
-            <Button type="button">
-              <Add />
-            </Button>
+            <h2>Cartões</h2>
           </Box>
           <Box
             component="div"
-            sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              mt: 1,
+              mb: 1,
+              alignItems: 'center',
+            }}
           >
-            <Spiral>
-              <span>R$ 1,000.00</span>
-              <span>+ 15%</span>
-            </Spiral>
+            <button type="button">
+              <KeyboardArrowLeftRounded style={{ color: '#949499' }} />
+            </button>
+            <Card>
+              <p>**** **** **** 4555</p>
+              <div>
+                <span>Card holder</span>
+                <p>Thiago Rodrigues</p>
+              </div>
+            </Card>
+            <button type="button">
+              <KeyboardArrowRightRounded style={{ color: '#949499' }} />
+            </button>
           </Box>
-          <BoxTypeValues>
+          <Balance>
             <div>
-              <span>
-                <ArrowUpwardRounded />
-              </span>
-              <span>R$ 2,000.00</span>
+              <h6>Card Balance</h6>
+              <span>R$ 4,250.00</span>
             </div>
+            <Button type="button" onClick={() => alert('Teste')}>
+              <Add />
+            </Button>
+          </Balance>
+
+          <ResumeCard>
             <div>
-              <span>
-                <ArrowDownwardRounded />
-              </span>
-              <span>R$ 1,000.00</span>
+              <div>
+                <span>L</span>
+              </div>
+              <div>
+                <span>Livraria</span>
+                <span>24 Junho, 23:42</span>
+              </div>
+              <div>
+                <p>R$ 1,000.00</p>
+              </div>
             </div>
-          </BoxTypeValues>
-          <Resume>
-            <div>
-              <FastfoodRounded />
-              <span>Comida</span>
-              <span>08/10/2021</span>
-              <span>R$ 50,00</span>
-            </div>
-            <div>
-              <FastfoodRounded />
-              <span>Comida</span>
-              <span>08/10/2021</span>
-              <span>R$ 50,00</span>
-            </div>
-            <div>
-              <FastfoodRounded />
-              <span>Comida</span>
-              <span>08/10/2021</span>
-              <span>R$ 50,00</span>
-            </div>
-            <div>
-              <FastfoodRounded />
-              <span>Comida</span>
-              <span>08/10/2021</span>
-              <span>R$ 50,00</span>
-            </div>
-            <div>
-              <FastfoodRounded />
-              <span>Comida</span>
-              <span>08/10/2021</span>
-              <span>R$ 50,00</span>
-            </div>
-            <div>
-              <FastfoodRounded />
-              <span>Comida</span>
-              <span>08/10/2021</span>
-              <span>R$ 50,00</span>
-            </div>
-            <div>
-              <FastfoodRounded />
-              <span>Comida</span>
-              <span>08/10/2021</span>
-              <span>R$ 50,00</span>
-            </div>
-            <div>
-              <FastfoodRounded />
-              <span>Comida</span>
-              <span>08/10/2021</span>
-              <span>R$ 50,00</span>
-            </div>
-          </Resume>
+            <KeyboardArrowDownRounded />
+          </ResumeCard>
         </Box>
       </Box>
       <MobileMenu />

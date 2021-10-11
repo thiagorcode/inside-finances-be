@@ -67,6 +67,7 @@ export const FixedIncome = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   div {
     margin-left: 12px;
   }
@@ -91,3 +92,62 @@ export const VariabelIncome = styled.div`
     color: #b5b5b5;
   }
 `;
+
+export const Card = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+
+  height: 195px;
+  background: linear-gradient(
+    180deg,
+    #646a8b 0%,
+    rgba(100, 106, 139, 0.7) 41.18%,
+    rgba(100, 106, 139, 0.07) 96.41%
+  );
+  border-radius: 25px;
+  padding: 0 25px;
+
+  & > p {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+  }
+
+  div p {
+    font-size: 16px;
+    color: #dfdfdf;
+  }
+
+  div span {
+    font-size: 12px;
+    color: #b5b5b5;
+    font-weight: bold;
+  }
+`;
+
+export const Balance = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 14px;
+
+  border-bottom: 0.4px solid #b5b5b5;
+  div h6 {
+    font-size: 14px;
+    color: #b5b5b5;
+  }
+
+  div span {
+    font-size: 36px;
+    color: #ffffff;
+  }
+  button {
+    width: 42px;
+    height: 42px;
+  }
+`;
+
+export const ResumeCard = styled.div``;
