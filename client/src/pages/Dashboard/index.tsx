@@ -24,6 +24,8 @@ import {
   Card,
   Balance,
   ResumeCard,
+  ResumeCardBox,
+  ResumeTypeBuy,
 } from './styles';
 import Header from '../../components/Header';
 
@@ -248,11 +250,14 @@ const Dashboard: React.FC = () => {
           <ResumeCard>
             <div>
               <div>
-                <span>L</span>
-              </div>
-              <div>
-                <span>Livraria</span>
-                <span>24 Junho, 23:42</span>
+                <div>
+                  <ResumeCardBox>L</ResumeCardBox>
+                </div>
+                <ResumeTypeBuy>
+                  <span>Livraria</span>
+                  <span>24 Junho, 23:42</span>
+                </ResumeTypeBuy>
+
               </div>
               <div>
                 <p>R$ 1,000.00</p>

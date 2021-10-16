@@ -150,4 +150,43 @@ export const Balance = styled.div`
   }
 `;
 
-export const ResumeCard = styled.div``;
+export const ResumeCard = styled.div`
+padding-bottom: 70px;
+  margin-top: 16px;
+  text-align: center;
+  & > div > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+  }
+  & > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+`;
+
+export const ResumeCardBox = styled.span`
+background-color: #c4c4c4;
+  color: #999999;
+ padding: 9px 17px;
+  border-radius: 4px;
+  margin-right: 7.82px;
+
+`
+export const ResumeTypeBuy = styled.div`
+  display: flex;
+  flex-direction: column;
+  span {
+    font-size: 16px;
+    text-align: left;
+  }
+  span:last-child {
+    color: #B5B5B5;
+    font-size: 14px;
+    margin-top: 6px;
+  }
+`
