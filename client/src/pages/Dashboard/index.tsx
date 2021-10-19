@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { Box } from '@mui/system';
 import {
   Add,
@@ -14,6 +14,7 @@ import {
 
 import MobileMenu from '../../components/MobileMenu';
 import Button from '../../components/Button';
+import Modal from '../../components/Modal'
 
 import {
   Spiral,
@@ -30,6 +31,8 @@ import {
 import Header from '../../components/Header';
 
 const Dashboard: React.FC = () => {
+  const [openModal, setOpenModal] = useState(false);
+
   return (
     <Box component="div" sx={{ maxWidth: '1200px', ml: 'auto', mr: 'auto' }}>
       <Header />
@@ -62,7 +65,7 @@ const Dashboard: React.FC = () => {
           >
             {/* Usar Typografh */}
             <h2>Controle de Gasto</h2>
-            <Button type="button">
+            <Button type="button" onClick={() => setOpenModal(true)}>
               <Add />
             </Button>
           </Box>
@@ -229,7 +232,7 @@ const Dashboard: React.FC = () => {
             <Card>
               <p>**** **** **** 4555</p>
               <div>
-                <span>Card holder</span>
+                <span>Dono do Cartão</span>
                 <p>Thiago Rodrigues</p>
               </div>
             </Card>
@@ -268,6 +271,16 @@ const Dashboard: React.FC = () => {
         </Box>
       </Box>
       <MobileMenu />
+      <Modal
+        open={openModal}
+      >
+        <header>
+          <button type="button" onClick={() => setOpenModal(false)}>Close</button>
+          <h1>Adicionar Transação
+          </h1>
+
+        </header>
+      </Modal>
     </Box>
   );
 };

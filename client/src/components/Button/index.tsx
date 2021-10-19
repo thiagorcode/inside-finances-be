@@ -3,11 +3,11 @@ import React, { ButtonHTMLAttributes } from 'react';
 import { But } from './styles';
 
 const Button: React.FC<ButtonHTMLAttributes<HTMLButtonElement>> = (
-  { children, color },
-  props,
+  { children, color, ...rest },
+
 ) => {
   return (
-    <But textcolor={color} {...props}>
+    <But textcolor={color} {...rest}>
       {children}
     </But>
   );
