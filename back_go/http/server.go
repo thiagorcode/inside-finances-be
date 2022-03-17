@@ -8,7 +8,7 @@ import (
 )
 
 type WebServer struct {
-	Users *model.Users
+	Users *model.Users1
 }
 
 func NewWebServer() *WebServer {
@@ -19,7 +19,7 @@ func (w WebServer) Server() {
 	e := echo.New()
 	e.GET("/user", w.getAll)
 	e.POST("/user", w.createUser)
-	e.Logger.Fatal(e.Start(":3333"))
+	e.Logger.Fatal(e.Start(":8080"))
 }
 
 func (w WebServer) getAll(c echo.Context) error {

@@ -9,11 +9,11 @@ type User struct {
 	Password string `json:"password"`
 }
 
-type Users struct {
+type Users1 struct {
 	User []User
 }
 
-func (u *Users) Add(user User) {
+func (u *Users1) Add(user User) {
 
 	u.User = append(u.User, user)
 }
