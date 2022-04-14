@@ -1,0 +1,133 @@
+body{
+ background-color: #23232C;
+ padding: 0;
+ overflow: hidden;
+
+}
+
+.Logo{
+    color: white;
+    position: absolute;
+    bottom: 60%;
+    left: 30px;
+    
+}
+
+h1{
+ position:relative;
+ bottom: -40px; 
+ left: 30px;  
+ font-size: 50px;
+}
+
+
+.Arealogin{
+display: flex;
+padding-bottom: 100px;
+padding: 20px;
+
+}
+
+button{
+  background-color: #0C27B5;
+  color: white;
+  height: 40px;
+  width: 291px;
+  border-radius: 8px;
+  font-size: 18px;
+}
+
+.Login{
+ 
+    position: absolute;
+    left: 38px;
+    bottom: 25%;   
+
+}
+
+form ::placeholder{
+    font-size: 14px;
+    padding-left: 0px;
+    color:#888888;
+
+
+}
+
+input{
+    color: white;
+    width: 100%;
+    border: none;
+    display: block;
+    background-color: transparent;   
+    line-height: 1.1;
+    
+    
+}
+
+.register{
+    padding: 20px;  
+    position: absolute;
+    bottom: 44%;
+    width: 80%;
+    border-bottom: 2px solid white; 
+    display: flex;
+    padding-bottom: 1px;
+    margin-bottom: 32px;
+    left: 40px;
+   
+}
+
+
+.passow{
+    padding: 18px;
+    position: absolute;
+    bottom: 35%;
+    width: 80%;
+    border-bottom: 2px solid white; 
+    display: flex;
+    padding-bottom: 1px;
+    margin-bottom: 22px;
+    left: 40px;
+}
+
+.passow p{
+    position: absolute;
+    font-size: 12px;
+    color: #888888;
+    position: absolute;
+    bottom: -45px;
+}
+
+.money{
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+}
+
+.triangulo1{
+    position: absolute;
+    top: 1px;
+    left: 1px;
+}
+
+.triangulo2{
+position: absolute;
+bottom:110px;
+left: -30px;    
+    
+}
+
+.tringbaixo1{
+ position: absolute;
+ bottom: 1px;
+ right: -1px;
+
+
+}
+
+.tringbaixo2{
+    position: absolute;
+     top: 320px;
+     left: 251px;
+       }
+   
