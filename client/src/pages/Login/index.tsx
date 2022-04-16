@@ -15,17 +15,17 @@ export default function login() {
             <img className="money" src={Moeda} alt="moeda" width="150px" />
             <img className="tringbaixo1" src={baixo1} alt="triangulodebaixo" width="150px" />
             </div>
-             <div className="Logo" >
+             <div className="Logoone" >
              <img className="triangulo2" src={vec2} alt="triangulo2" width="355px" /> 
              <img className="tringbaixo2" src={baixo2} alt="triangulodebaixo2" width="80px" />
                  <h1>LOGIN</h1>
              </div>
-             <div className="register">
+             <div className="registerone">
                  <form>
                  <input type="text" placeholder="Email" autoFocus></input>
                  </form>
                  </div>
-             <div className="passow">
+             <div className="passowone">
              <form>
              <input type="password" placeholder="Senha" ></input>
              <a href="http://localhost:3000/register"><p>cadastrar agora</p></a>

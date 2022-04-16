@@ -5,7 +5,7 @@ body{
 
 }
 
-.Logo{
+.Logoone{
     color: white;
     position: absolute;
     bottom: 60%;
@@ -13,7 +13,7 @@ body{
     
 }
 
-h1{
+.Logoone h1{
  position:relative;
  bottom: -40px; 
  left: 30px;  
@@ -55,7 +55,7 @@ form ::placeholder{
 
 input{
     color: white;
-    width: 100%;
+    width: 250px;
     border: none;
     display: block;
     background-color: transparent;   
@@ -64,7 +64,7 @@ input{
     
 }
 
-.register{
+.registerone{
     padding: 20px;  
     position: absolute;
     bottom: 44%;
@@ -78,7 +78,7 @@ input{
 }
 
 
-.passow{
+.passowone{
     padding: 18px;
     position: absolute;
     bottom: 35%;
@@ -90,9 +90,9 @@ input{
     left: 40px;
 }
 
-.passow p{
+.passowone p{
     position: absolute;
-    font-size: 12px;
+    font-size: 14px;
     color: #888888;
     position: absolute;
     bottom: -45px;
