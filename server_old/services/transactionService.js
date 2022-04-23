@@ -20,6 +20,7 @@ const findAll = async (req, res) => {
          .send({ message: error.message || 'Algum erro ocorreu ao procurar' })
    }
 }
+
 const findOne = async (req, res) => {
    try {
 
