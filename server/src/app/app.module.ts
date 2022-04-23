@@ -5,6 +5,7 @@ import { getConnectionOptions } from 'typeorm';
 import { AuthModule } from 'src/auth/auth.module';
 
 import { UsersModule } from 'src/modules/users/users.module';
+import { TransactionsModule } from 'src/modules/transactions/transactions.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UsersModule } from 'src/modules/users/users.module';
     AuthModule,
 
     UsersModule,
+    TransactionsModule,
   ],
 })
 export class AppModule {}
