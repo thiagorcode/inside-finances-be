@@ -10,7 +10,7 @@ import {
 import { Users } from '../users/users.entity';
 
 @Entity()
-export class Transactions {
+export class TransactionsCategory {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
