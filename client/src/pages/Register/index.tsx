@@ -1,5 +1,5 @@
 import React from "react";
-import './style.css'
+// import './style.css' Alterar para Styled
 import vec1 from '../Login/img/Vector1.png'
 import vec2 from '../Login/img/Vector2.png'
 import baixo1 from '../Login/img/baixo1.png'
@@ -35,7 +35,7 @@ export default function Register() {
         <div className="form-passwordconfirm">
           <input type="password" placeholder="Confirme sua senha" />
         </div>
-        </form>
+      </form>
     </>
   )
 }
