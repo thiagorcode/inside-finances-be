@@ -31,7 +31,7 @@ export default function Login() {
           Depois te ensino a fazer direcionamento no React
             Se quiser pesquisar vai no google e pesquisa "Link react router dom"
           */}
-          <a href="http://localhost:3000/register"><p>cadastrar agora</p></a>
+          <a className="phrase-register" href="http://localhost:3000/register"><p>cadastrar agora</p></a>
         </div>
         <div className="form-buttonsubmit" >
           <button type="submit">LOGIN</button>
