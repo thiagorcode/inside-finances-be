@@ -25,11 +25,9 @@ export class TransactionsCategoryService {
   async create(
     data: Partial<TransactionsCategoryDTO>,
   ): Promise<TransactionsCategoryDTO> {
-    data.dtCreate = new Date();
-    // Aplicar validação se a data for maior que a data atual o isPaid deve ser falso naturalmente
-    const newTransaction = Object.assign(new TransactionsCategory(), data);
+    const newCategory = Object.assign(new TransactionsCategory(), data);
 
-    const transaction = await this.transactionsRepository.save(newTransaction);
+    const transaction = await this.transactionsRepository.save(newCategory);
     return transaction;
   }
 

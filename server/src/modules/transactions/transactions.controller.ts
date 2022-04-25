@@ -18,10 +18,11 @@ import { TransactionsDTO } from './transactions.dto';
 export class TransactionsController {
   constructor(private transactionsService: TransactionsService) {}
 
-  @Get()
+  @Get('user/:idUser')
   // @UseGuards(JwtAuthGuard)
-  async findAllTransactions() {
-    const transactions = await this.transactionsService.findAll();
+  // TODO: Verificar a possibilidade se vai criar os valores totais aqui ou em outra rota
+  async findAllTransactionsByUser(@Param('idUser') idUser: string) {
+    const transactions = await this.transactionsService.findAllbyUser(idUser);
     return {
       statusCode: HttpStatus.OK,
       message: 'Transactions fetched successfully',

@@ -14,7 +14,7 @@ import { TransactionsCategoryService } from './transactionsCategory.service';
 import { TransactionsCategoryDTO } from './transactionsCategory.dto';
 // import { JwtAuthGuard } from '../../auth/jwt/jwt-auth.guard';
 
-@Controller('transactions')
+@Controller('categorys')
 export class TransactionsCategoryController {
   constructor(
     private transactionsCategoryService: TransactionsCategoryService,
@@ -22,36 +22,36 @@ export class TransactionsCategoryController {
 
   @Get()
   // @UseGuards(JwtAuthGuard)
-  async findAllTransactions() {
-    const transactions = await this.transactionsCategoryService.findAll();
+  async findAllCategorys() {
+    const categorys = await this.transactionsCategoryService.findAll();
     return {
       statusCode: HttpStatus.OK,
-      message: 'Transactions fetched successfully',
-      transactions,
+      message: 'Category fetched successfully',
+      categorys,
     };
   }
 
   @Post()
   async create(@Body() data: TransactionsCategoryDTO) {
-    const transaction = await this.transactionsCategoryService.create(data);
+    const category = await this.transactionsCategoryService.create(data);
 
     return {
       statusCode: HttpStatus.CREATED,
-      message: 'Transactions created successfully',
-      transaction,
+      message: 'Category created successfully',
+      category,
     };
   }
 
-  @Get(':id')
-  // @UseGuards(JwtAuthGuard)
-  async findTransaction(@Param('id') id: string) {
-    const transaction = await this.transactionsCategoryService.find(id);
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'Transactions fetched successfully',
-      transaction,
-    };
-  }
+  // @Get(':id')
+  // // @UseGuards(JwtAuthGuard)
+  // async findTransaction(@Param('id') id: string) {
+  //   const category = await this.transactionsCategoryService.find(id);
+  //   return {
+  //     statusCode: HttpStatus.OK,
+  //     message: 'Category fetched successfully',
+  //     category,
+  //   };
+  // }
 
   @Patch(':id')
   // @UseGuards(JwtAuthGuard)
@@ -62,7 +62,7 @@ export class TransactionsCategoryController {
     await this.transactionsCategoryService.update(id, data);
     return {
       statusCode: HttpStatus.OK,
-      message: 'Transactions updated successfully',
+      message: 'Category updated successfully',
     };
   }
 
@@ -72,7 +72,7 @@ export class TransactionsCategoryController {
     await this.transactionsCategoryService.delete(id);
     return {
       statusCode: HttpStatus.OK,
-      message: 'Transactions deleted successfully',
+      message: 'Category deleted successfully',
     };
   }
 }

@@ -12,8 +12,8 @@ export class TransactionsService {
     private transactionsRepository: Repository<Transactions>,
   ) {}
 
-  async findAll(): Promise<TransactionsDTO[]> {
-    return await this.transactionsRepository.find();
+  async findAllbyUser(id: string): Promise<TransactionsDTO[]> {
+    return await this.transactionsRepository.find({ user: { id } });
   }
 
   async find(id: string): Promise<TransactionsDTO> {

@@ -1,10 +1,11 @@
 import { UsersDTO } from '../users/users.dto';
+import { TransactionsCategoryDTO } from '../transactionsCategory/transactionsCategory.dto';
 
 export class TransactionsDTO {
   id: number;
   description: string;
   value: number;
-  category: string;
+  category: Partial<TransactionsCategoryDTO>;
   year: number;
   // month: number;
   // day: number;

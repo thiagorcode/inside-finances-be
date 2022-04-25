@@ -8,15 +8,12 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Users } from '../users/users.entity';
+import { TransactionsCategory } from '../transactionsCategory/transactionsCategory.entity';
 
 @Entity()
 export class Transactions {
   @PrimaryGeneratedColumn('increment')
   id: number;
-
-  // Criar tabela para o category
-  @Column({ type: 'varchar', length: '80' })
-  category: string;
 
   @Column({ type: 'varchar', length: '80' })
   description: string;
@@ -44,6 +41,10 @@ export class Transactions {
 
   @Column({ type: 'varchar' })
   type: '+' | '-';
+
+  @ManyToOne(() => TransactionsCategory)
+  @JoinColumn()
+  category: TransactionsCategory;
 
   @ManyToOne(() => Users)
   @JoinColumn()

@@ -10,4 +10,4 @@ import { TransactionsCategory } from './transactionsCategory.entity';
   providers: [TransactionsCategoryService],
   exports: [TransactionsCategoryService],
 })
-export class TransactionsModule {}
+export class TransactionsCategoryModule {}
