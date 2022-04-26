@@ -1,5 +1,5 @@
-import { UsersDTO } from '../users/users.dto';
-import { TransactionsCategoryDTO } from '../transactionsCategory/transactionsCategory.dto';
+import { UsersDTO } from '../../users/dtos/users.dto';
+import { TransactionsCategoryDTO } from '../../transactionsCategory/dtos/transactionsCategory.dto';
 
 export class TransactionsDTO {
   id: number;
