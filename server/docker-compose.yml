@@ -5,15 +5,15 @@ services:
     container_name: finances_backend
     restart: always
     build: .
-    environment:
-      - MYSQL_HOST=mysql
-      - MYSQL_USERNAME=webfinances
-      - MYSQL_PASSWORD=webfinances
-      - MYSQL_DATABASE=webfinances
-      - MYSQL_PORT=3308
-      - PORT=5000
+    # environment:
+    #   - MYSQL_HOST=mysql
+    #   - MYSQL_USERNAME=webfinances
+    #   - MYSQL_PASSWORD=webfinances
+    #   - MYSQL_DATABASE=webfinances
+    #   - MYSQL_PORT=3306
+    #   - PORT=5000
     volumes:
-      - ./src:/var/www/finances/src
+      - ./src:/var/www/finances/src # Tudo que acontece em ./src
       - ./test:/var/www/finances/test
     working_dir: /var/www/finances
     ports:

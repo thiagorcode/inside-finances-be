@@ -5,7 +5,7 @@
 /dist
 /dist-seeder
 /node_modules
-
+/mysql
 # Logs
 logs
 *.log
