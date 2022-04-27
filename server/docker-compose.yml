@@ -1,7 +1,28 @@
-version: "3.3"
+version: "3.7"
 
 services:
-  database:
+  backend:
+    container_name: finances_backend
+    restart: always
+    build: .
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USERNAME=webfinances
+      - MYSQL_PASSWORD=webfinances
+      - MYSQL_DATABASE=webfinances
+      - MYSQL_PORT=3308
+      - PORT=5000
+    volumes:
+      - ./src:/var/www/finances/src
+      - ./test:/var/www/finances/test
+    working_dir: /var/www/finances
+    ports:
+      - "3333:3333"
+    links:
+      - mysql
+    depends_on:
+      - mysql
+  mysql:
     image: mysql/mysql-server:8.0.25
     environment:
       - MYSQL_ROOT_HOST=%
@@ -16,7 +37,12 @@ services:
     volumes:
       - ./mysql/data:/var/lib/mysql
       - ./mysql/seed:/docker-entrypoint-initdb.d:ro
-
+volumes:
+  finances_mysql_data:
+networks:
+  default:
+    external:
+      name: finances
   # server:
   #   image: "node:12"
   #   ports:
