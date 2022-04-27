@@ -24,8 +24,8 @@ export const HeaderLogin = styled.div`
 
    .tringdow2{
     position: absolute;
-     top: 320px;
-     left: 251px;
+     top: 254px;
+     left: 253px;
   }
 
 `
@@ -48,8 +48,8 @@ export const Bordes = styled.div`
 
   .tringdown1{
     position: absolute;
-    bottom: 1px;
-    right: -1px;
+    bottom: -1px;
+    right: -2px;
   }
 
 `

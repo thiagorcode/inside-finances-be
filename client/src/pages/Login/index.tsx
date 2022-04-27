@@ -24,7 +24,7 @@ export default function Login() {
       </Bordes>
       <HeaderLogin >
         <img className="triangle" src={Vec2} alt="triangle2" width="355px" />
-        <img className="tringdow2" src={Down2} alt="triangledown2" width="80px" />
+        <img className="tringdow2" src={Down2} alt="triangledown2" width="78px" />
       </HeaderLogin>
       <Form>
         <h1>LOGIN</h1>
