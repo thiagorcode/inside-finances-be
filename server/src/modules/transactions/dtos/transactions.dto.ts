@@ -15,5 +15,7 @@ export class TransactionsDTO {
   isPaid: boolean;
   originCreate?: 'web' | 'telegram';
   type: '+' | '-';
+  specification?: string;
+  bank?: string;
   user: Partial<UsersDTO>;
 }

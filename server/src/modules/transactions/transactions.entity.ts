@@ -35,12 +35,18 @@ export class Transactions {
 
   @Column({ type: 'varchar' })
   yearMonth: string;
-
+  // converter para date
   @Column({ type: 'varchar' })
   yearMonthDay: string;
 
   @Column({ type: 'varchar' })
   type: '+' | '-';
+
+  @Column({ type: 'varchar', default: '' })
+  specification?: string;
+
+  @Column({ type: 'varchar', default: '' })
+  bank?: string;
 
   @ManyToOne(() => TransactionsCategory)
   @JoinColumn()
