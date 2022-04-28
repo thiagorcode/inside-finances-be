@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Spiral = styled.div`
+export const Spiral = styled.button`
   display: flex;
   flex-direction: column;
   justify-content: center;
