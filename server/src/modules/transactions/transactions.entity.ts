@@ -36,8 +36,8 @@ export class Transactions {
   @Column({ type: 'varchar' })
   yearMonth: string;
   // converter para date
-  @Column({ type: 'varchar' })
-  yearMonthDay: string;
+  @Column({ type: 'date' })
+  date: Date;
 
   @Column({ type: 'varchar' })
   type: '+' | '-';
@@ -69,9 +69,12 @@ export class Transactions {
   @BeforeInsert()
   @BeforeUpdate()
   formatDate() {
-    const schemaDate = this.yearMonthDay.split('-');
-
-    this.yearMonth = `${schemaDate[0]}-${schemaDate[1]}`;
-    this.year = +schemaDate[0];
+    this.date = new Date(this.date);
+    this.yearMonth = `${this.date.getFullYear()}-${
+      this.date.getMonth() <= 9
+        ? `0${this.date.getMonth() + 1}`
+        : this.date.getMonth() + 1
+    }`;
+    this.year = +this.date.getFullYear();
   }
 }

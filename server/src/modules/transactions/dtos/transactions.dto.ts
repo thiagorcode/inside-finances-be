@@ -10,7 +10,7 @@ export class TransactionsDTO {
   // month: number;
   // day: number;
   yearMonth: string;
-  yearMonthDay: string;
+  date: Date;
   dtCreate: Date;
   isPaid: boolean;
   originCreate?: 'web' | 'telegram';

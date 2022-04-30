@@ -30,14 +30,29 @@ export class TransactionsController {
     };
   }
 
-  @Post()
-  async create(@Body() data: TransactionsDTO) {
-    const transaction = await this.transactionsService.create(data);
+  @Get('user/:idUser/last')
+  // @UseGuards(JwtAuthGuard)
+  // TODO: Verificar possibilidade de pegar o ID pelo token
+  async findLastTransctionsByUser(@Param('idUser') idUser: string) {
+    const transactions = await this.transactionsService.findLastByUser(idUser);
 
     return {
-      statusCode: HttpStatus.CREATED,
-      message: 'Transactions created successfully',
-      transaction,
+      statusCode: HttpStatus.OK,
+      message: 'Transactions fetched successfully',
+      transactions,
+    };
+  }
+
+  @Get('user/:idUser/totalizers')
+  // @UseGuards(JwtAuthGuard)
+  // TODO: Verificar possibilidade de pegar o ID pelo token
+  async totalizers(@Param('idUser') idUser: string) {
+    const totalizers = await this.transactionsService.totalizers(idUser);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Totalizers fetched successfully',
+      totalizers,
     };
   }
 
@@ -48,6 +63,17 @@ export class TransactionsController {
     return {
       statusCode: HttpStatus.OK,
       message: 'Transactions fetched successfully',
+      transaction,
+    };
+  }
+
+  @Post()
+  async create(@Body() data: TransactionsDTO) {
+    const transaction = await this.transactionsService.create(data);
+
+    return {
+      statusCode: HttpStatus.CREATED,
+      message: 'Transactions created successfully',
       transaction,
     };
   }
