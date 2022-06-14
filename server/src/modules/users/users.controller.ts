@@ -7,6 +7,7 @@ import {
   Body,
   Param,
   HttpStatus,
+  Res,
   // UseGuards,
 } from '@nestjs/common';
 
@@ -20,13 +21,14 @@ export class UsersController {
 
   @Get()
   // @UseGuards(JwtAuthGuard)
-  async findAllUsers() {
+  async findAllUsers(@Res() response) {
     const users = await this.usersService.findAll();
-    return {
+    
+    return response.status(200).send({
       statusCode: HttpStatus.OK,
       message: 'Users fetched successfully',
       users,
-    };
+    });
   }
 
   @Post()

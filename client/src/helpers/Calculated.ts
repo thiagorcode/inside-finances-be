@@ -1,9 +1,17 @@
 import format from './formatHelpers';
 // * Realiza a soma dos valores de Receita, Despesa, total @
-const result = transanctions => {
+
+interface ReturnResult {
+  some: number | string;
+  total: number | string;
+  negative: number | string;
+}
+
+const result = (transanctions): ReturnResult => {
   let negative = 0;
   let some = 0;
   let total = 0;
+
   if (transanctions !== 0) {
     const balance = transanctions.report.map(transaction => {
       const { value, type } = transaction;
