@@ -21,7 +21,6 @@ const Modal = ({ open, children }: IModal) => {
             px: 2.3,
             py: 2,
             mb: 2,
-
             borderRadius: 6,
           }}
         >
