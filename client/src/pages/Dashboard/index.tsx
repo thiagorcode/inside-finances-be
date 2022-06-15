@@ -29,6 +29,7 @@ import {
   ResumeTypeBuy,
 } from './styles';
 import Header from '../../components/Header';
+import { AddTransaction } from './AddTransaction';
 
 const Dashboard = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -271,12 +272,7 @@ const Dashboard = () => {
       </Box>
       <MobileMenu />
       <Modal open={openModal}>
-        <header>
-          <button type="button" onClick={() => setOpenModal(false)}>
-            Close
-          </button>
-          <h1>Adicionar Transação</h1>
-        </header>
+        <AddTransaction setIsVisibleModal={setOpenModal} />
       </Modal>
     </Box>
   );
