@@ -11,7 +11,7 @@ const Modal = ({ open, children }: IModal) => {
     <ModalUI open={open}>
       <Box
         component="div"
-        sx={{ maxWidth: '1200px', ml: 'auto', mr: 'auto', bgcolor: '#000' }}
+        sx={{ maxWidth: '478px', ml: 'auto', mr: 'auto', bgcolor: '#000' }}
       >
         <Box
           component="div"
