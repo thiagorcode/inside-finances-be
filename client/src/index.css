@@ -31,11 +31,10 @@ body {
 button {
   background-color: transparent;
   border: 0;
-  outline: 0;
   color: none;
 }
 
-input {
+input, select, textarea, button {
   outline: 0;
 }
 

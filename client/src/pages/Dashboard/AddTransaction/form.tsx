@@ -1,15 +1,28 @@
-import Button from '../../../components/Button';
 import { Input } from '../../../components/Form';
-import { FormTransaction } from './styles';
+import { FormTransaction, Button } from './styles';
+import { format } from 'date-fns';
+import { Categorys } from './categorys';
 
 export const Form = () => {
   return (
     <FormTransaction>
-      <Input label="Descrição:" />
-      <Input label="Tipo:" />
-      <Input label="Valor:" />
-      <Input label="Data:" />
-      <Input label="Pagamento:" />
+      {/** TODO: Alterar o placeholder quando ele for despesa ou receita */}
+      <Input label="Descrição:" placeholder="Alimentação, Salário, Conta" />
+      <Input label="Tipo:" placeholder="Alimentação, Salário, Conta">
+        <select>
+          <option value="" disabled>
+            Selecione
+          </option>
+          <option value="+">Receita</option>
+          <option value="-">Despesa</option>
+        </select>
+      </Input>
+      <Categorys />
+      {/** TODO: Create sugest Value - 20,00 / MED */}
+
+      <Input label="Valor:" placeholder="R$ 99,99" />
+      <Input label="Data:" placeholder={format(new Date(), 'dd/MM/yyyy')} />
+      {/* <Input label="Pagamento:" placeholder="Cartão ou Avista" /> */}
       <Button>Salvar</Button>
     </FormTransaction>
   );
