@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 
-export const Container = styled.div``;
+export const Container = styled.div`
+  width: 90%;
+  margin-inline: auto;
+`;
 
 export const Header = styled.header`
   display: flex;
@@ -12,16 +15,15 @@ export const Header = styled.header`
     line-height: 2rem;
     margin-left: 1rem;
   }
-
+  button {
+    cursor: pointer;
+  }
   svg {
     color: #fff;
   }
 `;
 
-export const FormTransaction = styled.form`
-  width: 90%;
-  margin-inline: auto;
-`;
+export const FormTransaction = styled.form``;
 
 export const Button = styled.button`
   box-shadow: none;
@@ -38,6 +40,8 @@ export const Button = styled.button`
   border-radius: 20px;
   font-weight: bold;
   margin-top: 0.5rem;
+  cursor: pointer;
+
   &:hover {
     background-color: #2644d8;
     border-color: #2644d8;
@@ -50,6 +54,10 @@ export const Button = styled.button`
   }
   &:focus {
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+  }
+  &:disabled {
+    opacity: 0.7;
+    cursor: pointer;
   }
 `;
 
