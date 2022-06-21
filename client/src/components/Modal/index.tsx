@@ -1,17 +1,22 @@
-import { ReactNode } from 'react';
-import { Modal as ModalUI, Box } from '@mui/material';
+import {
+  Modal as ModalUI,
+  Box,
+  ModalTypeMap,
+  ModalProps as ModalProp,
+} from '@mui/material';
 
-interface IModal {
-  open: boolean;
-  children: ReactNode;
-}
-
-const Modal = ({ open, children }: IModal) => {
+// eslint-disable-next-line @typescript-eslint/ban-types
+const Modal = ({ children, ...props }: ModalProp<'div', ModalTypeMap>) => {
   return (
-    <ModalUI open={open}>
+    <ModalUI {...props}>
       <Box
         component="div"
-        sx={{ maxWidth: '478px', ml: 'auto', mr: 'auto', bgcolor: '#000' }}
+        sx={{
+          maxWidth: '478px',
+          ml: 'auto',
+          mr: 'auto',
+          bgcolor: 'trasparent',
+        }}
       >
         <Box
           component="div"
