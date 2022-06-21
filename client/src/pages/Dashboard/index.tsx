@@ -271,7 +271,7 @@ const Dashboard = () => {
         </Box>
       </Box>
       <MobileMenu />
-      <Modal open={openModal}>
+      <Modal open={openModal} sx={{ bottom: 0 }} defaultComponent={'div'}>
         <AddTransaction setIsVisibleModal={setOpenModal} />
       </Modal>
     </Box>
