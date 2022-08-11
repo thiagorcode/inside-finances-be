@@ -1,8 +1,8 @@
 import { UsersDTO } from '../../users/dtos/users.dto';
 import { TransactionsCategoryDTO } from '../../transactionsCategory/dtos/transactionsCategory.dto';
 
-export class TransactionsDTO {
-  id: number;
+export interface ITransaction {
+  id: string;
   description: string;
   value: number;
   category: Partial<TransactionsCategoryDTO>;

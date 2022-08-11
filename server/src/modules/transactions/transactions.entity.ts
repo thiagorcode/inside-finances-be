@@ -12,8 +12,8 @@ import { TransactionsCategory } from '../transactionsCategory/transactionsCatego
 
 @Entity()
 export class Transactions {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'varchar', length: '80' })
   description: string;

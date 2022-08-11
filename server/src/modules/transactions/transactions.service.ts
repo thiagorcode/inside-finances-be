@@ -1,10 +1,12 @@
+import { UpdateTransactionsDTO } from './dtos/updateTransactions.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { isBefore } from 'date-fns';
 import { Transactions } from './transactions.entity';
-import { TransactionsDTO } from './dtos/transactions.dto';
-import { TotalizersDTO } from './dtos/totalizers.dto';
+import { CreateTransactionsDTO } from './dtos/createTransactions.dto';
+import { ITotalizers } from './interface/totalizers';
+import { ITransaction } from './interface/transaction';
 
 @Injectable()
 export class TransactionsService {
@@ -13,19 +15,19 @@ export class TransactionsService {
     private transactionsRepository: Repository<Transactions>,
   ) {}
 
-  async findAllbyUser(id: string): Promise<TransactionsDTO[]> {
+  async findAllByUser(id: string): Promise<ITransaction[]> {
     return await this.transactionsRepository.find({ user: { id } });
   }
 
-  async findLastByUser(id: string): Promise<TransactionsDTO[]> {
+  async findLastByUser(id: string): Promise<ITransaction[]> {
     return await this.transactionsRepository.find({
       where: { user: { id } },
       take: 10,
     });
   }
 
-  async totalizers(id: string): Promise<TotalizersDTO> {
-    const transactions = await this.findAllbyUser(id);
+  async totalizers(id: string): Promise<ITotalizers> {
+    const transactions = await this.findAllByUser(id);
 
     const earnings = transactions
       .filter(
@@ -49,13 +51,13 @@ export class TransactionsService {
       balanceAvailable,
     };
   }
-  async find(id: string): Promise<TransactionsDTO> {
+  async find(id: string): Promise<ITransaction> {
     return await this.transactionsRepository.findOne({
       where: { id },
     });
   }
 
-  async create(data: Partial<TransactionsDTO>): Promise<TransactionsDTO> {
+  async create(data: CreateTransactionsDTO): Promise<ITransaction> {
     data.dtCreate = new Date();
     // Aplicar validação se a data for maior que a data atual o isPaid deve ser falso naturalmente
     const newTransaction = Object.assign(new Transactions(), data);
@@ -64,14 +66,14 @@ export class TransactionsService {
     return transaction;
   }
 
-  async update(id: string, transaction: Partial<TransactionsDTO>) {
+  async update(id: string, transaction: UpdateTransactionsDTO) {
     return this.transactionsRepository.update(id, transaction).then(() => {
-      return this.transactionsRepository.findOne({ id: +id });
+      return this.transactionsRepository.findOne({ id });
     });
   }
 
   async delete(id: string) {
-    await this.transactionsRepository.delete({ id: +id });
+    await this.transactionsRepository.delete({ id });
     return { deleted: true };
   }
 }

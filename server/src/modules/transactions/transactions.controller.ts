@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 
 import { TransactionsService } from './transactions.service';
-import { TransactionsDTO } from './dtos/transactions.dto';
+import { CreateTransactionsDTO } from './dtos/createTransactions.dto';
 // import { JwtAuthGuard } from '../../auth/jwt/jwt-auth.guard';
 
 @Controller('transactions')
@@ -22,7 +22,7 @@ export class TransactionsController {
   // @UseGuards(JwtAuthGuard)
   // TODO: Verificar a possibilidade se vai criar os valores totais aqui ou em outra rota
   async findAllTransactionsByUser(@Param('idUser') idUser: string) {
-    const transactions = await this.transactionsService.findAllbyUser(idUser);
+    const transactions = await this.transactionsService.findAllByUser(idUser);
     return {
       statusCode: HttpStatus.OK,
       message: 'Transactions fetched successfully',
@@ -68,7 +68,7 @@ export class TransactionsController {
   }
 
   @Post()
-  async create(@Body() data: TransactionsDTO) {
+  async create(@Body() data: CreateTransactionsDTO) {
     const transaction = await this.transactionsService.create(data);
 
     return {
@@ -82,7 +82,7 @@ export class TransactionsController {
   // @UseGuards(JwtAuthGuard)
   async updateTransaction(
     @Param('id') id: string,
-    @Body() data: Partial<TransactionsDTO>,
+    @Body() data: CreateTransactionsDTO,
   ) {
     await this.transactionsService.update(id, data);
     return {
