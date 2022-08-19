@@ -1,4 +1,4 @@
-import { UsersDTO } from '../../users/dtos/users.dto';
+import { CreateUserDTO } from '../../users/dtos/createUser.dto';
 import { TransactionsCategoryDTO } from '../../transactionsCategory/dtos/transactionsCategory.dto';
 
 export interface ITransaction {
@@ -17,5 +17,5 @@ export interface ITransaction {
   type: '+' | '-';
   specification?: string;
   bank?: string;
-  user: Partial<UsersDTO>;
+  user: Partial<CreateUserDTO>;
 }
