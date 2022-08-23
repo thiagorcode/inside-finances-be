@@ -14,7 +14,6 @@ import {
 
 import MobileMenu from '../../components/MobileMenu';
 import Button from '../../components/Button';
-import Modal from '../../components/Modal';
 
 import {
   Spiral,
@@ -29,6 +28,8 @@ import {
   ResumeTypeBuy,
 } from './styles';
 import Header from '../../components/Header';
+import { AddTransaction } from './AddTransaction';
+import { Modal } from '@mui/material';
 
 const Dashboard = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -270,13 +271,8 @@ const Dashboard = () => {
         </Box>
       </Box>
       <MobileMenu />
-      <Modal open={openModal}>
-        <header>
-          <button type="button" onClick={() => setOpenModal(false)}>
-            Close
-          </button>
-          <h1>Adicionar Transação</h1>
-        </header>
+      <Modal open={openModal} sx={{ height: '100vh' }}>
+        <AddTransaction setIsVisibleModal={setOpenModal} />
       </Modal>
     </Box>
   );
