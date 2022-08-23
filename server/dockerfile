@@ -1,4 +1,4 @@
-FROM node:14.17.0-alpine
+FROM node:16.15.0-alpine
 
 LABEL maintainer="Thiago Rodrigues <ti.thiago.rodrigues@outlook.com>"
 
@@ -6,8 +6,11 @@ LABEL maintainer="Thiago Rodrigues <ti.thiago.rodrigues@outlook.com>"
 WORKDIR /var/www/finances
 
 #COPY .. Cópia tudo que está dentro da pasta para o container
-COPY . .
+COPY package*.json ./
+
 COPY .env.docker /var/www/finances/.env
+
+COPY . .
 
 # Install app dependencies - For NPM use: `COPY package.json package-lock.lock ./`
 # COPY package.json yarn.lock ./ 

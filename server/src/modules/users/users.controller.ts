@@ -7,11 +7,12 @@ import {
   Body,
   Param,
   HttpStatus,
+  Res,
   // UseGuards,
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
-import { UsersDTO } from './dtos/users.dto';
+import { CreateUserDTO } from './dtos/createUser.dto';
 // import { JwtAuthGuard } from '../../auth/jwt/jwt-auth.guard';
 
 @Controller('users')
@@ -20,17 +21,18 @@ export class UsersController {
 
   @Get()
   // @UseGuards(JwtAuthGuard)
-  async findAllUsers() {
+  async findAllUsers(@Res() response) {
     const users = await this.usersService.findAll();
-    return {
+
+    return response.status(200).send({
       statusCode: HttpStatus.OK,
       message: 'Users fetched successfully',
       users,
-    };
+    });
   }
 
   @Post()
-  async create(@Body() data: UsersDTO) {
+  async create(@Body() data: CreateUserDTO) {
     const isRegisteredUser = await this.usersService.findByEmailAndUser(
       data.email,
       data.username,
@@ -65,7 +67,10 @@ export class UsersController {
 
   @Patch(':id')
   // @UseGuards(JwtAuthGuard)
-  async updateUser(@Param('id') id: string, @Body() data: Partial<UsersDTO>) {
+  async updateUser(
+    @Param('id') id: string,
+    @Body() data: Partial<CreateUserDTO>,
+  ) {
     await this.usersService.update(id, data);
     return {
       statusCode: HttpStatus.OK,

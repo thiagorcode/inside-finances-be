@@ -6,14 +6,16 @@ import {
   BeforeUpdate,
   ManyToOne,
   JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Users } from '../users/users.entity';
 import { TransactionsCategory } from '../transactionsCategory/transactionsCategory.entity';
 
 @Entity()
 export class Transactions {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'varchar', length: '80' })
   description: string;
@@ -36,8 +38,8 @@ export class Transactions {
   @Column({ type: 'varchar' })
   yearMonth: string;
   // converter para date
-  @Column({ type: 'varchar' })
-  yearMonthDay: string;
+  @Column({ type: 'date' })
+  date: Date;
 
   @Column({ type: 'varchar' })
   type: '+' | '-';
@@ -48,30 +50,38 @@ export class Transactions {
   @Column({ type: 'varchar', default: '' })
   bank?: string;
 
-  @ManyToOne(() => TransactionsCategory)
-  @JoinColumn()
-  category: TransactionsCategory;
+  @Column({ type: 'varchar', default: 'web' })
+  originCreate?: 'web' | 'telegram';
+
+  @Column({ type: 'varchar' })
+  userId: string;
+
+  @Column({ type: 'varchar' })
+  categoryId: string;
 
   @ManyToOne(() => Users)
   @JoinColumn()
   user: Users;
 
-  @Column({ type: 'varchar', default: 'web' })
-  originCreate?: 'web' | 'telegram';
+  @ManyToOne(() => TransactionsCategory)
+  @JoinColumn({ name: 'categoryId' })
+  category: TransactionsCategory;
 
-  @Column({
-    type: 'datetime',
-    nullable: true,
-    default: () => 'CURRENT_TIMESTAMP',
-  })
+  @CreateDateColumn()
   dtCreate: Date;
+
+  @UpdateDateColumn()
+  dtUpdate: Date;
 
   @BeforeInsert()
   @BeforeUpdate()
   formatDate() {
-    const schemaDate = this.yearMonthDay.split('-');
-
-    this.yearMonth = `${schemaDate[0]}-${schemaDate[1]}`;
-    this.year = +schemaDate[0];
+    this.date = new Date(this.date);
+    this.yearMonth = `${this.date.getFullYear()}-${
+      this.date.getMonth() <= 9
+        ? `0${this.date.getMonth() + 1}`
+        : this.date.getMonth() + 1
+    }`;
+    this.year = +this.date.getFullYear();
   }
 }

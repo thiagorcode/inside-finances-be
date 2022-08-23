@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class TransactionsCategory {
@@ -15,4 +21,10 @@ export class TransactionsCategory {
   // @ManyToOne(() => Transactions)
   // @JoinColumn()
   // transactions: Transactions;
+
+  @CreateDateColumn()
+  dtCreate: Date;
+
+  @UpdateDateColumn()
+  dtUpdate: Date;
 }
