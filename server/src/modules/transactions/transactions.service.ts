@@ -67,9 +67,7 @@ export class TransactionsService {
   }
 
   async update(id: string, transaction: UpdateTransactionsDTO) {
-    return this.transactionsRepository.update(id, transaction).then(() => {
-      return this.transactionsRepository.findOne({ id });
-    });
+    return await this.transactionsRepository.update(id, transaction);
   }
 
   async delete(id: string) {
