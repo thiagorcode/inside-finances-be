@@ -31,9 +31,13 @@ body {
 button {
   background-color: transparent;
   border: 0;
-  outline: 0;
   color: none;
 }
+
+input, select, textarea, button {
+  outline: 0;
+}
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

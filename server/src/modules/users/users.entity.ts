@@ -5,6 +5,8 @@ import {
   BeforeInsert,
   BeforeUpdate,
   AfterLoad,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import * as crypto from 'crypto';
 
@@ -32,12 +34,11 @@ export class Users {
   // @Column({ default: false })
   // isPasswordChange: boolean;
 
-  @Column({
-    type: 'datetime',
-    nullable: true,
-    default: () => 'CURRENT_TIMESTAMP',
-  })
+  @CreateDateColumn()
   dtCreate: Date;
+
+  @UpdateDateColumn()
+  dtUpdate: Date;
 
   @AfterLoad()
   loadPassword() {

@@ -75,12 +75,12 @@ async function start() {
       description: '',
       value: row[2],
       category: category?.id || typeTransfer?.id,
-      yearMonthDay: row[0] && dateFns.format(dateFns.addHours(row[0], 3), 'yyyy-MM-dd'),
+      date: row[0],
       isPaid: dateFns.isBefore(row[0], new Date()),
       type: '+',
       // Ser dinamico o User
       // Criar um input para receber os dados de auth
-      user: 'e4b228d7-5860-418c-8e5a-7d293608f12a',
+      user: '6df7fd4a-02bb-4a3a-aa05-77a2d4706a2c',
     }
     await fetch('http://localhost:3333/transactions', {
       method: 'POST',
@@ -96,14 +96,14 @@ async function start() {
       description: '',
       value: row[4],
       category: category?.id || typeTransfer?.id,
-      yearMonthDay: row[0] && dateFns.format(dateFns.addHours(row[0], 3), 'yyyy-MM-dd'),
+      date: row[0],
       isPaid: dateFns.isBefore(row[0], new Date()),
       type: '-',
       specification: row[5] || '',
       bank: row[3] || '',
       // Ser dinamico o User
       // Criar um input para receber os dados de auth
-      user: 'e4b228d7-5860-418c-8e5a-7d293608f12a',
+      user: '6df7fd4a-02bb-4a3a-aa05-77a2d4706a2c',
     }
     await fetch('http://localhost:3333/transactions', {
       method: 'POST',
