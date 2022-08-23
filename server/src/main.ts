@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from 'src/app/app.module';
-
+console.log(process.env.MYSQL_PORT);
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -15,7 +15,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
-  console.log(process.env.PORT);
+
   await app.listen(process.env.PORT);
 
   console.log('Rodando na porta ' + process.env.PORT);
