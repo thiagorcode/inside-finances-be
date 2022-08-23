@@ -6,6 +6,8 @@ import {
   BeforeUpdate,
   ManyToOne,
   JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Users } from '../users/users.entity';
 import { TransactionsCategory } from '../transactionsCategory/transactionsCategory.entity';
@@ -48,23 +50,28 @@ export class Transactions {
   @Column({ type: 'varchar', default: '' })
   bank?: string;
 
-  @ManyToOne(() => TransactionsCategory)
-  @JoinColumn()
-  category: TransactionsCategory;
+  @Column({ type: 'varchar', default: 'web' })
+  originCreate?: 'web' | 'telegram';
+
+  @Column({ type: 'varchar' })
+  userId: string;
+
+  @Column({ type: 'varchar' })
+  categoryId: string;
 
   @ManyToOne(() => Users)
   @JoinColumn()
   user: Users;
 
-  @Column({ type: 'varchar', default: 'web' })
-  originCreate?: 'web' | 'telegram';
+  @ManyToOne(() => TransactionsCategory)
+  @JoinColumn({ name: 'categoryId' })
+  category: TransactionsCategory;
 
-  @Column({
-    type: 'datetime',
-    nullable: true,
-    default: () => 'CURRENT_TIMESTAMP',
-  })
+  @CreateDateColumn()
   dtCreate: Date;
+
+  @UpdateDateColumn()
+  dtUpdate: Date;
 
   @BeforeInsert()
   @BeforeUpdate()
