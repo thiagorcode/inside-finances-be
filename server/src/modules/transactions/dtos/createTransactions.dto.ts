@@ -8,7 +8,7 @@ export class CreateTransactionsDTO {
   value: number;
 
   @ApiProperty()
-  category: string;
+  categoryId: string;
 
   @ApiProperty()
   year: number;
@@ -40,5 +40,5 @@ export class CreateTransactionsDTO {
   bank?: string;
 
   @ApiProperty()
-  user: string;
+  userId: string;
 }
