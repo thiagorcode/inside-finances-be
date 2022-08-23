@@ -57,9 +57,6 @@ export class UsersService {
   }
 
   async create(data: Partial<CreateUserDTO>): Promise<CreateUserDTO> {
-    data.isActive = true;
-    data.dtCreate = new Date();
-
     const newUser = Object.assign(new Users(), data);
 
     const user = await this.usersRepository.save(newUser);

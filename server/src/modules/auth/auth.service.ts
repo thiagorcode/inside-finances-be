@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/modules/users/users.service';
 import { CreateUserDTO } from 'src/modules/users/dtos/createUser.dto';
 import * as crypto from 'crypto';
+import { Users } from '../users/users.entity';
 
 @Injectable()
 export class AuthService {
@@ -27,7 +28,7 @@ export class AuthService {
 
     const password = (<any>user).unmaskedPassword;
 
-    // TODO: CRIPTOGRAFAR igual GETEDITS - Remover o pass e colocar o password
+    // TODO: CRIPTOGRAFAR igual GE - Remover o pass e colocar o password
     const chkPass = `${user.username}_${pass}`;
     const hashPass = crypto.createHash('sha256').update(chkPass).digest('hex');
 
@@ -39,7 +40,7 @@ export class AuthService {
     return user;
   }
 
-  async login(user: CreateUserDTO) {
+  async login(user: Users) {
     const payload = {
       email: user.email,
       username: user.username,
