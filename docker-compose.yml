@@ -1,0 +1,30 @@
+version: "3.7"
+
+services:
+  backend:
+    container_name: finances_backend
+    restart: always
+    build: ./server
+    volumes:
+      - ./server/src:/var/www/finances/src # Tudo que acontece em ./src
+      - ./server/test:/var/www/finances/test
+    working_dir: /var/www/finances
+    ports:
+      - "3333:3333"
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql/mysql-server:8.0.25
+    environment:
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=finances
+      - MYSQL_USER=finances
+      - MYSQL_PASSWORD=finances
+    ports:
+      - 3309:3306
+    command: '--default-authentication-plugin=mysql_native_password --bind-address=0.0.0.0 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci'
+    restart: always
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/seed:/docker-entrypoint-initdb.d:ro
