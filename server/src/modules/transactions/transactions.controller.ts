@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 
 import { TransactionsService } from './transactions.service';
-import { TransactionsDTO } from './dtos/transactions.dto';
+import { CreateTransactionsDTO } from './dtos/createTransactions.dto';
 // import { JwtAuthGuard } from '../../auth/jwt/jwt-auth.guard';
 
 @Controller('transactions')
@@ -22,7 +22,7 @@ export class TransactionsController {
   // @UseGuards(JwtAuthGuard)
   // TODO: Verificar a possibilidade se vai criar os valores totais aqui ou em outra rota
   async findAllTransactionsByUser(@Param('idUser') idUser: string) {
-    const transactions = await this.transactionsService.findAllbyUser(idUser);
+    const transactions = await this.transactionsService.findAllByUser(idUser);
     return {
       statusCode: HttpStatus.OK,
       message: 'Transactions fetched successfully',
@@ -30,14 +30,29 @@ export class TransactionsController {
     };
   }
 
-  @Post()
-  async create(@Body() data: TransactionsDTO) {
-    const transaction = await this.transactionsService.create(data);
+  @Get('user/:idUser/last')
+  // @UseGuards(JwtAuthGuard)
+  // TODO: Verificar possibilidade de pegar o ID pelo token
+  async findLastTransctionsByUser(@Param('idUser') idUser: string) {
+    const transactions = await this.transactionsService.findLastByUser(idUser);
 
     return {
-      statusCode: HttpStatus.CREATED,
-      message: 'Transactions created successfully',
-      transaction,
+      statusCode: HttpStatus.OK,
+      message: 'Transactions fetched successfully',
+      transactions,
+    };
+  }
+
+  @Get('user/:idUser/totalizers')
+  // @UseGuards(JwtAuthGuard)
+  // TODO: Verificar possibilidade de pegar o ID pelo token
+  async totalizers(@Param('idUser') idUser: string) {
+    const totalizers = await this.transactionsService.totalizers(idUser);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Totalizers fetched successfully',
+      totalizers,
     };
   }
 
@@ -52,11 +67,22 @@ export class TransactionsController {
     };
   }
 
+  @Post()
+  async create(@Body() data: CreateTransactionsDTO) {
+    const transaction = await this.transactionsService.create(data);
+
+    return {
+      statusCode: HttpStatus.CREATED,
+      message: 'Transactions created successfully',
+      transaction,
+    };
+  }
+
   @Patch(':id')
   // @UseGuards(JwtAuthGuard)
   async updateTransaction(
     @Param('id') id: string,
-    @Body() data: Partial<TransactionsDTO>,
+    @Body() data: CreateTransactionsDTO,
   ) {
     await this.transactionsService.update(id, data);
     return {

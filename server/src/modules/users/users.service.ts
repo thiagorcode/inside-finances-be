@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Users } from './users.entity';
-import { UsersDTO } from './dtos/users.dto';
+import { CreateUserDTO } from './dtos/createUser.dto';
 
 @Injectable()
 export class UsersService {
@@ -25,7 +25,7 @@ export class UsersService {
   async findByLoginPassword(
     user: string,
     password: string,
-  ): Promise<UsersDTO | undefined> {
+  ): Promise<CreateUserDTO | undefined> {
     return await this.usersRepository.findOne({
       where: {
         user: user,
@@ -34,7 +34,7 @@ export class UsersService {
     });
   }
 
-  async findByLogin(username: string): Promise<UsersDTO | undefined> {
+  async findByLogin(username: string): Promise<CreateUserDTO | undefined> {
     return await this.usersRepository.findOne({
       where: {
         username,
@@ -45,7 +45,7 @@ export class UsersService {
   async findByEmailAndUser(
     email: string,
     username: string,
-  ): Promise<UsersDTO | null> {
+  ): Promise<CreateUserDTO | null> {
     return await this.usersRepository.findOne({
       where: [
         {
@@ -56,17 +56,14 @@ export class UsersService {
     });
   }
 
-  async create(data: Partial<UsersDTO>): Promise<UsersDTO> {
-    data.isActive = true;
-    data.dtCreate = new Date();
-
+  async create(data: Partial<CreateUserDTO>): Promise<CreateUserDTO> {
     const newUser = Object.assign(new Users(), data);
 
     const user = await this.usersRepository.save(newUser);
     return user;
   }
 
-  async update(id: string, user: Partial<UsersDTO>) {
+  async update(id: string, user: Partial<CreateUserDTO>) {
     return this.usersRepository.update(id, user).then(() => {
       return this.usersRepository.findOne({ id });
     });
