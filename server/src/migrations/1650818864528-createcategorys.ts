@@ -1,11 +1,12 @@
+import { TransactionsCategory } from './../modules/transactionsCategory/transactionsCategory.entity';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class createcategorys1650818864528 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    const transactionsCategoryRepo = queryRunner.connection.getRepository(
-      'TransactionsCategory',
-    );
-
+    const transactionsCategoryRepo =
+      queryRunner.connection.getRepository<TransactionsCategory>(
+        'TransactionsCategory',
+      );
     await transactionsCategoryRepo.insert([
       {
         name: 'Carro',

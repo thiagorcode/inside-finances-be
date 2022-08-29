@@ -4,7 +4,9 @@ services:
   backend:
     container_name: finances_backend
     restart: always
-    build: ./server
+    build: 
+      context: ./server
+      target: production
     volumes:
       - ./server/src:/var/www/finances/src # Tudo que acontece em ./src
       - ./server/test:/var/www/finances/test
@@ -14,17 +16,17 @@ services:
     depends_on:
       - mysql
   mysql:
-    image: mysql/mysql-server:8.0.25
+    image: docker.io/bitnami/mysql:latest
     environment:
       - MYSQL_ROOT_HOST=%
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=finances
       - MYSQL_USER=finances
       - MYSQL_PASSWORD=finances
+      - MYSQL_AUTHENTICATION_PLUGIN=mysql_native_password
     ports:
-      - 3309:3306
-    command: '--default-authentication-plugin=mysql_native_password --bind-address=0.0.0.0 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci'
+      - 3099:3306
+    # command: '--default-authentication-plugin=mysql_native_password --bind-address=0.0.0.0 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci'
     restart: always
     volumes:
       - ./mysql/data:/var/lib/mysql
-      - ./mysql/seed:/docker-entrypoint-initdb.d:ro

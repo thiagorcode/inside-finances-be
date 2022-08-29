@@ -1,26 +1,22 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { getConnectionOptions } from 'typeorm';
-import { AuthModule } from 'src/modules/auth/auth.module';
+import { AuthModule } from '../modules/auth/auth.module';
 
-import { UsersModule } from 'src/modules/users/users.module';
-import { TransactionsModule } from 'src/modules/transactions/transactions.module';
-import { TransactionsCategoryModule } from 'src/modules/transactionsCategory/transactionsCategory.module';
+import { UsersModule } from '../modules/users/users.module';
+import { TransactionsModule } from '../modules/transactions/transactions.module';
+import { TransactionsCategoryModule } from '../modules/transactionsCategory/transactionsCategory.module';
+import { TypeOrmConfigService } from '../infra/database/typeorm-config.service';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      useFactory: async () =>
-        Object.assign(await getConnectionOptions(), {
-          autoLoadEntities: true,
-        }),
+      useClass: TypeOrmConfigService,
     }),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
     AuthModule,
-
     UsersModule,
     TransactionsModule,
     TransactionsCategoryModule,

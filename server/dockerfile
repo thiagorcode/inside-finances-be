@@ -1,6 +1,67 @@
-FROM node:16.15.0-alpine
+FROM node:16.15.0-alpine As development
 
 LABEL maintainer="Thiago Rodrigues <ti.thiago.rodrigues@outlook.com>"
+
+# Create app directory
+WORKDIR /var/www/finances
+
+#COPY .. Cópia tudo que está dentro da pasta para o container
+COPY package*.json ./
+
+COPY .env.docker /var/www/finances/.env
+
+COPY . .
+
+RUN npm install -g npm@8.18.0
+# Install app dependencies - For NPM use: `COPY package.json package-lock.lock ./`
+# COPY package.json yarn.lock ./ 
+# For NPM use: `RUN npm ci`
+RUN npm install --force --only=development
+
+# Copy important files - Add ormconfig.ts here if using Typeorm
+# COPY .eslintrc.js nest-cli.json tsconfig.json tsconfig.build.json ormconfig.js ./
+
+# Copy env
+
+# Add storage folder to the container (If you want to add other folder contents to the container)
+# ADD storage /var/www/finances/storage
+
+# Entrypoint command - Replace `"yarn"` with `"npm", "run"` if you are using NPM as your package manager.
+# You can update this to run other NodeJS apps
+
+RUN  npm run build
+USER node
+
+
+# CMD [ "npm", "run", "start:dev", "--preserveWatchOutput" ]
+
+
+###################
+# PRODUCTION
+###################
+
+FROM node:16.15.0-alpine As production
+
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+WORKDIR /var/www/finances
+
+COPY package*.json ./
+
+COPY .env.docker /var/www/finances/.env
+
+RUN npm install --force --only=production && npm cache clean --force
+
+COPY . .
+
+COPY --chown=node:node --from=development /var/www/finances/dist ./dist
+
+USER node
+
+CMD [ "node", "dist/main.js" ]
+
+FROM node:16.15.0-alpine as local
 
 # Create app directory
 WORKDIR /var/www/finances

@@ -16,7 +16,7 @@ export class TransactionsService {
   ) {}
 
   async findAllByUser(id: string): Promise<ITransaction[]> {
-    return await this.transactionsRepository.find({ user: { id } });
+    return await this.transactionsRepository.find({ where: { user: { id } } });
   }
 
   async findLastByUser(id: string): Promise<ITransaction[]> {

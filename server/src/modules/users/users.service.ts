@@ -28,8 +28,8 @@ export class UsersService {
   ): Promise<CreateUserDTO | undefined> {
     return await this.usersRepository.findOne({
       where: {
-        user: user,
-        pas: password,
+        username: user,
+        password: password,
       },
     });
   }
@@ -65,7 +65,7 @@ export class UsersService {
 
   async update(id: string, user: Partial<CreateUserDTO>) {
     return this.usersRepository.update(id, user).then(() => {
-      return this.usersRepository.findOne({ id });
+      return this.usersRepository.findOne({ where: { id } });
     });
   }
 
