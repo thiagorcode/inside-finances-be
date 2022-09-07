@@ -36,7 +36,7 @@ jobs:
         working-directory: ./server
         run: yarn build
       
-      - name: copy file via ssh password
+      - name: copy file via ssh key
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
