@@ -44,4 +44,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: "., !node_modules"
-          target: "test"
+          target: "~/live"
