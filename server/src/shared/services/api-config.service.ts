@@ -61,12 +61,12 @@ export class ApiConfigService {
       entities: ['dist/modules/**/*.entity{.ts,.js}'],
       migrations: ['dist/migrations/**/*{.ts,.js}'],
       autoLoadEntities: true,
-      keepConnectionAlive: !this.isTest,
-      dropSchema: this.isTest,
+      // keepConnectionAlive: !this.isTest,
+      // dropSchema: this.isTest,
       name: 'default',
       // subscribers: [UserSubscriber],
       migrationsRun: true,
-      logging: this.getBoolean('ENABLE_ORM_LOGS'),
+      // logging: this.getBoolean('ENABLE_ORM_LOGS'),
       // namingStrategy: new SnakeNamingStrategy(),
     };
   }
