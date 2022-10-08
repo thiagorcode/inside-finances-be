@@ -17,9 +17,6 @@ A aplicação vai permiti que o usuário faça um controle de gastos pessoais. P
 
 ## Tools
 
-## Description
-
-Aplicativo para controle de gastos pessoais.
 
 ## Installation
 
