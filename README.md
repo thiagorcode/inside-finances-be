@@ -1,7 +1,5 @@
 # Web Finances
 
-A aplicação vai permiti que o usuário faça um controle de gastos pessoais. Pretendo com essa aplicação automatizar uma planilha minha e além disso estudar nova tecnologias, como por exemplo Cloud.
-
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
@@ -19,6 +17,11 @@ A aplicação vai permiti que o usuário faça um controle de gastos pessoais. P
     <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
   <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
 </p>
+
+
+A aplicação vai permiti que o usuário faça um controle de gastos pessoais. Pretendo com essa aplicação automatizar uma planilha minha e além disso estudar nova tecnologias, como por exemplo Cloud.
+
+
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
