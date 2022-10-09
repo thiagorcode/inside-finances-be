@@ -46,10 +46,11 @@ export class ApiConfigService {
   }
 
   get nodeEnv(): string {
-    return this.getString('NODE_ENV');
+    return this.getString('ENVIRONMENT');
   }
 
   get ormConfig(): TypeOrmModuleOptions {
+    console.log(this.isTest);
     return {
       type: 'mysql',
       host: this.getString('MYSQL_HOST'),
@@ -65,7 +66,7 @@ export class ApiConfigService {
       // dropSchema: this.isTest,
       name: 'default',
       // subscribers: [UserSubscriber],
-      migrationsRun: true,
+      // migrationsRun: true,
       // logging: this.getBoolean('ENABLE_ORM_LOGS'),
       // namingStrategy: new SnakeNamingStrategy(),
     };
