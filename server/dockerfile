@@ -12,11 +12,11 @@ COPY .env.docker /var/www/finances/.env
 
 COPY . .
 
-RUN npm install -g npm@8.18.0
+RUN npm install -g npm@8.19.2
 # Install app dependencies - For NPM use: `COPY package.json package-lock.lock ./`
 # COPY package.json yarn.lock ./ 
 # For NPM use: `RUN npm ci`
-RUN npm install --force --only=development
+RUN npm install --force --omit=dev
 
 # Copy important files - Add ormconfig.ts here if using Typeorm
 # COPY .eslintrc.js nest-cli.json tsconfig.json tsconfig.build.json ormconfig.js ./
