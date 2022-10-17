@@ -60,7 +60,7 @@ export class ApiConfigService {
       database: this.getString('MYSQL_DATABASE'),
       synchronize: this.isTest,
       entities: ['dist/modules/**/*.entity{.ts,.js}'],
-      migrations: ['dist/migrations/**/*{.ts,.js}'],
+      migrations: ['dist/migrations/*{.ts,.js}'],
       autoLoadEntities: true,
       // keepConnectionAlive: !this.isTest,
       // dropSchema: this.isTest,
