@@ -9,8 +9,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Users } from '../users/users.entity';
-import { TransactionsCategory } from '../transactionsCategory/transactionsCategory.entity';
+import { Users } from '../../users/entities/users.entity';
+import { TransactionsCategory } from '../../transactionsCategory/entities/transactionsCategory.entity';
 
 @Entity()
 export class Transactions {

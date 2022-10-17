@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { isBefore } from 'date-fns';
-import { Transactions } from './transactions.entity';
+import { Transactions } from './entities/transactions.entity';
 import { CreateTransactionsDTO } from './dtos/createTransactions.dto';
 import { ITotalizers } from './interface/totalizers';
 import { ITransaction } from './interface/transaction';

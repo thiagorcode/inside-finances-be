@@ -1,4 +1,4 @@
-import { TransactionsCategory } from './../modules/transactionsCategory/transactionsCategory.entity';
+import { TransactionsCategory } from '../modules/transactionsCategory/entities/transactionsCategory.entity';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class createcategorys1650818864528 implements MigrationInterface {
