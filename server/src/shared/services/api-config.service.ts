@@ -50,24 +50,26 @@ export class ApiConfigService {
   }
 
   get ormConfig(): TypeOrmModuleOptions {
-    console.log(this.isTest);
+    const migrations = [__dirname + '/../../migrations/*{.ts,.js}'];
+    const entities = [__dirname + '/../../modules/**/*.entity{.ts,.js}'];
+
     return {
       type: 'mysql',
-      host: this.getString('MYSQL_HOST'),
-      port: this.getNumber('MYSQL_PORT'),
-      username: this.getString('MYSQL_USERNAME'),
-      password: this.getString('MYSQL_PASSWORD'),
-      database: this.getString('MYSQL_DATABASE'),
+      host: this.getString('DB_HOST'),
+      port: this.getNumber('DB_PORT'),
+      username: this.getString('DB_USERNAME'),
+      password: this.getString('DB_PASSWORD'),
+      database: this.getString('DB_DATABASE'),
       synchronize: this.isTest,
-      entities: ['dist/modules/**/*.entity{.ts,.js}'],
-      migrations: ['dist/migrations/*{.ts,.js}'],
+      entities,
+      migrations,
       autoLoadEntities: true,
+      name: 'default',
+      logging: this.getBoolean('ENABLE_ORM_LOGS'),
       // keepConnectionAlive: !this.isTest,
       // dropSchema: this.isTest,
-      name: 'default',
       // subscribers: [UserSubscriber],
       // migrationsRun: true,
-      // logging: this.getBoolean('ENABLE_ORM_LOGS'),
       // namingStrategy: new SnakeNamingStrategy(),
     };
   }
