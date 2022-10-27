@@ -4,7 +4,7 @@ import { IsIn, IsString, IsUUID } from 'class-validator';
 export class TransactionsCategoryDTO {
   @ApiProperty()
   @IsUUID()
-  readonly id: number;
+  readonly id: string;
 
   @ApiProperty()
   @IsString()

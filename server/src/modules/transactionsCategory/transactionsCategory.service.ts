@@ -18,7 +18,7 @@ export class TransactionsCategoryService {
 
   async find(id: string): Promise<TransactionsCategoryDTO> {
     return await this.transactionsRepository.findOne({
-      where: { id: +id },
+      where: { id },
     });
   }
 
@@ -33,12 +33,12 @@ export class TransactionsCategoryService {
 
   async update(id: string, transaction: Partial<TransactionsCategoryDTO>) {
     return this.transactionsRepository.update(id, transaction).then(() => {
-      return this.transactionsRepository.findOne({ where: { id: +id } });
+      return this.transactionsRepository.findOne({ where: { id } });
     });
   }
 
   async delete(id: string) {
-    await this.transactionsRepository.delete({ id: +id });
+    await this.transactionsRepository.delete({ id });
     return { deleted: true };
   }
 }

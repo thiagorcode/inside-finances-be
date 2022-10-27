@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
-  IsDate,
-  IsInt,
+  IsDateString,
+  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
@@ -14,25 +14,18 @@ export class CreateTransactionsDTO {
   description: string;
 
   @ApiProperty()
-  @IsInt()
+  @IsNumber()
   value: number;
 
   @ApiProperty()
   @IsUUID()
   categoryId: string;
 
-  @ApiProperty()
-  @IsInt()
-  year: number;
-
   // month: number;
   // day: number;
-  @ApiProperty()
-  @IsString()
-  yearMonth: string;
 
   @ApiProperty()
-  @IsDate()
+  @IsDateString()
   date: Date;
 
   @ApiProperty()

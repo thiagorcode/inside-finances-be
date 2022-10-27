@@ -8,8 +8,8 @@ import {
 
 @Entity()
 export class TransactionsCategory {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   // Criar tabela para o category
   @Column({ type: 'varchar', length: '80' })
