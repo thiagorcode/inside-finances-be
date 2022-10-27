@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { TransactionsCategory } from './entities/transactionsCategory.entity';
-import { TransactionsCategoryDTO } from './dtos/transactionsCategory.dto';
+import { TransactionsCategoryDTO } from './dtos/createTransactionsCategory.dto';
 
 @Injectable()
 export class TransactionsCategoryService {

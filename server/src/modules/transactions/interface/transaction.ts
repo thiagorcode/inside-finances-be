@@ -1,5 +1,5 @@
 import { CreateUserDTO } from '../../users/dtos/createUser.dto';
-import { TransactionsCategoryDTO } from '../../transactionsCategory/dtos/transactionsCategory.dto';
+import { TransactionsCategoryDTO } from '../../transactionsCategory/dtos/createTransactionsCategory.dto';
 
 export interface ITransaction {
   id: string;

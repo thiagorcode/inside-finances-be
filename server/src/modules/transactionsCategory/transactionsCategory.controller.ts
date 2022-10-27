@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 
 import { TransactionsCategoryService } from './transactionsCategory.service';
-import { TransactionsCategoryDTO } from './dtos/transactionsCategory.dto';
+import { TransactionsCategoryDTO } from './dtos/createTransactionsCategory.dto';
 // import { JwtAuthGuard } from '../../auth/jwt/jwt-auth.guard';
 
 @Controller('categorys')
