@@ -58,8 +58,7 @@ export class TransactionsService {
   }
 
   async create(data: CreateTransactionsDTO): Promise<ITransaction> {
-    data.dtCreate = new Date();
-    // Aplicar validação se a data for maior que a data atual o isPaid deve ser falso naturalmente
+    // Todo: Aplicar validação se a data for maior que a data atual o isPaid deve ser falso naturalmente
     const newTransaction = Object.assign(new Transactions(), data);
 
     const transaction = await this.transactionsRepository.save(newTransaction);
