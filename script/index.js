@@ -1,4 +1,4 @@
-// script para ler planilha excel e registrar os dados no sitema de controle de gasto.
+// script para ler planilha excel e registrar os dados no sitema de testeScriptControle de gasto.
 const dotenv = require('dotenv');
 const fetch = require('node-fetch')
 const readXlsxFile = require('read-excel-file/node')
@@ -12,7 +12,7 @@ async function loadCategorys() {
 }
 
 async function readSheetEarnings() {
-  const sheet = await readXlsxFile('./Controle.xlsm', { sheet: 'Receita' })
+  const sheet = await readXlsxFile('./testeScriptControle.xlsm', { sheet: 'Receita' })
 
   const inconsistencyInDate = sheet.filter(row => row[2] !== null && row[0] === null)
   const inconsistencyInSalary = sheet.filter(row => row[2] === null && row[0] !== null)
@@ -31,7 +31,7 @@ async function readSheetEarnings() {
 
 
 async function readSheetExpenditure() {
-  const sheet = await readXlsxFile('./Controle.xlsm', { sheet: 'Despesa' })
+  const sheet = await readXlsxFile('./testeScriptControle.xlsm', { sheet: 'Despesa' })
 
   const inconsistencyInDate = sheet.filter(row => row[0] === null && row[2] !== null && row[4] !== null)
   const inconsistencyInSalary = sheet.filter(row => row[0] !== null && row[2] !== null && row[4] === null)
@@ -71,17 +71,19 @@ async function start() {
   console.log('Atualizando no sistema as transações das planilhas')
   await sheetEarnings.forEach(async row => {
     const category = categorys.find(category => category.name === row[1] && category.type === '+')
+    
     const body = {
       description: '',
       value: row[2],
-      category: category?.id || typeTransfer?.id,
+      categoryId: category?.id || typeTransfer?.id,
       date: row[0],
       isPaid: dateFns.isBefore(row[0], new Date()),
       type: '+',
-      // Ser dinamico o User
+      // TODO: Ser dinamico o User
       // Criar um input para receber os dados de auth
-      user: '6df7fd4a-02bb-4a3a-aa05-77a2d4706a2c',
+      userId: '0b9bd0dc-0c74-4e39-859a-e86200093edc',
     }
+
     await fetch('http://localhost:3333/transactions', {
       method: 'POST',
       body: JSON.stringify(body),
@@ -95,7 +97,7 @@ async function start() {
     const body = {
       description: '',
       value: row[4],
-      category: category?.id || typeTransfer?.id,
+      categoryId: category?.id || typeTransfer?.id,
       date: row[0],
       isPaid: dateFns.isBefore(row[0], new Date()),
       type: '-',
@@ -103,7 +105,7 @@ async function start() {
       bank: row[3] || '',
       // Ser dinamico o User
       // Criar um input para receber os dados de auth
-      user: '6df7fd4a-02bb-4a3a-aa05-77a2d4706a2c',
+      userId: '0b9bd0dc-0c74-4e39-859a-e86200093edc',
     }
     await fetch('http://localhost:3333/transactions', {
       method: 'POST',
