@@ -14,7 +14,7 @@ export class AuthService {
 
   async validateUser(
     login: string,
-    pass: string,
+    password: string,
   ): Promise<CreateUserDTO | null> {
     const user = await this.usersService.findByLogin(login);
 
@@ -26,14 +26,14 @@ export class AuthService {
       return null;
     }
 
-    const password = (<any>user).unmaskedPassword;
+    const unmaskedPassword = (<any>user).unmaskedPassword;
 
     // TODO: CRIPTOGRAFAR igual GE - Remover o pass e colocar o password
-    const chkPass = `${user.username}_${pass}`;
+    const chkPass = `${user.username}_${password}`;
     const hashPass = crypto.createHash('sha256').update(chkPass).digest('hex');
 
     // TODO: REmover password e colocar pass
-    if (hashPass !== password) {
+    if (hashPass !== unmaskedPassword) {
       return null;
     }
 

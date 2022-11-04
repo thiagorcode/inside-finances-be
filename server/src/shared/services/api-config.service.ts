@@ -7,8 +7,8 @@ import { isNil } from 'lodash';
 export class ApiConfigService {
   constructor(private configService: ConfigService) {}
 
-  get isDevelopment(): boolean {
-    return this.nodeEnv === 'development';
+  get isLocal(): boolean {
+    return this.nodeEnv === 'local';
   }
 
   get isProduction(): boolean {
@@ -60,7 +60,7 @@ export class ApiConfigService {
       username: this.getString('DB_USERNAME'),
       password: this.getString('DB_PASSWORD'),
       database: this.getString('DB_DATABASE'),
-      synchronize: this.isTest,
+      synchronize: this.isLocal,
       entities,
       migrations,
       autoLoadEntities: true,
