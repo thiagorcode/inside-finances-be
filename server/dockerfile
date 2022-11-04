@@ -63,6 +63,9 @@ CMD [ "node", "dist/main.js" ]
 
 FROM node:16.15.0-alpine as local
 
+ARG ENVIRONMENT=local
+ENV ENVIRONMENT=${ENVIRONMENT}
+
 # Create app directory
 WORKDIR /var/www/finances
 

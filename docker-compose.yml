@@ -6,13 +6,13 @@ services:
     restart: always
     build: 
       context: ./server
-      target: production
+      target: local
     volumes:
       - ./server/src:/var/www/finances/src # Tudo que acontece em ./src
       - ./server/test:/var/www/finances/test
     working_dir: /var/www/finances
     ports:
-      - "3333:3333"
+      - "3333:8080"
     depends_on:
       - mysql
   mysql:
