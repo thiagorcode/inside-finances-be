@@ -14,7 +14,7 @@ import { TransactionsCategoryService } from './transactionsCategory.service';
 import { TransactionsCategoryDTO } from './dtos/createTransactionsCategory.dto';
 // import { JwtAuthGuard } from '../../auth/jwt/jwt-auth.guard';
 
-@Controller('categorys')
+@Controller('category')
 export class TransactionsCategoryController {
   constructor(
     private transactionsCategoryService: TransactionsCategoryService,
@@ -22,12 +22,12 @@ export class TransactionsCategoryController {
 
   @Get()
   // @UseGuards(JwtAuthGuard)
-  async findAllCategorys() {
-    const categorys = await this.transactionsCategoryService.findAll();
+  async findAllCategory() {
+    const category = await this.transactionsCategoryService.findAll();
     return {
       statusCode: HttpStatus.OK,
       message: 'Category fetched successfully',
-      categorys,
+      category,
     };
   }
 
