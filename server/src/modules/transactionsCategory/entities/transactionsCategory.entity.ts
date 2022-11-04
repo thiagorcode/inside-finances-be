@@ -15,13 +15,14 @@ export class TransactionsCategory {
   @Column({ type: 'varchar', length: '80' })
   name: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', length: '3' })
   type: '+' | '-';
 
+  @Column({ type: 'varchar', length: '50' })
+  icon: string;
   // @ManyToOne(() => Transactions)
   // @JoinColumn()
   // transactions: Transactions;
-
   @CreateDateColumn()
   dtCreate: Date;
 
