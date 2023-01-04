@@ -4,7 +4,9 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
 } from 'typeorm';
+import { Transactions } from '../../transactions/entities/transactions.entity';
 
 @Entity()
 export class TransactionsCategory {
@@ -18,9 +20,8 @@ export class TransactionsCategory {
   @Column({ type: 'varchar' })
   type: '+' | '-';
 
-  // @ManyToOne(() => Transactions)
-  // @JoinColumn()
-  // transactions: Transactions;
+  @ManyToOne(() => Transactions, (transaction) => transaction.category)
+  transactions: Transactions;
 
   @CreateDateColumn()
   dtCreate: Date;

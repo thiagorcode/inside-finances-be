@@ -63,7 +63,7 @@ export class Transactions {
   @JoinColumn()
   user: Users;
 
-  @ManyToOne(() => TransactionsCategory)
+  @ManyToOne(() => TransactionsCategory, (category) => category.transactions)
   @JoinColumn({ name: 'categoryId' })
   category: TransactionsCategory;
 

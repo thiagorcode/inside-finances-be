@@ -16,7 +16,21 @@ export class TransactionsService {
   ) {}
 
   async findAllByUser(id: string): Promise<ITransaction[]> {
-    return await this.transactionsRepository.find({ where: { user: { id } } });
+    // Encontrar maneira para trazer o objeto category diretamente
+    return await this.transactionsRepository.find({
+      where: { user: { id } },
+      relations: ['category'],
+      loadEagerRelations: true,
+      select: {
+        category: {
+          name: true,
+        },
+      },
+      order: {
+        date: 'DESC',
+        type: 'ASC',
+      },
+    });
   }
 
   async findLastByUser(id: string): Promise<ITransaction[]> {
@@ -58,7 +72,6 @@ export class TransactionsService {
   }
 
   async create(data: CreateTransactionsDTO): Promise<ITransaction> {
-    data.dtCreate = new Date();
     // Aplicar validação se a data for maior que a data atual o isPaid deve ser falso naturalmente
     const newTransaction = Object.assign(new Transactions(), data);
 

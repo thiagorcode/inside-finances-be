@@ -4,7 +4,7 @@ import { AppModule } from './app/app.module';
 import { rateLimit } from 'express-rate-limit';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
 
   const options = new DocumentBuilder()
     .setTitle('Finances API')
@@ -15,7 +15,9 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('doc', app, document);
+
+  app.setGlobalPrefix('api');
 
   app.use(
     rateLimit({
