@@ -7,6 +7,8 @@ import { Transactions } from './entities/transactions.entity';
 import { CreateTransactionsDTO } from './dtos/createTransactions.dto';
 import { ITotalizers } from './interface/totalizers';
 import { ITransaction } from './interface/transaction';
+import { FindAllWithQueryDto } from './dtos/findAllWithQuery.dto';
+import { query } from 'express';
 
 @Injectable()
 export class TransactionsService {
@@ -15,15 +17,48 @@ export class TransactionsService {
     private transactionsRepository: Repository<Transactions>,
   ) {}
 
-  async findAllByUser(id: string): Promise<ITransaction[]> {
+  async findAllByUser(userId: string): Promise<ITransaction[]> {
     // Encontrar maneira para trazer o objeto category diretamente
     return await this.transactionsRepository.find({
-      where: { user: { id } },
+      where: { user: { id: userId } },
       relations: ['category'],
       loadEagerRelations: true,
       select: {
         category: {
           name: true,
+        },
+      },
+      order: {
+        date: 'DESC',
+        type: 'ASC',
+      },
+    });
+  }
+  async findAllWithQuery({
+    userId,
+    categoryId,
+    date,
+    type,
+  }: FindAllWithQueryDto): Promise<ITransaction[]> {
+    // Encontrar maneira para trazer o objeto category diretamente
+    return await this.transactionsRepository.find({
+      where: {
+        user: { id: userId },
+        ...(type !== undefined && { type: type }),
+        ...(date !== undefined && { yearMonth: date }),
+        ...(categoryId !== undefined && { categoryId: +categoryId }),
+      },
+      relations: ['category'],
+      loadEagerRelations: true,
+      select: {
+        id: true,
+        type: true,
+        date: true,
+        userId: true,
+        value: true,
+        category: {
+          name: true,
+          id: true,
         },
       },
       order: {

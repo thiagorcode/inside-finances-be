@@ -7,22 +7,40 @@ import {
   Body,
   Param,
   HttpStatus,
+  Query,
+  ValidationPipe,
   // UseGuards,
 } from '@nestjs/common';
 
 import { TransactionsService } from './transactions.service';
 import { CreateTransactionsDTO } from './dtos/createTransactions.dto';
+import { FindAllWithQueryDto } from './dtos/findAllWithQuery.dto';
 // import { JwtAuthGuard } from '../../auth/jwt/jwt-auth.guard';
 
 @Controller('transactions')
 export class TransactionsController {
   constructor(private transactionsService: TransactionsService) {}
 
-  @Get('user/:idUser')
+  @Get('user/:userId')
   // @UseGuards(JwtAuthGuard)
   // TODO: Verificar a possibilidade se vai criar os valores totais aqui ou em outra rota
-  async findAllTransactionsByUser(@Param('idUser') idUser: string) {
-    const transactions = await this.transactionsService.findAllByUser(idUser);
+  async findAllWithQuery(
+    @Param('userId') userId: string,
+    @Query(
+      new ValidationPipe({
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+        forbidNonWhitelisted: true,
+      }),
+    )
+    query: FindAllWithQueryDto,
+  ) {
+    const transactions = await this.transactionsService.findAllWithQuery({
+      userId,
+      categoryId: query.categoryId,
+      type: query.type,
+      date: query.date,
+    });
     return {
       statusCode: HttpStatus.OK,
       message: 'Transactions fetched successfully',
