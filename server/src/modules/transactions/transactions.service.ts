@@ -36,7 +36,18 @@ export class TransactionsService {
   async findLastByUser(id: string): Promise<ITransaction[]> {
     return await this.transactionsRepository.find({
       where: { user: { id } },
+      relations: ['category'],
+      loadEagerRelations: true,
+      select: {
+        category: {
+          name: true,
+        },
+      },
       take: 10,
+      order: {
+        date: 'DESC',
+        type: 'ASC',
+      },
     });
   }
 
