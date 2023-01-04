@@ -9,7 +9,7 @@ const userId = "fac56249-feaf-460d-9aa5-37dd6412cdb9"
 async function loadCategory() {
   const res = await fetch('http://localhost:3333/api/category');
   const resJSON = await res.json()
-  console.log(resJSON)
+
   return resJSON.category;
 }
 
@@ -56,31 +56,28 @@ async function readSheetExpenditure() {
 
 
 async function start() {
-  console.log('Carregando categorias...');
+  console.log('Configuração da planilha de Ganhos | DATA - Descrição? - Categoria - Banco? - Valor - Especificação?')
+  console.log('Configuração da planilha de Ganhos | DATA - Categoria? - Valor')
   const category = await loadCategory()
 
   const typeTransfer = category.find(_category => _category.name === 'Transferência')
   console.log('Categorias carregadas!')
 
-  console.log('Configuração da planilha de Ganhos | DATA - Categoria? - Valor')
-  console.log('Carregando planilha - Ganhos...');
   const sheetEarnings = await readSheetEarnings()
   console.log('Planiha de ganhos carregada');
 
-  console.log('Configuração da planilha de Ganhos | DATA - Descrição? - Categoria - Banco? - Valor - Especificação?')
-
-  console.log('Carregando planilha - Despesas...');
   const sheetExpenditure = await readSheetExpenditure()
   console.log('Planiha de despesas carregada');
 
-  console.log('Atualizando no sistema as transações das planilhas')
   await sheetEarnings.forEach(async row => {
-    const selectCategory = category.find(_category => _category.name === row[1] && _category.type === '+')
-    
+    let selectCategory = typeTransfer
+    if(row[1]) {
+      selectCategory = category.find(_category => _category.name.toLowerCase() === row[1].toLowerCase() && _category.type === '+')
+    }
     const body = {
       description: '',
       value: row[2],
-      categoryId: selectCategory?.id || typeTransfer?.id,
+      categoryId: selectCategory?.id,
       date: row[0],
       isPaid: dateFns.isBefore(row[0], new Date()),
       type: '+',
@@ -96,9 +93,8 @@ async function start() {
     })
   })
   // 0DATA - 1Descrição? - 2Categoria - 3Banco? - 4Valor - 5Especificação?'
-  console.log(sheetExpenditure)
   await sheetExpenditure.forEach(async (row) => {
-    const selectCategory = category.find(category => category.name === row[2] && category.type === '-')
+    const selectCategory = category.find(_category => _category.name.toLowerCase() === row[2].toLowerCase() && category.type === '-')
 
     const body = {
       description: '',

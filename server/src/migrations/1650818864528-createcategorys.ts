@@ -13,6 +13,18 @@ export class createcategorys1650818864528 implements MigrationInterface {
         type: '-',
       },
       {
+        name: 'Transporte',
+        type: '-',
+      },
+      {
+        name: 'Música',
+        type: '-',
+      },
+      {
+        name: 'Casa',
+        type: '-',
+      },
+      {
         name: 'Alimentação',
         type: '-',
       },
