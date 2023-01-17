@@ -94,8 +94,8 @@ async function start() {
   })
   // 0DATA - 1Descrição? - 2Categoria - 3Banco? - 4Valor - 5Especificação?'
   await sheetExpenditure.forEach(async (row) => {
-    const selectCategory = category.find(_category => _category.name.toLowerCase() === row[2].toLowerCase() && category.type === '-')
-
+    const selectCategory = category.find(_category => _category.name.toLowerCase() === row[2].toLowerCase() && _category.type === '-')
+    
     const body = {
       description: '',
       value: row[4],
