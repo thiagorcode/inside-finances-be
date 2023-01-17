@@ -48,11 +48,11 @@ export class TransactionsController {
     };
   }
 
-  @Get('user/:idUser/last')
+  @Get('user/:userId/last')
   // @UseGuards(JwtAuthGuard)
   // TODO: Verificar possibilidade de pegar o ID pelo token
-  async findLastTransctionsByUser(@Param('idUser') idUser: string) {
-    const transactions = await this.transactionsService.findLastByUser(idUser);
+  async findLastTransactionsByUser(@Param('userId') userId: string) {
+    const transactions = await this.transactionsService.findLastByUser(userId);
 
     return {
       statusCode: HttpStatus.OK,
@@ -61,11 +61,11 @@ export class TransactionsController {
     };
   }
 
-  @Get('user/:idUser/totalizers')
+  @Get('user/:userId/totalizers')
   // @UseGuards(JwtAuthGuard)
   // TODO: Verificar possibilidade de pegar o ID pelo token
-  async totalizers(@Param('idUser') idUser: string) {
-    const totalizers = await this.transactionsService.totalizers(idUser);
+  async totalizers(@Param('userId') userId: string) {
+    const totalizers = await this.transactionsService.totalizers(userId);
 
     return {
       statusCode: HttpStatus.OK,
@@ -116,6 +116,37 @@ export class TransactionsController {
     return {
       statusCode: HttpStatus.OK,
       message: 'Transactions deleted successfully',
+    };
+  }
+
+  @Get('user/:userId/totalizer')
+  // @UseGuards(JwtAuthGuard)
+  // Temporária
+  async findTotalizersValue(
+    @Param('userId') userId: string,
+    @Query(
+      new ValidationPipe({
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+        forbidNonWhitelisted: true,
+      }),
+    )
+    query: FindAllWithQueryDto,
+  ) {
+    const transactions = await this.transactionsService.findAllWithQuery({
+      userId,
+      categoryId: query.categoryId,
+      type: query.type,
+      date: query.date,
+    });
+
+    const totalizers = await this.transactionsService.findTotalizersValue(
+      transactions,
+    );
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Totalizers fetched successfully',
+      totalizers,
     };
   }
 }
