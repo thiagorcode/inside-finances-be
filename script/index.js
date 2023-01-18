@@ -75,7 +75,7 @@ async function start() {
       selectCategory = category.find(_category => _category.name.toLowerCase() === row[1].toLowerCase() && _category.type === '+')
     }
     const body = {
-      description: '',
+      description: row[1] || '',
       value: row[2],
       categoryId: selectCategory?.id,
       date: row[0],
@@ -97,7 +97,7 @@ async function start() {
     const selectCategory = category.find(_category => _category.name.toLowerCase() === row[2].toLowerCase() && _category.type === '-')
     
     const body = {
-      description: '',
+      description: row[1] || '',
       value: row[4],
       categoryId: selectCategory?.id || typeTransfer?.id,
       date: row[0],
@@ -118,6 +118,7 @@ async function start() {
 
   })
   console.log('Atualização feita com sucesso.')
+  console.log('Salvo no total: ', sheetEarnings.length + sheetExpenditure.length)
 
 
 
