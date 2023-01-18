@@ -9,6 +9,7 @@ import { ITotalizers } from './interface/totalizers';
 import { ITransaction } from './interface/transaction';
 import { FindAllWithQueryDto } from './dtos/findAllWithQuery.dto';
 import { query } from 'express';
+import { curry } from 'lodash';
 
 @Injectable()
 export class TransactionsService {
@@ -34,6 +35,7 @@ export class TransactionsService {
       },
     });
   }
+
   async findAllWithQuery({
     userId,
     categoryId,
@@ -66,6 +68,24 @@ export class TransactionsService {
         type: 'ASC',
       },
     });
+  }
+
+  async findTotalizersValue(transactions: ITransaction[]) {
+    const recipe = transactions
+      .filter((transaction) => transaction.type === '+')
+      .reduce((acc, curr) => acc + curr.value, 0);
+
+    const expense = transactions
+      .filter((transaction) => transaction.type === '-')
+      .reduce((acc, curr) => acc + curr.value, 0);
+
+    const totalBalance = recipe - expense;
+
+    return {
+      recipe,
+      expense,
+      totalBalance,
+    };
   }
 
   async findLastByUser(id: string): Promise<ITransaction[]> {

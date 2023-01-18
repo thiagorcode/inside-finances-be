@@ -11,18 +11,7 @@ export class CreateTransactionsDTO {
   categoryId: number;
 
   @ApiProperty()
-  year: number;
-
-  // month: number;
-  // day: number;
-  @ApiProperty()
-  yearMonth: string;
-
-  @ApiProperty()
   date: Date;
-
-  @ApiProperty()
-  dtCreate: Date;
 
   @ApiProperty()
   isPaid: boolean;
