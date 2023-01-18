@@ -56,8 +56,8 @@ export class Transactions {
   @Column({ type: 'varchar' })
   userId: string;
 
-  @Column({ type: 'int' })
-  categoryId: number;
+  @Column({ type: 'varchar' })
+  categoryId: string;
 
   @ManyToOne(() => Users)
   @JoinColumn()
@@ -78,7 +78,7 @@ export class Transactions {
   formatDate() {
     this.date = new Date(this.date);
     this.yearMonth = `${this.date.getFullYear()}-${
-      this.date.getMonth() <= 9
+      this.date.getMonth() < 9
         ? `0${this.date.getMonth() + 1}`
         : this.date.getMonth() + 1
     }`;

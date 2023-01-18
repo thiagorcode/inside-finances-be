@@ -49,7 +49,7 @@ export class TransactionsService {
         user: { id: userId },
         ...(type !== undefined && { type: type }),
         ...(date !== undefined && { yearMonth: date }),
-        ...(categoryId !== undefined && { categoryId: +categoryId }),
+        ...(categoryId !== undefined && { categoryId: categoryId }),
         ...(isPaid !== undefined && { isPaid }),
       },
       relations: ['category'],

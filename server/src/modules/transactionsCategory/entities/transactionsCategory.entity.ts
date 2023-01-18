@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Transactions } from '../../transactions/entities/transactions.entity';
 
@@ -20,11 +21,13 @@ export class TransactionsCategory {
   @Column({ type: 'varchar', length: '3' })
   type: '+' | '-';
 
-  @Column({ type: 'varchar', length: '50' })
+  @Column({ type: 'varchar', length: '50', default: '' })
   icon: string;
-  // @ManyToOne(() => Transactions)
-  // @JoinColumn()
-  // transactions: Transactions;
+
+  @ManyToOne(() => Transactions)
+  @JoinColumn()
+  transactions: Transactions;
+
   @CreateDateColumn()
   dtCreate: Date;
 
