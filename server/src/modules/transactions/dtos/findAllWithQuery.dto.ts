@@ -1,7 +1,13 @@
-import { IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+  IsOptional,
+  IsString,
+  IsUUID,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
 export class FindAllWithQueryDto {
-  // TODO; APlicar apiProperty
+  @IsUUID()
   userId: string;
 
   @IsOptional()
@@ -20,4 +26,6 @@ export class FindAllWithQueryDto {
   @MinLength(1)
   @MaxLength(1)
   type?: '+' | '-';
+
+  isPaid?: boolean;
 }

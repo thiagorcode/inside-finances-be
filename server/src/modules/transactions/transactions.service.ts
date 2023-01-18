@@ -41,6 +41,7 @@ export class TransactionsService {
     categoryId,
     date,
     type,
+    isPaid,
   }: FindAllWithQueryDto): Promise<ITransaction[]> {
     // Encontrar maneira para trazer o objeto category diretamente
     return await this.transactionsRepository.find({
@@ -49,6 +50,7 @@ export class TransactionsService {
         ...(type !== undefined && { type: type }),
         ...(date !== undefined && { yearMonth: date }),
         ...(categoryId !== undefined && { categoryId: +categoryId }),
+        ...(isPaid !== undefined && { isPaid }),
       },
       relations: ['category'],
       loadEagerRelations: true,

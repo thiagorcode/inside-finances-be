@@ -138,6 +138,7 @@ export class TransactionsController {
       categoryId: query.categoryId,
       type: query.type,
       date: query.date,
+      isPaid: true,
     });
 
     const totalizers = await this.transactionsService.findTotalizersValue(
