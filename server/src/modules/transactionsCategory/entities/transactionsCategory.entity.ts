@@ -4,7 +4,9 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
 } from 'typeorm';
+import { Transactions } from '../../transactions/entities/transactions.entity';
 
 @Entity()
 export class TransactionsCategory {

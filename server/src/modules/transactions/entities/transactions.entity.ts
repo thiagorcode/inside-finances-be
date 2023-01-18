@@ -56,14 +56,14 @@ export class Transactions {
   @Column({ type: 'varchar' })
   userId: string;
 
-  @Column({ type: 'varchar' })
-  categoryId: string;
+  @Column({ type: 'int' })
+  categoryId: number;
 
   @ManyToOne(() => Users)
   @JoinColumn()
   user: Users;
 
-  @ManyToOne(() => TransactionsCategory)
+  @ManyToOne(() => TransactionsCategory, (category) => category.transactions)
   @JoinColumn({ name: 'categoryId' })
   category: TransactionsCategory;
 

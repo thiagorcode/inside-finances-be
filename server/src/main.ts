@@ -24,7 +24,9 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('doc', app, document);
+
+  app.setGlobalPrefix('api');
 
   app.use(
     rateLimit({

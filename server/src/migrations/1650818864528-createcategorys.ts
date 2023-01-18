@@ -24,6 +24,18 @@ export class createcategorys1650818864528 implements MigrationInterface {
         icon: 'OtherHouses',
       },
       {
+        name: 'Transporte',
+        type: '-',
+      },
+      {
+        name: 'Música',
+        type: '-',
+      },
+      {
+        name: 'Casa',
+        type: '-',
+      },
+      {
         name: 'Alimentação',
         type: '-',
         icon: 'Fastfood',

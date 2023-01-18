@@ -7,6 +7,9 @@ import { Transactions } from './entities/transactions.entity';
 import { CreateTransactionsDTO } from './dtos/createTransactions.dto';
 import { ITotalizers } from './interface/totalizers';
 import { ITransaction } from './interface/transaction';
+import { FindAllWithQueryDto } from './dtos/findAllWithQuery.dto';
+import { query } from 'express';
+import { curry } from 'lodash';
 
 @Injectable()
 export class TransactionsService {
@@ -15,14 +18,93 @@ export class TransactionsService {
     private transactionsRepository: Repository<Transactions>,
   ) {}
 
-  async findAllByUser(id: string): Promise<ITransaction[]> {
-    return await this.transactionsRepository.find({ where: { user: { id } } });
+  async findAllByUser(userId: string): Promise<ITransaction[]> {
+    // Encontrar maneira para trazer o objeto category diretamente
+    return await this.transactionsRepository.find({
+      where: { user: { id: userId } },
+      relations: ['category'],
+      loadEagerRelations: true,
+      select: {
+        category: {
+          name: true,
+        },
+      },
+      order: {
+        date: 'DESC',
+        type: 'ASC',
+      },
+    });
+  }
+
+  async findAllWithQuery({
+    userId,
+    categoryId,
+    date,
+    type,
+    isPaid,
+  }: FindAllWithQueryDto): Promise<ITransaction[]> {
+    // Encontrar maneira para trazer o objeto category diretamente
+    return await this.transactionsRepository.find({
+      where: {
+        user: { id: userId },
+        ...(type !== undefined && { type: type }),
+        ...(date !== undefined && { yearMonth: date }),
+        ...(categoryId !== undefined && { categoryId: +categoryId }),
+        ...(isPaid !== undefined && { isPaid }),
+      },
+      relations: ['category'],
+      loadEagerRelations: true,
+      select: {
+        id: true,
+        type: true,
+        date: true,
+        userId: true,
+        value: true,
+        category: {
+          name: true,
+          id: true,
+        },
+      },
+      order: {
+        date: 'DESC',
+        type: 'ASC',
+      },
+    });
+  }
+
+  async findTotalizersValue(transactions: ITransaction[]) {
+    const recipe = transactions
+      .filter((transaction) => transaction.type === '+')
+      .reduce((acc, curr) => acc + curr.value, 0);
+
+    const expense = transactions
+      .filter((transaction) => transaction.type === '-')
+      .reduce((acc, curr) => acc + curr.value, 0);
+
+    const totalBalance = recipe - expense;
+
+    return {
+      recipe,
+      expense,
+      totalBalance,
+    };
   }
 
   async findLastByUser(id: string): Promise<ITransaction[]> {
     return await this.transactionsRepository.find({
       where: { user: { id } },
+      relations: ['category'],
+      loadEagerRelations: true,
+      select: {
+        category: {
+          name: true,
+        },
+      },
       take: 10,
+      order: {
+        date: 'DESC',
+        type: 'ASC',
+      },
     });
   }
 
