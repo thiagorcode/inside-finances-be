@@ -92,7 +92,7 @@ export class TransactionsService {
 
   async findLastByUser(id: string): Promise<ITransaction[]> {
     return await this.transactionsRepository.find({
-      where: { user: { id } },
+      where: { user: { id }, isPaid: true },
       relations: ['category'],
       loadEagerRelations: true,
       select: {
