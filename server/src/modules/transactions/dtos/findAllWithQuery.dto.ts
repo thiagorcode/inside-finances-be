@@ -7,7 +7,6 @@ import {
 } from 'class-validator';
 
 export class FindAllWithQueryDto {
-  @IsUUID()
   userId: string;
 
   @IsOptional()
