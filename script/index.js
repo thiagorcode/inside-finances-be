@@ -77,7 +77,7 @@ async function start() {
     const body = {
       description: row[1] || '',
       value: row[2],
-      categoryId: selectCategory?.id,
+      categoryId: selectCategory?.id || typeTransfer?.id,
       date: row[0],
       isPaid: dateFns.isBefore(row[0], new Date()),
       type: '+',
@@ -85,12 +85,12 @@ async function start() {
       // Criar um input para receber os dados de auth
       userId: userId,
     }
-
     await fetch('http://localhost:3333/api/transactions', {
       method: 'POST',
       body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json' }
     })
+    
   })
   // 0DATA - 1Descrição? - 2Categoria - 3Banco? - 4Valor - 5Especificação?'
   await sheetExpenditure.forEach(async (row) => {
@@ -119,9 +119,6 @@ async function start() {
   })
   console.log('Atualização feita com sucesso.')
   console.log('Salvo no total: ', sheetEarnings.length + sheetExpenditure.length)
-
-
-
 }
 
 start()
