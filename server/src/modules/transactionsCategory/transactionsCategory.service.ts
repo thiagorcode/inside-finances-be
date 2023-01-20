@@ -13,15 +13,16 @@ export class TransactionsCategoryService {
   ) {}
 
   async findAll(): Promise<TransactionsCategoryDTO[]> {
-    return await this.transactionsRepository.find();
+    return await this.transactionsRepository.find({
+      order: {
+        name: 'ASC',
+      },
+    });
   }
 
   async find(id: string): Promise<TransactionsCategoryDTO> {
     return await this.transactionsRepository.findOne({
       where: { id },
-      order: {
-        name: 'ASC',
-      },
     });
   }
 
