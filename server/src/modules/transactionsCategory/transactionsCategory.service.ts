@@ -19,6 +19,9 @@ export class TransactionsCategoryService {
   async find(id: string): Promise<TransactionsCategoryDTO> {
     return await this.transactionsRepository.findOne({
       where: { id },
+      order: {
+        name: 'ASC',
+      },
     });
   }
 
