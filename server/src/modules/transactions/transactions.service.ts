@@ -1,5 +1,5 @@
 import { UpdateTransactionsDTO } from './dtos/updateTransactions.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { isBefore } from 'date-fns';
@@ -92,7 +92,7 @@ export class TransactionsService {
 
   async findLastByUser(id: string): Promise<ITransaction[]> {
     return await this.transactionsRepository.find({
-      where: { user: { id }, isPaid: true },
+      where: { user: { id } },
       relations: ['category'],
       loadEagerRelations: true,
       select: {
@@ -103,7 +103,6 @@ export class TransactionsService {
       take: 10,
       order: {
         date: 'DESC',
-        type: 'ASC',
       },
     });
   }
@@ -125,7 +124,6 @@ export class TransactionsService {
       .reduce((acc, curr) => acc + curr.value, 0);
 
     const balanceAvailable = earnings - expenses;
-    console.log(isBefore(transactions[0].date, new Date()));
 
     return {
       earnings,
@@ -148,7 +146,11 @@ export class TransactionsService {
   }
 
   async update(id: string, transaction: UpdateTransactionsDTO) {
-    return await this.transactionsRepository.update(id, transaction);
+    try {
+      return await this.transactionsRepository.update(id, transaction);
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
   }
 
   async delete(id: string) {
