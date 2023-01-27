@@ -2,14 +2,11 @@ import { UpdateTransactionsDTO } from './dtos/updateTransactions.dto';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { isBefore } from 'date-fns';
 import { Transactions } from './entities/transactions.entity';
 import { CreateTransactionsDTO } from './dtos/createTransactions.dto';
-import { ITotalizers } from './interface/totalizers';
 import { ITransaction } from './interface/transaction';
 import { FindAllWithQueryDto } from './dtos/findAllWithQuery.dto';
-import { query } from 'express';
-import { curry } from 'lodash';
+import { Totalizers } from './interface/totalizers.interface';
 
 @Injectable()
 export class TransactionsService {
@@ -44,35 +41,47 @@ export class TransactionsService {
     isPaid,
   }: FindAllWithQueryDto): Promise<ITransaction[]> {
     // Encontrar maneira para trazer o objeto category diretamente
-    return await this.transactionsRepository.find({
-      where: {
-        user: { id: userId },
-        ...(type !== undefined && { type: type }),
-        ...(date !== undefined && { yearMonth: date }),
-        ...(categoryId !== undefined && { categoryId: categoryId }),
-        ...(isPaid !== undefined && { isPaid }),
-      },
-      relations: ['category'],
-      loadEagerRelations: true,
-      select: {
-        id: true,
-        type: true,
-        date: true,
-        userId: true,
-        value: true,
-        category: {
-          name: true,
-          id: true,
-        },
-      },
-      order: {
-        date: 'DESC',
-        type: 'ASC',
-      },
-    });
+    const query =
+      this.transactionsRepository.createQueryBuilder('transactions');
+
+    query.where('userId = :userId', { userId });
+    query.leftJoinAndSelect('transactions.category', 'category');
+    query.select([
+      'transactions.id',
+      'transactions.type',
+      'transactions.date',
+      'transactions.userId',
+      'transactions.value',
+      'category.name',
+      'category.id',
+    ]);
+    query.orderBy('transactions.date', 'DESC');
+    query.addOrderBy('transactions.type', 'ASC');
+
+    if (type !== undefined) {
+      query.andWhere('transactions.type = :type', { type });
+    }
+
+    if (date !== undefined) {
+      query.andWhere('transactions.yearMonth = :yearMonth', {
+        yearMonth: date,
+      });
+    }
+
+    if (categoryId !== undefined) {
+      query.andWhere('category.id = :categoryId', { categoryId });
+    }
+
+    if (isPaid !== undefined) {
+      query.andWhere('transactions.isPaid = :isPaid', { isPaid });
+    }
+
+    const transactions = await query.getMany();
+
+    return transactions;
   }
 
-  async findTotalizersValue(transactions: ITransaction[]) {
+  findTotalizersValue(transactions: ITransaction[]) {
     const recipe = transactions
       .filter((transaction) => transaction.type === '+')
       .reduce((acc, curr) => acc + curr.value, 0);
@@ -83,11 +92,12 @@ export class TransactionsService {
 
     const totalBalance = recipe - expense;
 
-    return {
+    const totalizers: Totalizers = {
       recipe,
       expense,
       totalBalance,
     };
+    return totalizers;
   }
 
   async findLastByUser(id: string): Promise<ITransaction[]> {
@@ -107,42 +117,38 @@ export class TransactionsService {
     });
   }
 
-  async totalizers(id: string): Promise<ITotalizers> {
-    const transactions = await this.findAllByUser(id);
-
-    const earnings = transactions
-      .filter(
-        (transaction) =>
-          transaction.type === '+' && isBefore(transaction.date, new Date()),
-      )
-      .reduce((acc, curr) => acc + curr.value, 0);
-    const expenses = transactions
-      .filter(
-        (transaction) =>
-          transaction.type === '-' && isBefore(transaction.date, new Date()),
-      )
-      .reduce((acc, curr) => acc + curr.value, 0);
-
-    const balanceAvailable = earnings - expenses;
-
-    return {
-      earnings,
-      expenses,
-      balanceAvailable,
-    };
-  }
   async find(id: string): Promise<ITransaction> {
     return await this.transactionsRepository.findOne({
       where: { id },
     });
   }
 
+  /**
+   * create() is a function that creates a new transaction based on the given data.
+   *
+   * @param data {CreateTransactionsDTO} The data to be used in creating the new transaction.
+   *
+   * @returns {Promise<ITransaction>} A promise containing the newly created transaction.
+   *
+   * @throws {InternalServerErrorException} If an unexpected error occurs, an InternalServerErrorException will be thrown with a message and an error log for the administrator.
+   */
   async create(data: CreateTransactionsDTO): Promise<ITransaction> {
-    // Todo: Aplicar validação se a data for maior que a data atual o isPaid deve ser falso naturalmente
-    const newTransaction = Object.assign(new Transactions(), data);
+    try {
+      const newTransaction = Object.assign(new Transactions(), data);
 
-    const transaction = await this.transactionsRepository.save(newTransaction);
-    return transaction;
+      const transaction = await this.transactionsRepository.save(
+        newTransaction,
+      );
+
+      return transaction;
+    } catch (err) {
+      throw new InternalServerErrorException({
+        message:
+          'Erro inesperado, entre em contato com o administrador do sistema!',
+        error: err,
+        adm: 'Log temporário',
+      });
+    }
   }
 
   async update(id: string, transaction: UpdateTransactionsDTO) {

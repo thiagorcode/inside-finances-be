@@ -12,7 +12,7 @@ import {
 import { Users } from '../../users/entities/users.entity';
 import { TransactionsCategory } from '../../transactionsCategory/entities/transactionsCategory.entity';
 
-@Entity({ name: 'transactions' })
+@Entity({ database: 'gen', name: 'transactions' })
 export class Transactions {
   @PrimaryGeneratedColumn('uuid')
   id: string;

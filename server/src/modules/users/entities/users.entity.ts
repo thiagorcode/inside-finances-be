@@ -15,7 +15,7 @@ const PrevPasswordSymbol = Symbol('UserPrevPassword');
 const PrevEmailSymbol = Symbol('UserPrevEmail');
 const PasswordPlaceholder = '***********';
 
-@Entity({ name: 'users' })
+@Entity({ name: 'users', database: 'gen' })
 @Unique(['email', 'username'])
 export class Users {
   @PrimaryGeneratedColumn('uuid')
