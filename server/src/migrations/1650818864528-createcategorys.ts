@@ -5,7 +5,7 @@ export class createcategorys1650818864528 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const transactionsCategoryRepo =
       queryRunner.connection.getRepository<TransactionsCategory>(
-        'TransactionsCategory',
+        TransactionsCategory,
       );
     await transactionsCategoryRepo.insert([
       {
