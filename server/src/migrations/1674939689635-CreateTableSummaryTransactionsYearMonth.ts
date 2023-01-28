@@ -1,26 +1,28 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class creteTableSummaryTransactions1674834605256
+export class CreateTableSummaryTransactionsYearMonth1674939689635
   implements MigrationInterface
 {
+  public tableName = 'summary_transactions_month';
+
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'summary_transactions',
+        name: this.tableName,
         database: 'das',
         uniques: [
           {
-            name: 'summary_day',
-            columnNames: ['year', 'yearMonth', 'date', 'type', 'categoryId'],
+            name: 'summary_month',
+            columnNames: ['year', 'yearMonth', 'type'],
           },
         ],
         columns: [
           {
             name: 'id',
-            generationStrategy: 'uuid',
-            type: 'varchar',
-            length: '36',
+            generationStrategy: 'increment',
+            type: 'int',
             isPrimary: true,
+            isGenerated: true,
           },
           {
             name: 'value',
@@ -39,11 +41,6 @@ export class creteTableSummaryTransactions1674834605256
             length: '10',
           },
           {
-            name: 'date',
-            type: 'date',
-            isNullable: false,
-          },
-          {
             name: 'type',
             type: 'varchar',
             isNullable: false,
@@ -51,12 +48,6 @@ export class creteTableSummaryTransactions1674834605256
           },
           {
             name: 'userId',
-            type: 'varchar',
-            isNullable: false,
-            length: '36',
-          },
-          {
-            name: 'categoryId',
             type: 'varchar',
             isNullable: false,
             length: '36',
@@ -69,7 +60,7 @@ export class creteTableSummaryTransactions1674834605256
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable(
       new Table({
-        name: 'summary_transactions',
+        name: this.tableName,
         database: 'das',
       }),
     );
