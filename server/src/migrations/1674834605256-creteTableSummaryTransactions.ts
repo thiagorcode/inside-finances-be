@@ -6,7 +6,7 @@ export class creteTableSummaryTransactions1674834605256
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'summary_transactions',
+        name: 'summary_transactions_day',
         database: 'das',
         uniques: [
           {
@@ -60,6 +60,19 @@ export class creteTableSummaryTransactions1674834605256
             type: 'varchar',
             isNullable: false,
             length: '36',
+          },
+          {
+            name: 'dtCreated',
+            type: 'datetime',
+            default: 'CURRENT_TIMESTAMP',
+            isNullable: false,
+          },
+          {
+            name: 'dtUpdated',
+            type: 'datetime',
+            default: 'CURRENT_TIMESTAMP',
+            isNullable: false,
+            onUpdate: 'CURRENT_TIMESTAMP',
           },
         ],
       }),

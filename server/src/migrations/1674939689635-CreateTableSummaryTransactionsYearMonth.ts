@@ -13,7 +13,7 @@ export class CreateTableSummaryTransactionsYearMonth1674939689635
         uniques: [
           {
             name: 'summary_month',
-            columnNames: ['year', 'yearMonth', 'type'],
+            columnNames: ['year', 'yearMonth', 'type', 'userId'],
           },
         ],
         columns: [
@@ -51,6 +51,19 @@ export class CreateTableSummaryTransactionsYearMonth1674939689635
             type: 'varchar',
             isNullable: false,
             length: '36',
+          },
+          {
+            name: 'dtCreated',
+            type: 'datetime',
+            default: 'CURRENT_TIMESTAMP',
+            isNullable: false,
+          },
+          {
+            name: 'dtUpdated',
+            type: 'datetime',
+            default: 'CURRENT_TIMESTAMP',
+            isNullable: false,
+            onUpdate: 'CURRENT_TIMESTAMP',
           },
         ],
       }),
