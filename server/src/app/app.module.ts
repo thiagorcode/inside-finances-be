@@ -1,4 +1,3 @@
-import { SummarysModule } from './../summarys/summarys.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -7,6 +6,7 @@ import { AuthModule } from '../modules/auth/auth.module';
 import { ApiConfigService } from './../shared/services/api-config.service';
 
 import { UsersModule } from '../modules/users/users.module';
+import { SummaryModule } from './../modules/summary/summary.module';
 import { TransactionsModule } from '../modules/transactions/transactions.module';
 import { TransactionsCategoryModule } from '../modules/transactionsCategory/transactionsCategory.module';
 import { SharedModule } from '../shared/shared.module';
@@ -27,7 +27,7 @@ import { SharedModule } from '../shared/shared.module';
       },
     }),
     AuthModule,
-    SummarysModule,
+    SummaryModule,
     TransactionsModule,
     TransactionsCategoryModule,
     UsersModule,

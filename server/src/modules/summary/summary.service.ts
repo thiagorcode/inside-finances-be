@@ -3,13 +3,9 @@ import { CreateSummaryDto } from './dto/create-summary.dto';
 import { UpdateSummaryDto } from './dto/update-summary.dto';
 
 @Injectable()
-export class SummarysService {
-  create(createSummaryDto: CreateSummaryDto) {
-    return 'This action adds a new summary';
-  }
-
+export class SummaryService {
   findAll() {
-    return `This action returns all summarys`;
+    return `This action returns all summary`;
   }
 
   findOne(id: number) {
