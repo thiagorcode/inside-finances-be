@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class creteTableSummaryTransactions1674834605256
+export class CreateTableSummaryTransaction1675178696638
   implements MigrationInterface
 {
   public async up(queryRunner: QueryRunner): Promise<void> {

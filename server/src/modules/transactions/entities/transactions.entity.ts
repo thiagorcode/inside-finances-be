@@ -1,3 +1,4 @@
+import { TypeEnum } from './../../../enums/type.enum';
 import { Injectable } from '@nestjs/common';
 import {
   Entity,
@@ -38,8 +39,8 @@ export class Transactions extends BaseEntity {
   @Column({ type: 'date', nullable: false })
   date: Date;
 
-  @Column({ type: 'varchar', nullable: false })
-  type: '+' | '-';
+  @Column({ type: 'enum', enum: TypeEnum, nullable: false })
+  type: TypeEnum;
 
   @Column({ type: 'varchar', default: '' })
   specification?: string;
@@ -48,7 +49,7 @@ export class Transactions extends BaseEntity {
   bank?: string;
 
   @Column({ type: 'varchar', default: 'web' })
-  originCreate?: 'web' | 'telegram';
+  originCreate?: string;
 
   @Column({ type: 'varchar', nullable: false })
   userId: string;
@@ -60,15 +61,15 @@ export class Transactions extends BaseEntity {
   @JoinColumn()
   user: Users;
 
-  @ManyToOne(() => TransactionsCategory, (category) => category.transactions)
+  @ManyToOne(() => TransactionsCategory)
   @JoinColumn({ name: 'categoryId' })
   category: TransactionsCategory;
 
   @CreateDateColumn()
-  dtCreate: Date;
+  dtCreated: Date;
 
   @UpdateDateColumn()
-  dtUpdate: Date;
+  dtUpdated: Date;
 
   @BeforeInsert()
   @BeforeUpdate()

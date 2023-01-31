@@ -132,7 +132,7 @@ export class TransactionsService {
    *
    * @throws {InternalServerErrorException} If an unexpected error occurs, an InternalServerErrorException will be thrown with a message and an error log for the administrator.
    */
-  async create(data: CreateTransactionsDTO): Promise<ITransaction> {
+  async create(data: CreateTransactionsDTO) {
     try {
       const newTransaction = Object.assign(new Transactions(), data);
       const transaction = await this.transactionsRepository.save(

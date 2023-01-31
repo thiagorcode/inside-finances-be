@@ -1,60 +1,56 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateTableSummaryTransactionsYearMonth1674939689635
-  implements MigrationInterface
-{
-  public tableName = 'summary_transactions_month';
-
+export class CreateTableUsers1675176083050 implements MigrationInterface {
+  private databaseName = 'gen';
+  private tableName = 'users';
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
         name: this.tableName,
-        database: 'das',
+        database: this.databaseName,
         uniques: [
           {
-            name: 'summary_month',
-            columnNames: ['year', 'yearMonth', 'userId'],
+            name: 'user',
+            columnNames: ['email', 'username'],
           },
         ],
         columns: [
           {
             name: 'id',
-            generationStrategy: 'increment',
-            type: 'int',
-            isPrimary: true,
-            isGenerated: true,
-          },
-          {
-            name: 'recipeValue',
-            type: 'float',
-            isNullable: false,
-          },
-          {
-            name: 'expenseValue',
-            type: 'float',
-            isNullable: false,
-          },
-          {
-            name: 'total',
-            type: 'float',
-            isNullable: false,
-          },
-          {
-            name: 'year',
-            type: 'int',
-            isNullable: false,
-          },
-          {
-            name: 'yearMonth',
+            generationStrategy: 'uuid',
             type: 'varchar',
-            isNullable: false,
-            length: '8',
-          },
-          {
-            name: 'userId',
-            type: 'varchar',
-            isNullable: false,
             length: '36',
+            isPrimary: true,
+          },
+          {
+            name: 'username',
+            type: 'varchar',
+            isNullable: false,
+            length: '100',
+          },
+          {
+            name: 'email',
+            type: 'varchar',
+            isNullable: false,
+            length: '100',
+          },
+          {
+            name: 'password',
+            type: 'varchar',
+            isNullable: false,
+            length: '80',
+          },
+          {
+            name: 'isActive',
+            type: 'bool',
+            isNullable: false,
+            default: true,
+          },
+          {
+            name: 'isPasswordChange',
+            type: 'bool',
+            isNullable: false,
+            default: true,
           },
           {
             name: 'dtCreated',
@@ -78,7 +74,7 @@ export class CreateTableSummaryTransactionsYearMonth1674939689635
     await queryRunner.dropTable(
       new Table({
         name: this.tableName,
-        database: 'das',
+        database: this.databaseName,
       }),
     );
   }

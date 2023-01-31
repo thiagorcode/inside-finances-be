@@ -1,36 +1,31 @@
+import { TypeEnum } from './../../../enums/type.enum';
+import { Injectable } from '@nestjs/common';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne,
-  JoinColumn,
 } from 'typeorm';
-import { Transactions } from '../../transactions/entities/transactions.entity';
 
+@Injectable()
 @Entity({ name: 'transactions_category', database: 'gen' })
 export class TransactionsCategory {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  // Criar tabela para o category
   @Column({ type: 'varchar', length: '80' })
   name: string;
 
-  @Column({ type: 'varchar', length: '3' })
-  type: '+' | '-';
+  @Column({ type: 'enum', enum: TypeEnum })
+  type: TypeEnum;
 
   @Column({ type: 'varchar', length: '50', default: '' })
   icon: string;
 
-  @ManyToOne(() => Transactions)
-  @JoinColumn()
-  transactions: Transactions;
-
   @CreateDateColumn()
-  dtCreate: Date;
+  dtCreated: Date;
 
   @UpdateDateColumn()
-  dtUpdate: Date;
+  dtUpdated: Date;
 }

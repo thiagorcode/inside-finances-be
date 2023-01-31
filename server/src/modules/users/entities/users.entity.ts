@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import {
   Entity,
   Column,
@@ -15,32 +16,33 @@ const PrevPasswordSymbol = Symbol('UserPrevPassword');
 const PrevEmailSymbol = Symbol('UserPrevEmail');
 const PasswordPlaceholder = '***********';
 
+@Injectable()
 @Entity({ name: 'users', database: 'gen' })
 @Unique(['email', 'username'])
 export class Users {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: '50' })
+  @Column({ type: 'varchar', length: '100', nullable: false })
   username: string;
 
-  @Column({ type: 'varchar', length: '80' })
+  @Column({ type: 'varchar', length: '100', nullable: false })
   email: string;
 
-  @Column({ type: 'varchar', length: '64' })
+  @Column({ type: 'varchar', length: '80', nullable: false })
   password: string;
 
   @Column({ default: true })
   isActive: boolean;
 
-  // @Column({ default: false })
-  // isPasswordChange: boolean;
+  @Column({ default: false })
+  isPasswordChange: boolean;
 
   @CreateDateColumn()
-  dtCreate: Date;
+  dtCreated: Date;
 
   @UpdateDateColumn()
-  dtUpdate: Date;
+  dtUpdated: Date;
 
   @AfterLoad()
   loadPassword() {
