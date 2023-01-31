@@ -15,23 +15,14 @@ import { UpdateSummaryDto } from './dto/update-summary.dto';
 export class SummaryController {
   constructor(private readonly summaryService: SummaryService) {}
 
-  @Get()
-  findAll() {
-    return this.summaryService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.summaryService.findOne(+id);
+  @Get('month/:userId')
+  async findByUser(@Param('userId') userId: string) {
+    const summary = await this.summaryService.findByUser(userId);
+    return { summary };
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateSummaryDto: UpdateSummaryDto) {
     return this.summaryService.update(+id, updateSummaryDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.summaryService.remove(+id);
   }
 }

@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import {
   Column,
   CreateDateColumn,
@@ -7,23 +8,27 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+@Injectable()
 @Entity({ database: 'das', name: 'summary_transactions_month' })
-@Unique(['year', 'yearMonth', 'type', 'userId'])
+@Unique(['year', 'yearMonth', 'userId'])
 export class SummaryTransactionMonth {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column()
-  value: number;
+  recipeValue: number;
+
+  @Column()
+  expenseValue: number;
+
+  @Column()
+  total: number;
 
   @Column()
   year: number;
 
   @Column()
   yearMonth: string;
-
-  @Column()
-  type: string;
 
   @Column()
   userId: string;
