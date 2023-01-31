@@ -15,6 +15,9 @@ export class SummaryService {
   findByUser(userId: string) {
     return this.summaryTransactionMonthRepository.find({
       where: { userId },
+      order: {
+        yearMonth: 'DESC',
+      },
     });
   }
 
