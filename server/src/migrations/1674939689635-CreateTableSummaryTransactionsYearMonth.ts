@@ -13,7 +13,7 @@ export class CreateTableSummaryTransactionsYearMonth1674939689635
         uniques: [
           {
             name: 'summary_month',
-            columnNames: ['year', 'yearMonth', 'type', 'userId'],
+            columnNames: ['year', 'yearMonth', 'userId'],
           },
         ],
         columns: [
@@ -25,7 +25,17 @@ export class CreateTableSummaryTransactionsYearMonth1674939689635
             isGenerated: true,
           },
           {
-            name: 'value',
+            name: 'recipeValue',
+            type: 'float',
+            isNullable: false,
+          },
+          {
+            name: 'expenseValue',
+            type: 'float',
+            isNullable: false,
+          },
+          {
+            name: 'total',
             type: 'float',
             isNullable: false,
           },
@@ -39,12 +49,6 @@ export class CreateTableSummaryTransactionsYearMonth1674939689635
             type: 'varchar',
             isNullable: false,
             length: '10',
-          },
-          {
-            name: 'type',
-            type: 'varchar',
-            isNullable: false,
-            length: '50',
           },
           {
             name: 'userId',

@@ -39,18 +39,14 @@ export class PopulateTableSummaryTransactionsYearMonth1674941460472
               },
               [0, 0],
             );
+          const totalValue =
+            totalValueTransactionsRecipe - totalValueTransactionsExpense;
 
           await queryRunner.query(`
-          INSERT INTO das.summary_transactions_month
-          (value, \`year\`, yearMonth, \`type\`, userId, dtCreated, dtUpdated)
-        VALUES(${totalValueTransactionsExpense}, ${year}, '${yearMonth}', '-', '${user.id}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-          `);
-
-          await queryRunner.query(`
-          INSERT INTO das.summary_transactions_month
-          (value, \`year\`, yearMonth, \`type\`, userId, dtCreated, dtUpdated)
-        VALUES(${totalValueTransactionsRecipe}, ${year}, '${yearMonth}', '+', '${user.id}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-          `);
+            INSERT INTO das.summary_transactions_month
+            (recipeValue, expenseValue, total, \`year\`, yearMonth, userId, dtCreated, dtUpdated)
+          VALUES(${totalValueTransactionsRecipe}, ${totalValueTransactionsExpense}, ${totalValue}, ${year}, '${yearMonth}', '${user.id}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+            `);
         },
       );
     });

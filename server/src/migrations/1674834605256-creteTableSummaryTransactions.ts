@@ -82,7 +82,7 @@ export class creteTableSummaryTransactions1674834605256
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable(
       new Table({
-        name: 'summary_transactions',
+        name: 'summary_transactions_day',
         database: 'das',
       }),
     );
