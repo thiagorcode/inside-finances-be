@@ -36,7 +36,7 @@ export class creteTableSummaryTransactions1674834605256
             name: 'yearMonth',
             type: 'varchar',
             isNullable: false,
-            length: '10',
+            length: '8',
           },
           {
             name: 'date',

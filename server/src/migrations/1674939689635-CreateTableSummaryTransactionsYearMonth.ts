@@ -48,7 +48,7 @@ export class CreateTableSummaryTransactionsYearMonth1674939689635
             name: 'yearMonth',
             type: 'varchar',
             isNullable: false,
-            length: '10',
+            length: '8',
           },
           {
             name: 'userId',
