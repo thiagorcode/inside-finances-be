@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Transactions } from './entities/transactions.entity';
 import { CreateTransactionsDTO } from './dtos/createTransactions.dto';
-import { ITransaction } from './interface/transaction';
+import { ITransaction } from './interface/transaction.interface';
 import { FindAllWithQueryDto } from './dtos/findAllWithQuery.dto';
 import { Totalizers } from './interface/totalizers.interface';
 
@@ -135,7 +135,6 @@ export class TransactionsService {
   async create(data: CreateTransactionsDTO): Promise<ITransaction> {
     try {
       const newTransaction = Object.assign(new Transactions(), data);
-
       const transaction = await this.transactionsRepository.save(
         newTransaction,
       );

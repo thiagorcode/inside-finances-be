@@ -34,6 +34,7 @@ export class CreateTransactionsDTO {
 
   @ApiProperty()
   @IsString()
+  @IsOptional()
   originCreate?: 'web' | 'telegram';
 
   @ApiProperty()
