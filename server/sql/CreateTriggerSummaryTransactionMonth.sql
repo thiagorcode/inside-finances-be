@@ -27,3 +27,5 @@ CREATE TRIGGER `SummaryTransactionsMonth` AFTER INSERT ON `transactions` FOR EAC
 
 
 END
+
+DROP trigger SummaryTransactionsMonth

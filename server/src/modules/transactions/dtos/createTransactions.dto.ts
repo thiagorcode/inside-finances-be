@@ -1,7 +1,10 @@
+import { TypeEnum } from './../../../enums/type.enum';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsDateString,
+  IsEnum,
+  isEnum,
   IsNumber,
   IsOptional,
   IsString,
@@ -38,8 +41,8 @@ export class CreateTransactionsDTO {
   originCreate?: 'web' | 'telegram';
 
   @ApiProperty()
-  @IsString()
-  type: '+' | '-';
+  @IsEnum(TypeEnum)
+  type: TypeEnum;
 
   @ApiProperty()
   @IsString()

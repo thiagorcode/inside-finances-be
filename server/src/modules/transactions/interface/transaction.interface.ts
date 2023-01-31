@@ -1,3 +1,4 @@
+import { TypeEnum } from './../../../enums/type.enum';
 import { CreateUserDTO } from '../../users/dtos/createUser.dto';
 import { TransactionsCategoryDTO } from '../../transactionsCategory/dtos/createTransactionsCategory.dto';
 
@@ -8,6 +9,6 @@ export interface ITransaction {
   // month: number;
   // day: number;
   date: Date;
-  type: '+' | '-';
+  type: TypeEnum;
   user: Partial<CreateUserDTO>;
 }
