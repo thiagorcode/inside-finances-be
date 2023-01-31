@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import {
   Entity,
   Column,
@@ -8,40 +9,36 @@ import {
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  BaseEntity,
 } from 'typeorm';
 import { Users } from '../../users/entities/users.entity';
 import { TransactionsCategory } from '../../transactionsCategory/entities/transactionsCategory.entity';
 
-@Entity()
-export class Transactions {
+@Injectable()
+@Entity({ database: 'gen', name: 'transactions' })
+export class Transactions extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'varchar', length: '80' })
   description: string;
 
-  @Column({ type: 'float', precision: 2 })
+  @Column({ type: 'float', precision: 2, nullable: false })
   value: number;
 
-  @Column({ type: 'bool', default: true })
+  @Column({ type: 'bool', default: true, nullable: false })
   isPaid: boolean;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', nullable: false, default: 0 })
   year: number;
 
-  // @Column({ type: 'int' })
-  // month: number;
-
-  // @Column({ type: 'int' })
-  // day: number;
-
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: false })
   yearMonth: string;
-  // converter para date
-  @Column({ type: 'date' })
+
+  @Column({ type: 'date', nullable: false })
   date: Date;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: false })
   type: '+' | '-';
 
   @Column({ type: 'varchar', default: '' })
@@ -53,10 +50,10 @@ export class Transactions {
   @Column({ type: 'varchar', default: 'web' })
   originCreate?: 'web' | 'telegram';
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: false })
   userId: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: false })
   categoryId: string;
 
   @ManyToOne(() => Users)
@@ -77,11 +74,9 @@ export class Transactions {
   @BeforeUpdate()
   formatDate() {
     this.date = new Date(this.date);
-    this.yearMonth = `${this.date.getFullYear()}-${
-      this.date.getMonth() < 9
-        ? `0${this.date.getMonth() + 1}`
-        : this.date.getMonth() + 1
-    }`;
-    this.year = +this.date.getFullYear();
+    this.year = this.date.getFullYear();
+    this.yearMonth = `${this.date.getFullYear()}-${(this.date.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}`;
   }
 }

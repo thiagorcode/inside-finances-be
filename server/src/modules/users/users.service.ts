@@ -57,7 +57,6 @@ export class UsersService {
   }
 
   async create(data: CreateUserDTO): Promise<Users> {
-    console.log(12, data.password);
     if (!data.password) return;
     const newUser = Object.assign(new Users(), data);
 

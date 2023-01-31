@@ -7,18 +7,17 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
 
-  // app.useGlobalPipes(
-  //   new ValidationPipe({
-  //     whitelist: true,
-  //     forbidNonWhitelisted: true,
-  //     transform: true,
-  //   }),
-  // );
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
 
   const options = new DocumentBuilder()
     .setTitle('Finances API')
     .setDescription('The app API description')
-    .setVersion('0.2.0')
+    .setVersion('0.5.0')
     .addTag('app')
     .setContact('Thiago Rodrigues', '', 'ti.thiago.rodrigues@gmail.com')
     .build();

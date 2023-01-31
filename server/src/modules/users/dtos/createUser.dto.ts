@@ -3,6 +3,7 @@ import { IsBoolean, IsEmail, IsString } from 'class-validator';
 
 export class CreateUserDTO {
   @ApiProperty()
+  @IsString()
   username: string;
 
   @ApiProperty()

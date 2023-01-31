@@ -7,6 +7,7 @@ import {
   AfterLoad,
   CreateDateColumn,
   UpdateDateColumn,
+  Unique,
 } from 'typeorm';
 import * as crypto from 'crypto';
 
@@ -14,12 +15,13 @@ const PrevPasswordSymbol = Symbol('UserPrevPassword');
 const PrevEmailSymbol = Symbol('UserPrevEmail');
 const PasswordPlaceholder = '***********';
 
-@Entity()
+@Entity({ name: 'users', database: 'gen' })
+@Unique(['email', 'username'])
 export class Users {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: '80' })
+  @Column({ type: 'varchar', length: '50' })
   username: string;
 
   @Column({ type: 'varchar', length: '80' })

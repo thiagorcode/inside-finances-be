@@ -61,19 +61,6 @@ export class TransactionsController {
     };
   }
 
-  @Get('user/:userId/totalizers')
-  // @UseGuards(JwtAuthGuard)
-  // TODO: Verificar possibilidade de pegar o ID pelo token
-  async totalizers(@Param('userId') userId: string) {
-    const totalizers = await this.transactionsService.totalizers(userId);
-
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'Totalizers fetched successfully',
-      totalizers,
-    };
-  }
-
   @Get(':id')
   // @UseGuards(JwtAuthGuard)
   async findTransaction(@Param('id') id: string) {
@@ -140,10 +127,9 @@ export class TransactionsController {
       date: query.date,
       isPaid: true,
     });
-
-    const totalizers = await this.transactionsService.findTotalizersValue(
-      transactions,
-    );
+    // TODO: Criar um utils que gerencie tudo isso.
+    const totalizers =
+      this.transactionsService.findTotalizersValue(transactions);
     return {
       statusCode: HttpStatus.OK,
       message: 'Totalizers fetched successfully',

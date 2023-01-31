@@ -33,6 +33,7 @@ export class UsersController {
 
   @Post()
   async create(@Body() data: CreateUserDTO) {
+    // TODO: Refatorar validação deve ocorrer no service
     const isRegisteredUser = await this.usersService.findByEmailAndUser(
       data.email,
       data.username,
