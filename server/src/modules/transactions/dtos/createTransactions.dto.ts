@@ -4,11 +4,11 @@ import {
   IsBoolean,
   IsDateString,
   IsEnum,
-  isEnum,
   IsNumber,
   IsOptional,
   IsString,
   IsUUID,
+  Max,
 } from 'class-validator';
 
 export class CreateTransactionsDTO {
@@ -42,6 +42,11 @@ export class CreateTransactionsDTO {
 
   @ApiProperty()
   @IsNumber()
+  /**
+   * TODO: Deixei assim por que o usuário poderia informar a parcela inicial como por exemplo 34
+   * e a final 44 e isso causaria um erro. Pensar em outra lógica
+   */
+  @Max(100)
   @IsOptional()
   finalInstallment?: number;
 

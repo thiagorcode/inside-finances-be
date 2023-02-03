@@ -1,4 +1,3 @@
-import { UpdateTransactionsDTO } from './dtos/updateTransactions.dto';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
@@ -7,6 +6,7 @@ import { CreateTransactionsDTO } from './dtos/createTransactions.dto';
 import { ITransaction } from './interface/transaction.interface';
 import { FindAllWithQueryDto } from './dtos/findAllWithQuery.dto';
 import { Totalizers } from './interface/totalizers.interface';
+import { UpdateTransactionsDTO } from './dtos/updateTransactions.dto';
 import { addMonths, parseISO } from 'date-fns';
 
 @Injectable()
@@ -54,6 +54,7 @@ export class TransactionsService {
       'transactions.date',
       'transactions.userId',
       'transactions.value',
+      'transactions.isPaid',
       'category.name',
       'category.id',
     ]);
@@ -104,7 +105,7 @@ export class TransactionsService {
 
   findLastByUser(id: string): Promise<ITransaction[]> {
     return this.transactionsRepository.find({
-      where: { user: { id } },
+      where: { user: { id }, isPaid: true },
       relations: ['category'],
       loadEagerRelations: true,
       select: {
@@ -141,7 +142,8 @@ export class TransactionsService {
       const transaction = await this.transactionsRepository.save(
         newTransaction,
       );
-      if (data.finalInstallment) {
+
+      if (data.finalInstallment && data.type === '-') {
         await this.createInstallmentTransaction(data);
       }
 
@@ -157,7 +159,7 @@ export class TransactionsService {
   }
 
   async createInstallmentTransaction(data: CreateTransactionsDTO) {
-    const finalInstallment = data.finalInstallment - 1;
+    const finalInstallment = data.finalInstallment - data.installment;
     const queryRunner = this.dataSource.createQueryRunner();
 
     await queryRunner.connect();
