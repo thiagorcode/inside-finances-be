@@ -1,8 +1,8 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
 import { Users } from './../modules/users/entities/users.entity';
 import { Transactions } from './../modules/transactions/entities/transactions.entity';
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class PopulateTableSummaryTransactionYearMonth1675178722586
+export class PopulateSummaryTransactionsYearMonth1675390598580
   implements MigrationInterface
 {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -43,10 +43,10 @@ export class PopulateTableSummaryTransactionYearMonth1675178722586
             totalValueTransactionsRecipe - totalValueTransactionsExpense;
 
           await queryRunner.query(`
-                INSERT INTO das.summary_transactions_month
-                (recipeValue, expenseValue, total, \`year\`, yearMonth, userId, dtCreated, dtUpdated)
-              VALUES(${totalValueTransactionsRecipe}, ${totalValueTransactionsExpense}, ${totalValue}, ${year}, '${yearMonth}', '${user.id}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-                `);
+                    INSERT INTO das.summary_transactions_month
+                    (recipeValue, expenseValue, total, \`year\`, yearMonth, userId, dtCreated, dtUpdated)
+                  VALUES(${totalValueTransactionsRecipe}, ${totalValueTransactionsExpense}, ${totalValue}, ${year}, '${yearMonth}', '${user.id}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+                    `);
         },
       );
     });
