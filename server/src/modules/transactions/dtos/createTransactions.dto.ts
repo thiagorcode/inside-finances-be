@@ -4,11 +4,11 @@ import {
   IsBoolean,
   IsDateString,
   IsEnum,
-  isEnum,
   IsNumber,
   IsOptional,
   IsString,
   IsUUID,
+  Max,
 } from 'class-validator';
 
 export class CreateTransactionsDTO {
@@ -29,7 +29,7 @@ export class CreateTransactionsDTO {
 
   @ApiProperty()
   @IsDateString()
-  date: Date;
+  date: string;
 
   @ApiProperty()
   @IsBoolean()
@@ -39,6 +39,21 @@ export class CreateTransactionsDTO {
   @IsString()
   @IsOptional()
   originCreate?: 'web' | 'telegram';
+
+  @ApiProperty()
+  @IsNumber()
+  /**
+   * TODO: Deixei assim por que o usuário poderia informar a parcela inicial como por exemplo 34
+   * e a final 44 e isso causaria um erro. Pensar em outra lógica
+   */
+  @Max(100)
+  @IsOptional()
+  finalInstallment?: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsOptional()
+  installment?: number;
 
   @ApiProperty()
   @IsEnum(TypeEnum)

@@ -51,6 +51,12 @@ export class Transactions extends BaseEntity {
   @Column({ type: 'varchar', default: 'web' })
   originCreate?: string;
 
+  @Column({ type: 'int', default: 0 })
+  installment?: number;
+
+  @Column({ type: 'int', default: 0 })
+  finalInstallment?: number;
+
   @Column({ type: 'varchar', nullable: false })
   userId: string;
 

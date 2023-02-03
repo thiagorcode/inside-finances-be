@@ -15,6 +15,7 @@ import {
 import { TransactionsService } from './transactions.service';
 import { CreateTransactionsDTO } from './dtos/createTransactions.dto';
 import { FindAllWithQueryDto } from './dtos/findAllWithQuery.dto';
+import { UpdateTransactionsDTO } from './dtos/updateTransactions.dto';
 // import { JwtAuthGuard } from '../../auth/jwt/jwt-auth.guard';
 
 @Controller('transactions')
@@ -87,7 +88,7 @@ export class TransactionsController {
   // @UseGuards(JwtAuthGuard)
   async updateTransaction(
     @Param('id') id: string,
-    @Body() data: CreateTransactionsDTO,
+    @Body() data: UpdateTransactionsDTO,
   ) {
     await this.transactionsService.update(id, data);
     return {

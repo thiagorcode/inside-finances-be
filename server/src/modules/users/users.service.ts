@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -12,41 +12,26 @@ export class UsersService {
     private readonly usersRepository: Repository<Users>,
   ) {}
 
-  async findAll() {
-    return await this.usersRepository.find();
+  findAll() {
+    return this.usersRepository.find();
   }
 
-  async find(id: string) {
-    return await this.usersRepository.findOne({
+  find(id: string) {
+    return this.usersRepository.findOne({
       where: { id },
     });
   }
 
-  async findByLoginPassword(
-    user: string,
-    password: string,
-  ): Promise<CreateUserDTO | undefined> {
-    return await this.usersRepository.findOne({
-      where: {
-        username: user,
-        password: password,
-      },
-    });
-  }
-
-  async findByLogin(username: string): Promise<CreateUserDTO | undefined> {
-    return await this.usersRepository.findOne({
+  findByLogin(username: string): Promise<CreateUserDTO | undefined> {
+    return this.usersRepository.findOne({
       where: {
         username,
       },
     });
   }
 
-  async findByEmailAndUser(
-    email: string,
-    username: string,
-  ): Promise<CreateUserDTO | null> {
-    return await this.usersRepository.findOne({
+  async findByEmailAndUser(email: string, username: string): Promise<boolean> {
+    const userExist = await this.usersRepository.findOne({
       where: [
         {
           email,
@@ -54,29 +39,36 @@ export class UsersService {
         { username },
       ],
     });
+
+    return !!userExist;
   }
 
   async create(data: CreateUserDTO): Promise<Users> {
-    if (!data.password) return;
+    const isRegisteredUser = await this.findByEmailAndUser(
+      data.email,
+      data.username,
+    );
+
+    if (isRegisteredUser) {
+      throw new BadRequestException('User is already registered');
+    }
+
     const newUser = Object.assign(new Users(), data);
 
     const user = await this.usersRepository.save(newUser);
     return user;
   }
 
-  async update(id: string, user: Partial<CreateUserDTO>) {
-    return this.usersRepository.update(id, user).then(() => {
-      return this.usersRepository.findOne({ where: { id } });
-    });
+  update(userId: string, user: Partial<CreateUserDTO>) {
+    return this.usersRepository.update(userId, user);
   }
 
-  async delete(id: string) {
-    await this.usersRepository.delete({ id });
-    return { deleted: true };
+  inactiveUser(userId: string) {
+    return this.usersRepository.update(userId, { isActive: false });
   }
 
   // async forgotPassword(user: Partial<UsersDTO>) {
-  //   const newPassword = gerateRadomPassword();
+  //   const newPassword = generateRadomPassword();
 
   //   // user.isPasswordChange = true;
   //   user.password = newPassword;
