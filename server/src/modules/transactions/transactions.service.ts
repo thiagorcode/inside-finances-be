@@ -1,23 +1,25 @@
 import { UpdateTransactionsDTO } from './dtos/updateTransactions.dto';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Transactions } from './entities/transactions.entity';
 import { CreateTransactionsDTO } from './dtos/createTransactions.dto';
 import { ITransaction } from './interface/transaction.interface';
 import { FindAllWithQueryDto } from './dtos/findAllWithQuery.dto';
 import { Totalizers } from './interface/totalizers.interface';
+import { addMonths, parseISO } from 'date-fns';
 
 @Injectable()
 export class TransactionsService {
   constructor(
     @InjectRepository(Transactions)
     private transactionsRepository: Repository<Transactions>,
+    private dataSource: DataSource,
   ) {}
 
-  async findAllByUser(userId: string): Promise<ITransaction[]> {
+  findAllByUser(userId: string): Promise<ITransaction[]> {
     // Encontrar maneira para trazer o objeto category diretamente
-    return await this.transactionsRepository.find({
+    return this.transactionsRepository.find({
       where: { user: { id: userId } },
       relations: ['category'],
       loadEagerRelations: true,
@@ -100,8 +102,8 @@ export class TransactionsService {
     return totalizers;
   }
 
-  async findLastByUser(id: string): Promise<ITransaction[]> {
-    return await this.transactionsRepository.find({
+  findLastByUser(id: string): Promise<ITransaction[]> {
+    return this.transactionsRepository.find({
       where: { user: { id } },
       relations: ['category'],
       loadEagerRelations: true,
@@ -117,8 +119,8 @@ export class TransactionsService {
     });
   }
 
-  async find(id: string): Promise<ITransaction> {
-    return await this.transactionsRepository.findOne({
+  find(id: string): Promise<ITransaction> {
+    return this.transactionsRepository.findOne({
       where: { id },
     });
   }
@@ -132,12 +134,16 @@ export class TransactionsService {
    *
    * @throws {InternalServerErrorException} If an unexpected error occurs, an InternalServerErrorException will be thrown with a message and an error log for the administrator.
    */
-  async create(data: CreateTransactionsDTO) {
+  async create(data: CreateTransactionsDTO): Promise<ITransaction> {
     try {
-      const newTransaction = Object.assign(new Transactions(), data);
+      const newTransaction = Object.assign(new Transactions(), { ...data });
+
       const transaction = await this.transactionsRepository.save(
         newTransaction,
       );
+      if (data.finalInstallment) {
+        await this.createInstallmentTransaction(data);
+      }
 
       return transaction;
     } catch (err) {
@@ -150,6 +156,40 @@ export class TransactionsService {
     }
   }
 
+  async createInstallmentTransaction(data: CreateTransactionsDTO) {
+    const finalInstallment = data.finalInstallment - 1;
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const transactionsInstallment = [];
+
+      for (let i = 1; i <= finalInstallment; i++) {
+        const newTransaction: Omit<ITransaction, 'id'> = Object.assign(
+          new Transactions(),
+          {
+            ...data,
+            installment: data.installment + i,
+            finalInstallment: data.finalInstallment,
+            isPaid: false,
+            date: addMonths(parseISO(data.date), i),
+          },
+        );
+        transactionsInstallment.push(newTransaction);
+      }
+      console.log(transactionsInstallment);
+      await queryRunner.manager.save<Transactions>(transactionsInstallment);
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      console.log(error);
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
   async update(id: string, transaction: UpdateTransactionsDTO) {
     try {
       return await this.transactionsRepository.update(id, transaction);
@@ -159,7 +199,6 @@ export class TransactionsService {
   }
 
   async delete(id: string) {
-    await this.transactionsRepository.delete({ id });
-    return { deleted: true };
+    return this.transactionsRepository.delete({ id });
   }
 }
