@@ -33,19 +33,6 @@ export class UsersController {
 
   @Post()
   async create(@Body() data: CreateUserDTO) {
-    // TODO: Refatorar validação deve ocorrer no service
-    const isRegisteredUser = await this.usersService.findByEmailAndUser(
-      data.email,
-      data.username,
-    );
-
-    if (isRegisteredUser) {
-      return {
-        statusCode: HttpStatus.OK,
-        message: 'User is already registered',
-      };
-    }
-
     const user = await this.usersService.create(data);
 
     return {
@@ -57,7 +44,7 @@ export class UsersController {
 
   @Get(':id')
   // @UseGuards(JwtAuthGuard)
-  async readUser(@Param('id') id: string) {
+  async findUser(@Param('id') id: string) {
     const data = await this.usersService.find(id);
     return {
       statusCode: HttpStatus.OK,
@@ -79,10 +66,10 @@ export class UsersController {
     };
   }
 
-  @Delete(':id')
+  @Delete(':userId')
   // @UseGuards(JwtAuthGuard)
-  async deleteUser(@Param('id') id: string) {
-    await this.usersService.delete(id);
+  async deleteUser(@Param('userId') userId: string) {
+    await this.usersService.inactiveUser(userId);
     return {
       statusCode: HttpStatus.OK,
       message: 'User deleted successfully',
