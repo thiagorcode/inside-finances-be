@@ -29,7 +29,7 @@ export class CreateTransactionsDTO {
 
   @ApiProperty()
   @IsDateString()
-  date: Date;
+  date: string;
 
   @ApiProperty()
   @IsBoolean()
@@ -39,6 +39,16 @@ export class CreateTransactionsDTO {
   @IsString()
   @IsOptional()
   originCreate?: 'web' | 'telegram';
+
+  @ApiProperty()
+  @IsNumber()
+  @IsOptional()
+  finalInstallment?: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsOptional()
+  installment?: number;
 
   @ApiProperty()
   @IsEnum(TypeEnum)

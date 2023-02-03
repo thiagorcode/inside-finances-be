@@ -5,10 +5,14 @@ import { TransactionsCategoryDTO } from '../../transactionsCategory/dtos/createT
 export interface ITransaction {
   id: string;
   value: number;
-  category: Partial<TransactionsCategoryDTO>;
-  // month: number;
-  // day: number;
+  categoryId: string;
   date: Date;
   type: TypeEnum;
-  user: Partial<CreateUserDTO>;
+  userId: string;
+  specification?: string;
+  bank?: string;
+  originCreate?: string;
+  installment?: number;
+  finalInstallment?: number;
+  isPaid: boolean;
 }
