@@ -32,10 +32,10 @@ export class Users {
   @Column({ type: 'varchar', length: '80', nullable: false })
   password: string;
 
-  @Column({ default: true })
+  @Column({ type: 'bool', default: true })
   isActive: boolean;
 
-  @Column({ default: false })
+  @Column({ type: 'bool', default: false })
   isPasswordChange: boolean;
 
   @CreateDateColumn()

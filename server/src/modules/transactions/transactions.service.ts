@@ -55,6 +55,8 @@ export class TransactionsService {
       'transactions.userId',
       'transactions.value',
       'transactions.isPaid',
+      'transactions.bank',
+      'transactions.description',
       'category.name',
       'category.id',
     ]);
@@ -181,7 +183,6 @@ export class TransactionsService {
         );
         transactionsInstallment.push(newTransaction);
       }
-      console.log(transactionsInstallment);
       await queryRunner.manager.save<Transactions>(transactionsInstallment);
       await queryRunner.commitTransaction();
     } catch (error) {
