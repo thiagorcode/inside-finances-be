@@ -19,7 +19,7 @@ async function bootstrap() {
     .setDescription('The app API description')
     .setVersion('0.5.0')
     .addTag('app')
-    .setContact('Thiago Rodrigues', '', 'ti.thiago.rodrigues@gmail.com')
+    .setContact('Thiago Rodrigues', '', 'thiagorodri.dev@gmail.com')
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
