@@ -1,7 +1,7 @@
 import {
   Transaction,
-  TYPE_EXPENSE,
-  TYPE_TRANSACTION,
+  TypeExpenseEnum,
+  TypeTransactionEnum,
 } from 'src/domain/entities/transaction.entity';
 import { CreateTransactionsDTO } from '../dtos/createTransactions.dto';
 
@@ -16,8 +16,8 @@ export class TransactionFactory {
       description: data.description,
       date: new Date(data.date),
       isPaid: data.isPaid,
-      type: TYPE_TRANSACTION.RECIPE,
-      expenseType: TYPE_EXPENSE.LOSE,
+      type: TypeTransactionEnum.RECIPE,
+      expenseType: TypeExpenseEnum.LOSE,
       year: '2026',
       monthYear: '02-2026',
       category: data.categoryId,

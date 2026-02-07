@@ -5,7 +5,7 @@ import { Totalizers } from './interface/totalizers.interface';
 import { UpdateTransactionsDTO } from './dtos/updateTransactions.dto';
 import {
   Transaction,
-  TYPE_TRANSACTION,
+  TypeTransactionEnum,
 } from 'src/domain/entities/transaction.entity';
 import { UniqueEntityID } from 'src/domain/common/unique-entity-id';
 import { TransactionFactory } from './factory/transaction.factory';
@@ -34,11 +34,11 @@ export class TransactionsService {
 
   findTotalizersValue(transactions: Transaction[]) {
     const recipe = transactions
-      .filter((transaction) => transaction.type === TYPE_TRANSACTION.RECIPE)
+      .filter((transaction) => transaction.type === TypeTransactionEnum.RECIPE)
       .reduce((acc, curr) => acc + curr.value, 0);
 
     const expense = transactions
-      .filter((transaction) => transaction.type === TYPE_TRANSACTION.EXPENSE)
+      .filter((transaction) => transaction.type === TypeTransactionEnum.EXPENSE)
       .reduce((acc, curr) => acc + curr.value, 0);
 
     const totalBalance = recipe - expense;

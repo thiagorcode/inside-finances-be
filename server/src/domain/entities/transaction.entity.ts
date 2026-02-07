@@ -2,11 +2,11 @@ import { AggregateRoot } from '../common/aggregate-root';
 import { UniqueEntityID } from '../common/unique-entity-id';
 import { InstallmentsGeneratedEvent } from '../events/transaction/installlments-generated.event';
 
-export enum TYPE_TRANSACTION {
+export enum TypeTransactionEnum {
   RECIPE = 'RECIPE',
   EXPENSE = 'EXPENSE',
 }
-export enum TYPE_EXPENSE {
+export enum TypeExpenseEnum {
   ESSENTIAL = 'ESSENTIAL',
   NOT_ESSENTIAL = 'NOT_ESSENTIAL',
   LOSE = 'LOSE',
@@ -14,13 +14,13 @@ export enum TYPE_EXPENSE {
 
 export interface TransactionProps {
   value: number;
-  type: TYPE_TRANSACTION;
+  type: TypeTransactionEnum;
   category: string;
   card?: string;
   description: string;
   date: Date;
   isPaid: boolean;
-  expenseType: TYPE_EXPENSE;
+  expenseType: TypeExpenseEnum;
   originCreate: string;
   isInstallment: boolean;
   currentInstallment: number;

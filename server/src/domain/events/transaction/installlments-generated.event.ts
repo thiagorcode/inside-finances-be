@@ -1,6 +1,6 @@
 import {
-  TYPE_EXPENSE,
-  TYPE_TRANSACTION,
+  TypeExpenseEnum,
+  TypeTransactionEnum,
 } from 'src/domain/entities/transaction.entity';
 import { UniqueEntityID } from '../../common/unique-entity-id';
 
@@ -15,8 +15,8 @@ export class InstallmentsGeneratedEvent {
       category: string;
       card?: string;
       description: string;
-      type: TYPE_TRANSACTION;
-      expenseType: TYPE_EXPENSE;
+      type: TypeTransactionEnum;
+      expenseType: TypeExpenseEnum;
     },
   ) {}
 }
