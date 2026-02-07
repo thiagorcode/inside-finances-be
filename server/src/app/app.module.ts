@@ -10,6 +10,7 @@ import { SummaryModule } from './../modules/summary/summary.module';
 import { TransactionsModule } from '../modules/transactions/transactions.module';
 import { TransactionsCategoryModule } from '../modules/transactionsCategory/transactionsCategory.module';
 import { SharedModule } from '../shared/shared.module';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { SharedModule } from '../shared/shared.module';
         return dataSource;
       },
     }),
+    CqrsModule.forRoot(),
     AuthModule,
     SummaryModule,
     TransactionsModule,
