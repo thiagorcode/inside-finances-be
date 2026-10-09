@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsIn, IsString, IsUUID } from 'class-validator';
+import { IsIn, IsString } from 'class-validator';
+import { TypeEnum } from './../../../enums/type.enum';
 
 export class TransactionsCategoryDTO {
   @ApiProperty()
@@ -7,6 +8,6 @@ export class TransactionsCategoryDTO {
   readonly name: string;
 
   @ApiProperty()
-  @IsIn(['+', '-'])
-  readonly type: '+' | '-';
+  @IsIn([TypeEnum.Recipe, TypeEnum.Expense])
+  readonly type: TypeEnum;
 }

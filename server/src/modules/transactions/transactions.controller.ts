@@ -15,6 +15,7 @@ import {
 import { TransactionsService } from './transactions.service';
 import { CreateTransactionsDTO } from './dtos/createTransactions.dto';
 import { FindAllWithQueryDto } from './dtos/findAllWithQuery.dto';
+import { UpdateTransactionsDTO } from './dtos/updateTransactions.dto';
 // import { JwtAuthGuard } from '../../auth/jwt/jwt-auth.guard';
 
 @Controller('transactions')
@@ -61,19 +62,6 @@ export class TransactionsController {
     };
   }
 
-  @Get('user/:userId/totalizers')
-  // @UseGuards(JwtAuthGuard)
-  // TODO: Verificar possibilidade de pegar o ID pelo token
-  async totalizers(@Param('userId') userId: string) {
-    const totalizers = await this.transactionsService.totalizers(userId);
-
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'Totalizers fetched successfully',
-      totalizers,
-    };
-  }
-
   @Get(':id')
   // @UseGuards(JwtAuthGuard)
   async findTransaction(@Param('id') id: string) {
@@ -100,7 +88,7 @@ export class TransactionsController {
   // @UseGuards(JwtAuthGuard)
   async updateTransaction(
     @Param('id') id: string,
-    @Body() data: CreateTransactionsDTO,
+    @Body() data: UpdateTransactionsDTO,
   ) {
     await this.transactionsService.update(id, data);
     return {
@@ -140,10 +128,9 @@ export class TransactionsController {
       date: query.date,
       isPaid: true,
     });
-
-    const totalizers = await this.transactionsService.findTotalizersValue(
-      transactions,
-    );
+    // TODO: Criar um utils que gerencie tudo isso.
+    const totalizers =
+      this.transactionsService.findTotalizersValue(transactions);
     return {
       statusCode: HttpStatus.OK,
       message: 'Totalizers fetched successfully',

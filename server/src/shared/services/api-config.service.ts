@@ -60,7 +60,7 @@ export class ApiConfigService {
       username: this.getString('DB_USERNAME'),
       password: this.getString('DB_PASSWORD'),
       database: this.getString('DB_DATABASE'),
-      synchronize: this.isLocal,
+      synchronize: false,
       entities,
       migrations,
       autoLoadEntities: true,

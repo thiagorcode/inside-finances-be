@@ -3,22 +3,22 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 import { rateLimit } from 'express-rate-limit';
 import { ValidationPipe } from '@nestjs/common';
+import { LIMIT_EACH_REQUEST, WINDOW_MS } from './shared/constants/configServer';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
 
-  // app.useGlobalPipes(
-  //   new ValidationPipe({
-  //     whitelist: true,
-  //     forbidNonWhitelisted: true,
-  //     transform: true,
-  //   }),
-  // );
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
 
   const options = new DocumentBuilder()
     .setTitle('Finances API')
     .setDescription('The app API description')
-    .setVersion('0.2.0')
+    .setVersion('0.5.1')
     .addTag('app')
     .setContact('Thiago Rodrigues', '', 'ti.thiago.rodrigues@gmail.com')
     .build();
@@ -30,8 +30,9 @@ async function bootstrap() {
 
   app.use(
     rateLimit({
-      windowMs: 15 * 60 * 1000, // 15 minutes
-      max: 1000, // limit each IP to 10000 requests per windowMs
+      windowMs: WINDOW_MS, 
+      max: LIMIT_EACH_REQUEST,
+      
     }),
   );
 

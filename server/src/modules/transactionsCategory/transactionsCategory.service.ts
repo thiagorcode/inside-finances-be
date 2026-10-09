@@ -12,16 +12,16 @@ export class TransactionsCategoryService {
     private transactionsRepository: Repository<TransactionsCategory>,
   ) {}
 
-  async findAll(): Promise<TransactionsCategoryDTO[]> {
-    return await this.transactionsRepository.find({
+  findAll(): Promise<TransactionsCategoryDTO[]> {
+    return this.transactionsRepository.find({
       order: {
         name: 'ASC',
       },
     });
   }
 
-  async find(id: string): Promise<TransactionsCategoryDTO> {
-    return await this.transactionsRepository.findOne({
+  find(id: string): Promise<TransactionsCategoryDTO> {
+    return this.transactionsRepository.findOne({
       where: { id },
     });
   }
@@ -35,14 +35,11 @@ export class TransactionsCategoryService {
     return transaction;
   }
 
-  async update(id: string, transaction: Partial<TransactionsCategoryDTO>) {
-    return this.transactionsRepository.update(id, transaction).then(() => {
-      return this.transactionsRepository.findOne({ where: { id } });
-    });
+  update(id: string, transaction: Partial<TransactionsCategoryDTO>) {
+    return this.transactionsRepository.update(id, transaction);
   }
 
-  async delete(id: string) {
-    await this.transactionsRepository.delete({ id });
-    return { deleted: true };
+  delete(id: string) {
+    return this.transactionsRepository.delete({ id });
   }
 }

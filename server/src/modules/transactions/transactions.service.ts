@@ -1,158 +1,96 @@
-import { UpdateTransactionsDTO } from './dtos/updateTransactions.dto';
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { isBefore } from 'date-fns';
-import { Transactions } from './entities/transactions.entity';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateTransactionsDTO } from './dtos/createTransactions.dto';
-import { ITotalizers } from './interface/totalizers';
-import { ITransaction } from './interface/transaction';
 import { FindAllWithQueryDto } from './dtos/findAllWithQuery.dto';
-import { query } from 'express';
-import { curry } from 'lodash';
+import { Totalizers } from './interface/totalizers.interface';
+import { UpdateTransactionsDTO } from './dtos/updateTransactions.dto';
+import {
+  Transaction,
+  TypeTransactionEnum,
+} from 'src/domain/entities/transaction.entity';
+import { UniqueEntityID } from 'src/domain/common/unique-entity-id';
+import { TransactionFactory } from './factory/transaction.factory';
+import { EventBus } from '@nestjs/cqrs';
 
 @Injectable()
 export class TransactionsService {
   constructor(
-    @InjectRepository(Transactions)
-    private transactionsRepository: Repository<Transactions>,
-  ) {}
-
-  async findAllByUser(userId: string): Promise<ITransaction[]> {
-    // Encontrar maneira para trazer o objeto category diretamente
-    return await this.transactionsRepository.find({
-      where: { user: { id: userId } },
-      relations: ['category'],
-      loadEagerRelations: true,
-      select: {
-        category: {
-          name: true,
-        },
-      },
-      order: {
-        date: 'DESC',
-        type: 'ASC',
-      },
-    });
+    private readonly repository: Transaction[],
+    private readonly eventBus: EventBus,
+  ) {
+    this.repository = [];
   }
 
-  async findAllWithQuery({
+  findAllTransactionByUser(userId: string): Transaction[] {
+    return this.repository.filter((item) => item.description === userId);
+  }
+
+  findAllWithQuery({
     userId,
     categoryId,
     date,
     type,
     isPaid,
-  }: FindAllWithQueryDto): Promise<ITransaction[]> {
-    // Encontrar maneira para trazer o objeto category diretamente
-    return await this.transactionsRepository.find({
-      where: {
-        user: { id: userId },
-        ...(type !== undefined && { type: type }),
-        ...(date !== undefined && { yearMonth: date }),
-        ...(categoryId !== undefined && { categoryId: categoryId }),
-        ...(isPaid !== undefined && { isPaid }),
-      },
-      relations: ['category'],
-      loadEagerRelations: true,
-      select: {
-        id: true,
-        type: true,
-        date: true,
-        userId: true,
-        value: true,
-        category: {
-          name: true,
-          id: true,
-        },
-      },
-      order: {
-        date: 'DESC',
-        type: 'ASC',
-      },
-    });
-  }
+  }: FindAllWithQueryDto): Transaction[] {}
 
-  async findTotalizersValue(transactions: ITransaction[]) {
+  findTotalizersValue(transactions: Transaction[]) {
     const recipe = transactions
-      .filter((transaction) => transaction.type === '+')
+      .filter((transaction) => transaction.type === TypeTransactionEnum.RECIPE)
       .reduce((acc, curr) => acc + curr.value, 0);
 
     const expense = transactions
-      .filter((transaction) => transaction.type === '-')
+      .filter((transaction) => transaction.type === TypeTransactionEnum.EXPENSE)
       .reduce((acc, curr) => acc + curr.value, 0);
 
     const totalBalance = recipe - expense;
 
-    return {
+    const totalizers: Totalizers = {
       recipe,
       expense,
       totalBalance,
     };
+    return totalizers;
   }
 
-  async findLastByUser(id: string): Promise<ITransaction[]> {
-    return await this.transactionsRepository.find({
-      where: { user: { id }, isPaid: true },
-      relations: ['category'],
-      loadEagerRelations: true,
-      select: {
-        category: {
-          name: true,
-        },
-      },
-      take: 10,
-      order: {
-        date: 'DESC',
-        type: 'ASC',
-      },
-    });
-  }
-
-  async totalizers(id: string): Promise<ITotalizers> {
-    const transactions = await this.findAllByUser(id);
-
-    const earnings = transactions
+  findLastByUser(id: string): Transaction[] {
+    return this.repository
       .filter(
-        (transaction) =>
-          transaction.type === '+' && isBefore(transaction.date, new Date()),
+        (item) => item.id === new UniqueEntityID(id) && item.isPaid === true,
       )
-      .reduce((acc, curr) => acc + curr.value, 0);
-    const expenses = transactions
-      .filter(
-        (transaction) =>
-          transaction.type === '-' && isBefore(transaction.date, new Date()),
-      )
-      .reduce((acc, curr) => acc + curr.value, 0);
-
-    const balanceAvailable = earnings - expenses;
-    console.log(isBefore(transactions[0].date, new Date()));
-
-    return {
-      earnings,
-      expenses,
-      balanceAvailable,
-    };
-  }
-  async find(id: string): Promise<ITransaction> {
-    return await this.transactionsRepository.findOne({
-      where: { id },
-    });
+      .slice(0, 10);
   }
 
-  async create(data: CreateTransactionsDTO): Promise<ITransaction> {
-    // Todo: Aplicar validação se a data for maior que a data atual o isPaid deve ser falso naturalmente
-    const newTransaction = Object.assign(new Transactions(), data);
-
-    const transaction = await this.transactionsRepository.save(newTransaction);
-    return transaction;
+  find(id: string): Transaction {
+    return this.repository.find((item) => item.id === new UniqueEntityID(id));
   }
 
-  async update(id: string, transaction: UpdateTransactionsDTO) {
-    return await this.transactionsRepository.update(id, transaction);
+  create(data: CreateTransactionsDTO) {
+    try {
+      const newTransaction = TransactionFactory.create(data);
+
+      if (newTransaction.isInstallment) {
+        newTransaction.generateInstallments(newTransaction.finalInstallment);
+      }
+      const transaction = this.repository.push(newTransaction);
+      for (const event of newTransaction.domainEvents) {
+        this.eventBus.publish(event);
+      }
+      newTransaction.clearDomainEvents();
+    } catch (err) {
+      throw new InternalServerErrorException({
+        message:
+          'Erro inesperado, entre em contato com o administrador do sistema!',
+        error: err,
+        adm: 'Log temporário',
+      });
+    }
   }
 
-  async delete(id: string) {
-    await this.transactionsRepository.delete({ id });
-    return { deleted: true };
+  update(id: string, transaction: UpdateTransactionsDTO) {
+    try {
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
   }
+
+  delete(id: string) {}
 }
