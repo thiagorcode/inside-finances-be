@@ -1,4 +1,4 @@
-FROM node:16.15.0-alpine As development
+FROM node:20-alpine As development
 
 LABEL maintainer="Thiago Rodrigues <ti.thiago.rodrigues@outlook.com>"
 
@@ -40,7 +40,7 @@ USER node
 # PRODUCTION
 ###################
 
-FROM node:16.15.0-alpine As production
+FROM node:20-alpine As production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
@@ -61,7 +61,7 @@ USER node
 
 CMD [ "node", "dist/main.js" ]
 
-FROM node:16.15.0-alpine as local
+FROM node:20-alpine as local
 
 ARG ENVIRONMENT=local
 ENV ENVIRONMENT=${ENVIRONMENT}

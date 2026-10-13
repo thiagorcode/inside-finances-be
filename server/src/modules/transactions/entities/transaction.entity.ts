@@ -12,7 +12,7 @@ import {
   BaseEntity,
 } from 'typeorm';
 import { TransactionsCategory } from '../../transactionsCategory/entities/transactionsCategory.entity';
-import { TypeTransactionEnum } from 'src/domain/entities/transaction.entity';
+import { TypeTransactionEnum } from '../../../domain/entities/transaction.entity';
 
 @Injectable()
 @Entity({ database: 'gen', name: 'transactions' })

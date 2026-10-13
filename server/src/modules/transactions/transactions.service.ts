@@ -1,27 +1,30 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTransactionsDTO } from './dtos/createTransactions.dto';
 import { FindAllWithQueryDto } from './dtos/findAllWithQuery.dto';
 import { Totalizers } from './interface/totalizers.interface';
 import { UpdateTransactionsDTO } from './dtos/updateTransactions.dto';
 import {
   Transaction,
+  TransactionProps,
   TypeTransactionEnum,
-} from 'src/domain/entities/transaction.entity';
-import { UniqueEntityID } from 'src/domain/common/unique-entity-id';
+} from '../../domain/entities/transaction.entity';
 import { TransactionFactory } from './factory/transaction.factory';
 import { EventBus } from '@nestjs/cqrs';
+import { TypeEnum } from '../../enums/type.enum';
 
 @Injectable()
 export class TransactionsService {
-  constructor(
-    private readonly repository: Transaction[],
-    private readonly eventBus: EventBus,
-  ) {
-    this.repository = [];
-  }
+  // TODO: substituir por repositório DDD (TypeORM) quando a migração for concluída
+  private readonly repository: Transaction[] = [];
+
+  constructor(private readonly eventBus: EventBus) {}
 
   findAllTransactionByUser(userId: string): Transaction[] {
-    return this.repository.filter((item) => item.description === userId);
+    return this.repository.filter((item) => item.userId === userId);
   }
 
   findAllWithQuery({
@@ -30,7 +33,24 @@ export class TransactionsService {
     date,
     type,
     isPaid,
-  }: FindAllWithQueryDto): Transaction[] {}
+  }: FindAllWithQueryDto): Transaction[] {
+    const transactionType = type
+      ? TransactionFactory.toTransactionType(type as TypeEnum)
+      : undefined;
+
+    return this.repository.filter((transaction) => {
+      if (transaction.userId !== userId) return false;
+      if (categoryId && transaction.category !== categoryId) return false;
+      if (date && transaction.yearMonth !== date) return false;
+      if (transactionType && transaction.type !== transactionType) {
+        return false;
+      }
+      if (typeof isPaid === 'boolean' && transaction.isPaid !== isPaid) {
+        return false;
+      }
+      return true;
+    });
+  }
 
   findTotalizersValue(transactions: Transaction[]) {
     const recipe = transactions
@@ -51,30 +71,44 @@ export class TransactionsService {
     return totalizers;
   }
 
-  findLastByUser(id: string): Transaction[] {
+  findLastByUser(userId: string): Transaction[] {
     return this.repository
       .filter(
-        (item) => item.id === new UniqueEntityID(id) && item.isPaid === true,
+        (item) => item.userId === userId && item.isPaid === true,
       )
+      .sort((a, b) => b.date.getTime() - a.date.getTime())
       .slice(0, 10);
   }
 
   find(id: string): Transaction {
-    return this.repository.find((item) => item.id === new UniqueEntityID(id));
+    const transaction = this.repository.find(
+      (item) => item.id.toValue() === id,
+    );
+    if (!transaction) {
+      throw new NotFoundException('Transaction not found');
+    }
+    return transaction;
   }
 
-  create(data: CreateTransactionsDTO) {
+  create(data: CreateTransactionsDTO): Transaction {
     try {
       const newTransaction = TransactionFactory.create(data);
 
-      if (newTransaction.isInstallment) {
+      // A última parcela de uma série não gera novas parcelas
+      if (
+        newTransaction.isInstallment &&
+        newTransaction.currentInstallment < newTransaction.finalInstallment
+      ) {
         newTransaction.generateInstallments(newTransaction.finalInstallment);
       }
-      const transaction = this.repository.push(newTransaction);
+
+      this.repository.push(newTransaction);
       for (const event of newTransaction.domainEvents) {
         this.eventBus.publish(event);
       }
       newTransaction.clearDomainEvents();
+
+      return newTransaction;
     } catch (err) {
       throw new InternalServerErrorException({
         message:
@@ -85,12 +119,33 @@ export class TransactionsService {
     }
   }
 
-  update(id: string, transaction: UpdateTransactionsDTO) {
-    try {
-    } catch (err) {
-      throw new InternalServerErrorException(err);
+  update(id: string, data: UpdateTransactionsDTO): Transaction {
+    const transaction = this.find(id);
+    const changes: Omit<Partial<TransactionProps>, 'userId'> = {};
+
+    if (data.description !== undefined) changes.description = data.description;
+    if (data.value !== undefined) changes.value = data.value;
+    if (data.categoryId !== undefined) changes.category = data.categoryId;
+    if (data.date !== undefined) changes.date = new Date(data.date);
+    if (data.isPaid !== undefined) changes.isPaid = data.isPaid;
+    if (data.type !== undefined) {
+      changes.type = TransactionFactory.toTransactionType(
+        data.type as TypeEnum,
+      );
     }
+    // TODO: atualização de parcelas pendente da reestruturação de installments
+
+    transaction.update(changes);
+
+    return transaction;
   }
 
-  delete(id: string) {}
+  delete(id: string): Transaction {
+    const transaction = this.find(id);
+    const index = this.repository.indexOf(transaction);
+    if (index !== -1) {
+      this.repository.splice(index, 1);
+    }
+    return transaction;
+  }
 }

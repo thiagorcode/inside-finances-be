@@ -1,6 +1,6 @@
 {
   "name": "server",
-  "version": "0.0.1",
+  "version": "0.5.1",
   "description": "",
   "author": "Thiago Rodrigues<thiagorodri.dev@gmail.com>",
   "private": true,
@@ -42,7 +42,8 @@
     "passport-local": "1.0.0",
     "reflect-metadata": "0.2.2",
     "rimraf": "6.1.2",
-    "rxjs": "7.8.2"
+    "rxjs": "7.8.2",
+    "typeorm": "^0.3.28"
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.16",
@@ -68,7 +69,6 @@
     "ts-loader": "9.5.4",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
-    "typeorm": "^0.3.28",
     "typescript": "5.9.3"
   },
   "jest": {
