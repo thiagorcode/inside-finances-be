@@ -6,14 +6,19 @@ import { AuthController } from './auth.controller';
 import { LocalStrategy } from './local-strategy/local.strategy';
 import { JwtStrategy } from './jwt/jwt.strategy';
 import { UsersModule } from '../../modules/users/users.module';
+import { ApiConfigService } from '../../shared/services/api-config.service';
 
 @Module({
   imports: [
     UsersModule,
     PassportModule,
-    JwtModule.register({
-      secret: process.env.JWT_KEY || 'secretKey',
-      signOptions: { expiresIn: '1d' },
+    // A secret vem do ApiConfigService, que falha rápido se JWT_KEY não estiver definido
+    JwtModule.registerAsync({
+      useFactory: (configService: ApiConfigService) => ({
+        secret: configService.jwtConfig.secretKey,
+        signOptions: { expiresIn: '1d' },
+      }),
+      inject: [ApiConfigService],
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],

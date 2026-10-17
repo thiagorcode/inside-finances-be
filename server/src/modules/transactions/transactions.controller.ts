@@ -41,6 +41,7 @@ export class TransactionsController {
       categoryId: query.categoryId,
       type: query.type,
       date: query.date,
+      isPaid: query.isPaid,
     });
     return {
       statusCode: HttpStatus.OK,
@@ -90,20 +91,22 @@ export class TransactionsController {
     @Param('id') id: string,
     @Body() data: UpdateTransactionsDTO,
   ) {
-    await this.transactionsService.update(id, data);
+    const transaction = await this.transactionsService.update(id, data);
     return {
       statusCode: HttpStatus.OK,
       message: 'Transactions updated successfully',
+      transaction,
     };
   }
 
   @Delete(':id')
   // @UseGuards(JwtAuthGuard)
   async deleteTransaction(@Param('id') id: string) {
-    await this.transactionsService.delete(id);
+    const transaction = await this.transactionsService.delete(id);
     return {
       statusCode: HttpStatus.OK,
       message: 'Transactions deleted successfully',
+      transaction,
     };
   }
 

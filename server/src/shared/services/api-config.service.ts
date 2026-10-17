@@ -74,12 +74,14 @@ export class ApiConfigService {
     };
   }
 
-  get authConfig() {
-    return {
-      privateKey: this.getString('JWT_PRIVATE_KEY'),
-      publicKey: this.getString('JWT_PUBLIC_KEY'),
-      jwtExpirationTime: this.getNumber('JWT_EXPIRATION_TIME'),
-    };
+  get jwtConfig() {
+    const secretKey = this.getString('JWT_KEY');
+
+    if (!secretKey) {
+      throw new Error('JWT_KEY environment variable cannot be empty');
+    }
+
+    return { secretKey };
   }
 
   get appConfig() {

@@ -1,13 +1,14 @@
 import {
   TypeExpenseEnum,
   TypeTransactionEnum,
-} from 'src/domain/entities/transaction.entity';
+} from '../../entities/transaction.entity';
 import { UniqueEntityID } from '../../common/unique-entity-id';
 
 export class InstallmentsGeneratedEvent {
   constructor(
     public readonly transactionId: UniqueEntityID,
     public readonly payload: {
+      userId: string;
       value: number;
       date: Date;
       finalInstallment: number;
@@ -17,6 +18,7 @@ export class InstallmentsGeneratedEvent {
       description: string;
       type: TypeTransactionEnum;
       expenseType: TypeExpenseEnum;
+      originCreate: string;
     },
   ) {}
 }

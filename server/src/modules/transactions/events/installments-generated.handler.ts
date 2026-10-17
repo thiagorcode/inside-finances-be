@@ -1,15 +1,17 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { Transaction } from 'src/domain/entities/transaction.entity';
-import { InstallmentsGeneratedEvent } from 'src/domain/events/transaction/installlments-generated.event';
+import { addMonths } from 'date-fns';
+import { Transaction } from '../../../domain/entities/transaction.entity';
+import { InstallmentsGeneratedEvent } from '../../../domain/events/transaction/installments-generated.event';
 
 @EventsHandler(InstallmentsGeneratedEvent)
-export class InstallmentsGeneratedHandler implements IEventHandler<InstallmentsGeneratedEvent> {
-  constructor(private readonly transactionRepo: Transaction[]) {
-    this.transactionRepo = [];
-  }
+export class InstallmentsGeneratedHandler
+  implements IEventHandler<InstallmentsGeneratedEvent> {
+  // TODO: substituir por repositório DDD (TypeORM) quando a migração for concluída
+  private readonly transactionRepo: Transaction[] = [];
 
   async handle(event: InstallmentsGeneratedEvent) {
     const {
+      userId,
       value,
       date,
       finalInstallment,
@@ -19,34 +21,32 @@ export class InstallmentsGeneratedHandler implements IEventHandler<InstallmentsG
       description,
       type,
       expenseType,
+      originCreate,
     } = event.payload;
 
     const transactions: Transaction[] = [];
 
+    // Cada parcela seguinte vence um mês após a anterior
     for (let i = 1; i <= finalInstallment - currentInstallment; i++) {
-      const installmentDate = new Date();
-
       const installment = Transaction.create({
+        userId,
         value,
         type,
         category,
         card,
         description,
-        date: installmentDate,
+        date: addMonths(date, i),
         isPaid: false,
         expenseType,
-        originCreate: 'app',
+        originCreate,
         isInstallment: true,
         currentInstallment: currentInstallment + i,
         finalInstallment,
-        year: installmentDate.getFullYear().toString(),
-        monthYear: `${String(installmentDate.getMonth() + 1).padStart(2, '0')}-${installmentDate.getFullYear()}`,
       });
 
       transactions.push(installment);
     }
 
     this.transactionRepo.push(...transactions);
-    console.log(this.transactionRepo);
   }
 }

@@ -1,6 +1,6 @@
 import { AggregateRoot } from '../common/aggregate-root';
 import { UniqueEntityID } from '../common/unique-entity-id';
-import { InstallmentsGeneratedEvent } from '../events/transaction/installlments-generated.event';
+import { InstallmentsGeneratedEvent } from '../events/transaction/installments-generated.event';
 
 export enum TypeTransactionEnum {
   RECIPE = 'RECIPE',
@@ -9,10 +9,17 @@ export enum TypeTransactionEnum {
 export enum TypeExpenseEnum {
   ESSENTIAL = 'ESSENTIAL',
   NOT_ESSENTIAL = 'NOT_ESSENTIAL',
-  LOSE = 'LOSE',
+  LOSS = 'LOSS',
 }
 
+// Deriva os campos de período a partir da data (formato YYYY-MM, igual à entidade TypeORM)
+const periodFrom = (date: Date) => ({
+  year: date.getFullYear(),
+  yearMonth: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`,
+});
+
 export interface TransactionProps {
+  userId: string;
   value: number;
   type: TypeTransactionEnum;
   category: string;
@@ -25,8 +32,10 @@ export interface TransactionProps {
   isInstallment: boolean;
   currentInstallment: number;
   finalInstallment: number;
-  monthYear: string;
-  year: string;
+  /** YYYY-MM — derivado de date em create()/update(), não enviar no payload */
+  yearMonth?: string;
+  /** derivado de date em create()/update(), não enviar no payload */
+  year?: number;
 }
 //
 //* Criar entidade TransactionCard para passar dentro do parametro
@@ -38,6 +47,9 @@ export interface TransactionProps {
 //*/
 
 export class Transaction extends AggregateRoot<TransactionProps> {
+  get userId() {
+    return this.props.userId;
+  }
   get type() {
     return this.props.type;
   }
@@ -59,8 +71,8 @@ export class Transaction extends AggregateRoot<TransactionProps> {
   get finalInstallment() {
     return this.props.finalInstallment;
   }
-  get monthYear() {
-    return this.props.monthYear;
+  get yearMonth() {
+    return this.props.yearMonth;
   }
   get year() {
     return this.props.year;
@@ -82,9 +94,22 @@ export class Transaction extends AggregateRoot<TransactionProps> {
   }
 
   static create(props: TransactionProps, id?: UniqueEntityID) {
-    const transaction = new Transaction(props, id);
+    const period = periodFrom(new Date(props.date));
+
+    const transaction = new Transaction({ ...props, ...period }, id);
 
     return transaction;
+  }
+
+  // O id do usuário é imutável: não faz parte das atualizações permitidas
+  update(changes: Omit<Partial<TransactionProps>, 'userId'>) {
+    this.props = { ...this.props, ...changes };
+
+    if (changes.date) {
+      const period = periodFrom(new Date(changes.date));
+      this.props.year = period.year;
+      this.props.yearMonth = period.yearMonth;
+    }
   }
 
   generateInstallments(finalInstallment: number) {
@@ -97,6 +122,7 @@ export class Transaction extends AggregateRoot<TransactionProps> {
     this.props.finalInstallment = finalInstallment;
     this.addDomainEvent(
       new InstallmentsGeneratedEvent(this.id, {
+        userId: this.props.userId,
         value: this.props.value,
         date: this.props.date,
         finalInstallment,
@@ -106,8 +132,31 @@ export class Transaction extends AggregateRoot<TransactionProps> {
         description: this.props.description,
         type: this.props.type,
         expenseType: this.props.expenseType,
+        originCreate: this.props.originCreate,
       }),
     );
+  }
+
+  // Expõe apenas o estado público — evita vazar props/domainEvents na serialização
+  toJSON() {
+    return {
+      id: this.id.toString(),
+      userId: this.props.userId,
+      value: this.props.value,
+      type: this.props.type,
+      category: this.props.category,
+      card: this.props.card,
+      description: this.props.description,
+      date: this.props.date,
+      isPaid: this.props.isPaid,
+      expenseType: this.props.expenseType,
+      originCreate: this.props.originCreate,
+      isInstallment: this.props.isInstallment,
+      currentInstallment: this.props.currentInstallment,
+      finalInstallment: this.props.finalInstallment,
+      yearMonth: this.props.yearMonth,
+      year: this.props.year,
+    };
   }
 }
 // TODO: Iniciar sem aplicar totalmente o DDD, mas ir aprofundado aos poucos

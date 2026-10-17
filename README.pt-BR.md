@@ -3,10 +3,10 @@
 <h3 align="center">API REST para gestão de finanças pessoais — receitas, despesas, categorias e saldo mensal — construída com NestJS, TypeScript, TypeORM e MySQL, containerizada com Docker e com deploy automatizado via CI/CD.</h3>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/NestJS-9-E0234E?logo=nestjs&logoColor=white" alt="NestJS 9" />
-  <img src="https://img.shields.io/badge/TypeScript-4.x-3178C6?logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Node.js-16-339933?logo=nodedotjs&logoColor=white" alt="Node.js 16" />
-  <img src="https://img.shields.io/badge/MySQL-8-4479A1?logo=mysql&logoColor=white" alt="MySQL" />
+  <img src="https://img.shields.io/badge/NestJS-11-E0234E?logo=nestjs&logoColor=white" alt="NestJS 11" />
+  <img src="https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Node.js-20-339933?logo=nodedotjs&logoColor=white" alt="Node.js 20" />
+  <img src="https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white" alt="MySQL" />
   <img src="https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white" alt="Docker" />
   <img src="https://img.shields.io/badge/CI/CD-GitHub_Actions-2088FF?logo=githubactions&logoColor=white" alt="GitHub Actions CI/CD" />
   <img src="https://img.shields.io/github/last-commit/thiagorcode/inside-finances-be" alt="Last commit" />
@@ -18,46 +18,59 @@
 
 ## 📖 Sobre o projeto
 
-O **Inside Finances** é um backend para **controle de finanças pessoais**: cada usuário registra suas **receitas e despesas** organizadas por **categoria**, e a API fornece **totalizadores mensais e saldo** com filtros por período, categoria, tipo e status de pagamento.
+O **Inside Finances** é um backend para **controle de finanças pessoais**: cada usuário registra suas **receitas e despesas** organizadas por **categoria**, e a API fornece **totalizadores e resumos mensais** com filtros por período, categoria, tipo e status de pagamento.
 
 Este projeto nasceu de um caso de uso real: ele substitui uma planilha que eu usava há anos para controlar meus gastos pessoais — a pasta [`script/`](./script/) contém um script em Node.js que lê essa planilha (`.xlsx`) e importa todo o histórico para a API, com checagens de consistência antes da importação.
 
 Foi construído como estudo de um backend em **nível de produção**: autenticação com **JWT**, validação de requisições com **DTOs**, modelagem relacional com **TypeORM**, documentação com **Swagger/OpenAPI**, imagens **multi-stage no Docker** e deploy automatizado com **GitHub Actions**.
 
+O código também está no meio de uma **evolução de arquitetura**: o módulo de transações está sendo migrado para **DDD** (entidades de domínio, factory e **eventos de domínio publicados com `@nestjs/cqrs`**), enquanto autenticação, usuários, categorias e resumo seguem nos módulos clássicos NestJS + TypeORM. As **tabelas de resumo mensal são mantidas consistentes por triggers MySQL** (vide [`server/sql/`](./server/sql/)).
+
 ## ✨ Funcionalidades
 
-- 🔐 **Autenticação** — login com e-mail/usuário + senha (estratégia local do Passport) emitindo **token de acesso JWT**, com estratégia e guard JWT implementados para as rotas protegidas
-- 👥 **Usuários** — cadastro, listagem, atualização e exclusão (senha armazenada com hash e mascarada nas consultas)
-- 💸 **Transações** — CRUD completo de receitas e despesas, com descrição, valor, data, status de pagamento, banco e especificação
+- 🔐 **Autenticação** — login por nome de usuário + senha (estratégia local do Passport) emitindo **token de acesso JWT** (validade de 1 dia), com estratégia e guard JWT implementados para as rotas protegidas
+- 👥 **Usuários** — cadastro, listagem, atualização e exclusão lógica (`isActive = false`); senha armazenada com hash SHA-256 e mascarada nas consultas
+- 💸 **Transações** — CRUD sobre **entidades de domínio (DDD)**, com descrição, valor, data, categoria e status de pagamento
+- 🧩 **Parcelamentos** — transações parceladas geram as próximas parcelas com **datas de vencimento mensais progressivas**, via **eventos de domínio (CQRS/@nestjs/cqrs)**
 - 🏷 **Categorias** — categorias de receita/despesa com ícones, populadas via **migrations do TypeORM**
-- 📊 **Totalizadores** — receitas, despesas e saldo disponível por usuário: geral, por mês, por categoria ou apenas entradas pagas
+- 📊 **Totalizadores** — receitas, despesas e saldo disponível por usuário com filtros por categoria, período e tipo (somente pagas)
+- 📈 **Resumo mensal** — por usuário, lido de uma tabela pré-agregada (`summary_transactions_month`) atualizada por **triggers SQL**
 - 📃 **Documentação da API** — interativa com **Swagger / OpenAPI**
-- 🚦 **Rate limiting** — proteção contra brute force na API
-- 🐳 **Docker** — imagens multi-stage (desenvolvimento com hot-reload e produção) + orquestração com `docker-compose`
-- 🚀 **CI/CD** — pipeline no GitHub Actions com build e deploy automatizado (rsync via SSH)
+- 🚦 **Rate limiting** — proteção contra brute force na API (express-rate-limit)
+- 🐳 **Docker** — imagens multi-stage (desenvolvimento, produção e local com hot-reload) + orquestração com `docker-compose`
+- 🚀 **CI/CD** — pipeline no GitHub Actions: build em `develop`/PRs e deploy via rsync (SSH) em push na `prod`
 
 ## 🛠 Stack e palavras-chave
 
-**Backend / API:** Node.js 16, TypeScript, NestJS 9, API REST, TypeORM (repositories, migrations, entities, relações), MySQL
-**Segurança:** Passport, autenticação JWT, hash de senha, rate limiting
+**Backend / API:** Node.js 20, TypeScript 5.x, NestJS 11, API REST, DDD (entidades de domínio, factory, eventos de domínio com `@nestjs/cqrs`), TypeORM (repositories, migrations, entities, relações), MySQL (+ triggers SQL)
+**Segurança:** Passport (local + JWT), hash de senha com máscara, rate limiting
 **Validação e documentação:** class-validator, class-transformer, DTOs, Swagger, OpenAPI
-**Infra e ferramentas:** Docker (build multi-stage), docker-compose, GitHub Actions (CI/CD, deploy), Jest (testes unitários e e2e), ESLint, Prettier
+**Infra e ferramentas:** Docker (build multi-stage), docker-compose, GitHub Actions (CI/CD, deploy rsync), Jest (testes unitários e e2e), ESLint, Prettier
 
 ## 📂 Estrutura do projeto
 
 ```
 .
-├── docker-compose.yml          # Orquestração da API + MySQL
-├── server/src
-│   ├── app/                    # Módulo raiz (TypeORM + módulos de feature)
-│   ├── migrations/             # Migrations TypeORM (seed das categorias padrão)
-│   ├── shared/                 # SharedModule + ApiConfigService (validação de env, fail-fast)
-│   └── modules/
-│       ├── auth/               # Login, estratégias JWT e local, guards
-│       ├── users/              # CRUD de usuários, entidade com senha com hash/mascarada
-│       ├── transactions/         # CRUD de transações, filtros e totalizadores
-│       └── transactionsCategory/ # CRUD de categorias de receita/despesa
-└── script/                     # Script que importa uma planilha do Excel para a API
+├── docker-compose.yml              # Orquestração da API + MySQL
+├── script/                         # Script Node.js: importa o histórico da planilha Excel (.xlsx) para a API
+└── server
+    ├── sql/                        # Triggers MySQL que mantêm as tabelas de resumo atualizadas
+    ├── test/                       # Testes e2e (Jest)
+    └── src
+        ├── app/                    # Módulo raiz (TypeORM, CQRS + módulos de feature)
+        ├── domain/                 # Núcleo do DDD: entidades de domínio, eventos e building blocks
+        │   ├── common/             # Entity, AggregateRoot, DomainEvent, UniqueEntityID
+        │   ├── entities/           # Entidade de domínio Transaction (getters + evento de parcelamento)
+        │   └── events/             # Eventos de domínio (ex.: InstallmentsGenerated)
+        ├── enums/                  # Enums compartilhados (tipo da transação: + / -)
+        ├── migrations/             # Migrations TypeORM: tabelas, seed de categorias, resumos, parcelas
+        ├── shared/                 # SharedModule + ApiConfigService (validação de env, fail-fast)
+        └── modules/
+            ├── auth/               # Login, estratégias local + JWT, guards
+            ├── users/              # CRUD de usuários (senha com hash e mascarada)
+            ├── summary/            # Resumo mensal por usuário (tabela pré-agregada)
+            ├── transactions/       # CRUD, filtros e totalizadores + factory e handler de eventos (CQRS, em migração)
+            └── transactionsCategory/ # CRUD de categorias de receita/despesa
 ```
 
 ## 🔌 Endpoints da API
@@ -66,19 +79,22 @@ Base: **`/api`** — a documentação completa e interativa é servida pelo Swag
 
 | Método | Rota | Descrição |
 | ------ | ---- | --------- |
-| `POST` | `/api/auth/login` | Autentica e retorna um token de acesso JWT |
+| `POST` | `/api/auth/login` | Autentica (campos `login` + `password`) e retorna um token de acesso JWT (validade de 1 dia) |
 | `GET` | `/api/users` | Lista usuários |
-| `POST` | `/api/users` | Cria um usuário |
-| `GET` `PATCH` `DELETE` | `/api/users/:id` | Busca, atualiza ou remove um usuário |
+| `POST` | `/api/users` | Cria um usuário (e-mail e username únicos) |
+| `GET` `PATCH` `DELETE` | `/api/users/:id` | Busca, atualiza ou remove logicamente um usuário (`isActive = false`) |
 | `GET` | `/api/transactions/user/:userId` | Lista as transações do usuário. Filtros via query: `categoryId`, `date=YYYY-MM`, `type` (`+` ou `-`), `isPaid` |
 | `GET` | `/api/transactions/user/:userId/last` | 10 transações pagas mais recentes |
-| `GET` | `/api/transactions/user/:userId/totalizers` | Total de receitas, despesas e saldo até hoje |
 | `GET` | `/api/transactions/user/:userId/totalizer` | Totalizadores filtrando por `categoryId`, `date` e `type` (somente pagas) |
 | `GET` `PATCH` `DELETE` | `/api/transactions/:id` | Busca, atualiza ou remove uma transação |
-| `POST` | `/api/transactions` | Cria uma transação |
+| `POST` | `/api/transactions` | Cria uma transação e retorna o objeto criado |
 | `GET` | `/api/category` | Lista categorias (ordenadas) |
 | `POST` | `/api/category` | Cria uma categoria |
 | `PATCH` `DELETE` | `/api/category/:id` | Atualiza ou remove uma categoria |
+| `GET` | `/api/summary/month/:userId` | Resumo mensal por usuário (receita, despesa, total), do mais recente |
+| `PATCH` | `/api/summary/:id` | Placeholder — atualização ainda será implementada |
+
+> ⚠️ **Migração de arquitetura em andamento:** o módulo de **transações** está sendo migrado para **DDD/CQRS** e, durante a transição, opera sobre um repositório em memória — criação, listagem (com todos os filtros e totalizadores), `update` e `delete` funcionam integralmente em memória, com as parcelas geradas via eventos de domínio. Reconectar a persistência via repositório DDD (TypeORM) é o próximo passo do Roadmap.
 
 ## 🚀 Como rodar
 
@@ -91,7 +107,7 @@ cd inside-finances-be
 
 ### 2. Rodando com Docker (recomendado)
 
-A imagem `local` lê `server/.env.docker`, então crie-o primeiro:
+A imagem `local` lê `server/.env.docker` (ela exige um `JWT_KEY` **não vazio** para assinar os tokens — a app falha rápido sem ele), então crie-o primeiro:
 
 ```bash
 cp server/.env.docker.example server/.env.docker
@@ -108,6 +124,7 @@ DB_PORT=3306
 PORT=8080
 ENVIRONMENT=local
 ENABLE_ORM_LOGS=false
+JWT_KEY=my-secret-key
 ```
 
 Depois suba toda a stack:
@@ -122,13 +139,13 @@ docker-compose up -d --build
 
 ### 3. Ou rode localmente
 
-Pré-requisitos: Node.js 16, Yarn e uma instância do MySQL.
+Pré-requisitos: Node.js 20 (NestJS 11 exige ≥ 20), Yarn e uma instância do MySQL.
 
 ```bash
 cd server
 cp .env.example .env # preencha DB_*, PORT, ENVIRONMENT=local, ENABLE_ORM_LOGS e JWT_KEY
 yarn
-yarn typeorm migration:run -d ormconfig.ts # opcional: popula as categorias padrão
+yarn typeorm migration:run -d ormconfig.ts # opcional: cria as tabelas e popula as categorias padrão
 yarn start:dev
 ```
 
@@ -144,12 +161,12 @@ yarn test:e2e # testes e2e (Jest)
 
 ## 🗺 Roadmap
 
+- 🔌 **Reconectar a persistência** ao novo modelo de domínio: repositório DDD para transações (TypeORM) e mapeamento domínio↔entidade (o serviço in-memory continua com a mesma API)
+- 🔀 **Unificar os enums de tipo**: `TypeEnum` (`+`/`-`) e `TypeTransactionEnum` (`RECIPE`/`EXPENSE`) + migration de dados
 - 🔐 Ativar o **guard JWT** em todas as rotas protegidas, obtendo o id do usuário pelo token em vez de parâmetro de rota
-- 🔑 Migrar o hash de senha de SHA-256 para **bcrypt**
-- 📧 Fluxo de recuperação/troca de senha (senha temporária por e-mail)
-- ✅ **Pipe de validação global** de requisições com whitelist de DTOs
+- 🔑 Migrar o hash de senha de SHA-256 para **bcrypt** + fluxo de recuperação/troca de senha (scaffolding já comentado no código)
+- 🧪 Restaurar a suíte de testes (transações, resumo, e2e) e rodá-la na pipeline de CI
 - 📄 Paginação na listagem de transações
-- 📊 Endpoint de relatório/resumo mensal
 
 ## 👨‍💻 Autor
 
