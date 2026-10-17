@@ -4,8 +4,7 @@ import { Transaction } from '../../../domain/entities/transaction.entity';
 import { InstallmentsGeneratedEvent } from '../../../domain/events/transaction/installments-generated.event';
 
 @EventsHandler(InstallmentsGeneratedEvent)
-export class InstallmentsGeneratedHandler
-  implements IEventHandler<InstallmentsGeneratedEvent> {
+export class InstallmentsGeneratedHandler implements IEventHandler<InstallmentsGeneratedEvent> {
   // TODO: substituir por repositório DDD (TypeORM) quando a migração for concluída
   private readonly transactionRepo: Transaction[] = [];
 

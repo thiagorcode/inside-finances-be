@@ -94,6 +94,48 @@ describe('Transaction', () => {
     });
   });
 
+  describe('equals', () => {
+    it('should be true for the same instance', () => {
+      const transaction = Transaction.create(makeProps());
+
+      expect(transaction.equals(transaction)).toBe(true);
+    });
+
+    it('should be true when both entities carry the same id value', () => {
+      const id = '0465f160-9783-4cd0-9605-d0e160f5f0cb';
+      const first = Transaction.create(
+        makeProps({ description: 'A' }),
+        new UniqueEntityID(id),
+      );
+      const second = Transaction.create(
+        makeProps({ description: 'B' }),
+        new UniqueEntityID(id),
+      );
+
+      expect(first.equals(second)).toBe(true);
+      expect(second.equals(first)).toBe(true);
+    });
+
+    it('should be false for different ids', () => {
+      const first = Transaction.create(
+        makeProps(),
+        new UniqueEntityID('0465f160-9783-4cd0-9605-d0e160f5f0cb'),
+      );
+      const second = Transaction.create(
+        makeProps(),
+        new UniqueEntityID('58124106-0df8-4b0e-a913-ce48155d2b29'),
+      );
+
+      expect(first.equals(second)).toBe(false);
+    });
+
+    it('should be false when nothing is given', () => {
+      const transaction = Transaction.create(makeProps());
+
+      expect(transaction.equals()).toBe(false);
+    });
+  });
+
   describe('generateInstallments', () => {
     it('should throw when the transaction is not an installment one', () => {
       const transaction = Transaction.create(
