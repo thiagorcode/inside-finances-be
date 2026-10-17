@@ -3,7 +3,6 @@ import { NotFoundException } from '@nestjs/common';
 
 import { TransactionsService } from './transactions.service';
 import { CreateTransactionsDTO } from './dtos/createTransactions.dto';
-import { FindAllWithQueryDto } from './dtos/findAllWithQuery.dto';
 import { UpdateTransactionsDTO } from './dtos/updateTransactions.dto';
 import {
   Transaction,

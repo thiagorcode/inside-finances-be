@@ -1,9 +1,6 @@
 import { TransactionFactory } from './transaction.factory';
 import { CreateTransactionsDTO } from '../dtos/createTransactions.dto';
-import {
-  TypeExpenseEnum,
-  TypeTransactionEnum,
-} from '../../../domain/entities/transaction.entity';
+import { TypeTransactionEnum } from '../../../domain/entities/transaction.entity';
 import { TypeEnum } from '../../../enums/type.enum';
 
 // Meio-dia UTC mantém o dia/mês local estável em qualquer timezone (±14h)

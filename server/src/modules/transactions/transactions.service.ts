@@ -73,9 +73,7 @@ export class TransactionsService {
 
   findLastByUser(userId: string): Transaction[] {
     return this.repository
-      .filter(
-        (item) => item.userId === userId && item.isPaid === true,
-      )
+      .filter((item) => item.userId === userId && item.isPaid === true)
       .sort((a, b) => b.date.getTime() - a.date.getTime())
       .slice(0, 10);
   }
