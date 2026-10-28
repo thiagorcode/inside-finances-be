@@ -1,5 +1,6 @@
+import { TypeTransactionEnum } from 'src/domain/entities/transaction.entity';
+import { Transactions } from './../modules/transactions/entities/transaction.entity';
 import { Users } from './../modules/users/entities/users.entity';
-import { Transactions } from './../modules/transactions/entities/transactions.entity';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class PopulateSummaryTransactionsYearMonth1675390598580
@@ -28,7 +29,7 @@ export class PopulateSummaryTransactionsYearMonth1675390598580
             transactions.reduce(
               (acc, { yearMonth: transactionYearMonth, type, value }) => {
                 if (yearMonth === transactionYearMonth) {
-                  if (type === '+') {
+                  if (type === TypeTransactionEnum.EXPENSE) {
                     acc[0] += value;
                   } else {
                     acc[1] += value;

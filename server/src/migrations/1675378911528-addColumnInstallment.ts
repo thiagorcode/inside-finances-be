@@ -3,7 +3,7 @@ import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 export class addColumnInstallment1675378911528 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.addColumn(
-      'gen.transactions',
+      'transactions',
       new TableColumn({
         name: 'installment',
         type: 'int',
@@ -12,7 +12,7 @@ export class addColumnInstallment1675378911528 implements MigrationInterface {
     );
 
     await queryRunner.addColumn(
-      'gen.transactions',
+      'transactions',
       new TableColumn({
         name: 'finalInstallment',
         type: 'int',

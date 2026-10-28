@@ -5,16 +5,12 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class CreateTableTransactionCategory1675176115326
-  implements MigrationInterface
-{
-  private databaseName = 'gen';
+export class CreateTableTransactionCategory1675176115326 implements MigrationInterface {
   private tableName = 'transactions_category';
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
         name: this.tableName,
-        database: this.databaseName,
         columns: [
           {
             name: 'id',
@@ -60,7 +56,7 @@ export class CreateTableTransactionCategory1675176115326
       true,
     );
     await queryRunner.createForeignKey(
-      'gen.transactions',
+      'transactions',
       new TableForeignKey({
         columnNames: ['categoryId'],
         referencedColumnNames: ['id'],
@@ -75,11 +71,10 @@ export class CreateTableTransactionCategory1675176115326
     const foreignKey = table.foreignKeys.find(
       (fk) => fk.columnNames.indexOf('categoryId') !== -1,
     );
-    await queryRunner.dropForeignKey('gen.transactions', foreignKey);
+    await queryRunner.dropForeignKey('transactions', foreignKey);
     await queryRunner.dropTable(
       new Table({
         name: this.tableName,
-        database: this.databaseName,
       }),
     );
   }
