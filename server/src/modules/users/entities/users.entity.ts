@@ -17,7 +17,7 @@ const PrevEmailSymbol = Symbol('UserPrevEmail');
 const PasswordPlaceholder = '***********';
 
 @Injectable()
-@Entity({ name: 'users', database: 'gen' })
+@Entity({ name: 'users' })
 @Unique(['email', 'username'])
 export class Users {
   @PrimaryGeneratedColumn('uuid')

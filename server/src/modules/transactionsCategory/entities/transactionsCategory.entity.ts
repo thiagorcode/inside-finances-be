@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 @Injectable()
-@Entity({ name: 'transactions_category', database: 'gen' })
+@Entity({ name: 'transactions_category' })
 export class TransactionsCategory {
   @PrimaryGeneratedColumn('uuid')
   id: string;
