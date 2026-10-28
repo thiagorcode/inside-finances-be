@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
   backend:
     container_name: finances_backend
@@ -16,7 +14,7 @@ services:
     depends_on:
       - mysql
   mysql:
-    image: docker.io/bitnami/mysql:latest
+    image: mysql:8.4
     environment:
       - MYSQL_ROOT_HOST=%
       - MYSQL_ROOT_PASSWORD=root
@@ -29,4 +27,4 @@ services:
     # command: '--default-authentication-plugin=mysql_native_password --bind-address=0.0.0.0 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci'
     restart: always
     volumes:
-      - ./mysql/data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
