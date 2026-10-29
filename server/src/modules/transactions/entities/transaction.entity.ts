@@ -15,7 +15,7 @@ import { TransactionsCategory } from '../../transactionsCategory/entities/transa
 import { TypeTransactionEnum } from '../../../domain/entities/transaction.entity';
 
 @Injectable()
-@Entity({ database: 'gen', name: 'transactions' })
+@Entity({ name: 'transactions' })
 export class Transactions extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
