@@ -13,15 +13,16 @@ export abstract class Entity<Props> {
     this._id = id ?? new UniqueEntityID();
   }
 
-  public equals(entity: Entity<unknown>) {
+  // Igualdade por identidade: mesma instância ou mesmo valor de id
+  public equals(entity?: Entity<unknown>) {
+    if (!entity) {
+      return false;
+    }
+
     if (entity === this) {
       return true;
     }
 
-    if (entity.id === this._id) {
-      return true;
-    }
-
-    return false;
+    return entity.id.equals(this._id);
   }
 }

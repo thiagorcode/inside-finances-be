@@ -34,17 +34,6 @@ const mockUserCreate = {
   unmaskedPassword: undefined,
 };
 
-const mockUserFind = {
-  id: 'f2a2f-43g21-gge4',
-  email: 'test@example.com',
-  isActive: true,
-  password: 'test@123',
-  username: 'test',
-  isPasswordChange: false,
-  dtCreated: new Date(),
-  dtUpdated: new Date(),
-};
-
 describe('UsersService', () => {
   let service: UsersService;
   let usersRepository: Repository<Users>;

@@ -1,13 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateTableSummaryTransaction1675178696638
-  implements MigrationInterface
-{
+export class CreateTableSummaryTransaction1675178696638 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
         name: 'summary_transactions_day',
-        database: 'das',
         uniques: [
           {
             name: 'summary_day',
@@ -83,7 +80,6 @@ export class CreateTableSummaryTransaction1675178696638
     await queryRunner.dropTable(
       new Table({
         name: 'summary_transactions_day',
-        database: 'das',
       }),
     );
   }

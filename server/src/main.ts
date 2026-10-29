@@ -20,7 +20,7 @@ async function bootstrap() {
     .setDescription('The app API description')
     .setVersion('0.5.1')
     .addTag('app')
-    .setContact('Thiago Rodrigues', '', 'ti.thiago.rodrigues@gmail.com')
+    .setContact('Thiago Rodrigues', '', 'thiagorodri.dev@gmail.com')
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
@@ -30,9 +30,8 @@ async function bootstrap() {
 
   app.use(
     rateLimit({
-      windowMs: WINDOW_MS, 
+      windowMs: WINDOW_MS,
       limit: LIMIT_EACH_REQUEST,
-      
     }),
   );
 

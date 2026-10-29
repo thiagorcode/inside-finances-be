@@ -15,7 +15,8 @@ export class TransactionFactory {
   }
 
   static create(data: CreateTransactionsDTO) {
-    const currentInstallment = data.installment ?? (data.finalInstallment ? 1 : 0);
+    const currentInstallment =
+      data.installment ?? (data.finalInstallment ? 1 : 0);
     const finalInstallment = data.finalInstallment ?? 0;
 
     return Transaction.create({

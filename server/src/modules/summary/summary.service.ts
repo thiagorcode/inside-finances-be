@@ -1,7 +1,6 @@
 import { Repository } from 'typeorm';
 import { SummaryTransactionMonth } from './entities/summaryTransactionMonth.entity';
 import { Injectable } from '@nestjs/common';
-import { CreateSummaryDto } from './dto/create-summary.dto';
 import { UpdateSummaryDto } from './dto/update-summary.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -21,7 +20,7 @@ export class SummaryService {
     });
   }
 
-  update(id: number, updateSummaryDto: UpdateSummaryDto) {
+  update(id: number, _updateSummaryDto: UpdateSummaryDto) {
     return `This action updates a #${id} summary`;
   }
 }

@@ -1,15 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateTableTransactions1675176093573
-  implements MigrationInterface
-{
-  private databaseName = 'gen';
+export class CreateTableTransactions1675176093573 implements MigrationInterface {
   private tableName = 'transactions';
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
         name: this.tableName,
-        database: this.databaseName,
         columns: [
           {
             name: 'id',
@@ -123,7 +119,6 @@ export class CreateTableTransactions1675176093573
     await queryRunner.dropTable(
       new Table({
         name: this.tableName,
-        database: this.databaseName,
       }),
     );
   }
